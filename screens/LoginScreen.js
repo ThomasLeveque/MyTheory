@@ -6,11 +6,11 @@ export default class Login extends React.Component {
     state = { email: '', password: '', errorMessage: null }
 
     handleLogin = () => {
-        const { email, pasword } = this.state
+        const { email, password } = this.state
         firebase
             .auth()
             .signInWithEmailAndPassword(email, password)
-            .then(() => this.props.navigation.navigate('Main'))
+            .then(() => this.props.navigation.navigate('main'))
             .catch(error => this.setState({ errorMessage: error.message }))
     }
 
@@ -40,7 +40,7 @@ export default class Login extends React.Component {
                 <Button title="Login" onPress={this.handleLogin} />
                 <Button
                     title="Don't have an account? Sign Up"
-                    onPress={() => this.props.navigation.navigate('SignUp')}
+                    onPress={() => this.props.navigation.navigate('signUp')}
                 />
             </View>
         )
