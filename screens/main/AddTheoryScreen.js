@@ -5,7 +5,7 @@ import {
     StyleSheet,
     TextInput,
     TouchableHighlight,
-    AlertIOS
+    Alert
 } from 'react-native';
 import {db} from "../../config/Database";
 
@@ -27,7 +27,7 @@ export default class AddTheoryScreen extends Component {
         db.ref('/items').push({
             name: this.state.name
         })
-        AlertIOS.alert(
+        Alert.alert(
             'Item saved successfully'
         );
     }
