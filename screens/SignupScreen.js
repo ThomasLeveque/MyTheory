@@ -3,14 +3,36 @@ import { StyleSheet, Text, TextInput, View, Button } from 'react-native'
 import firebase from 'firebase'
 
 export default class SignUp extends React.Component {
-    state = { email: '', password: '', errorMessage: null }
-    handleSignUp = () => {
-        firebase
-            .auth()
-            .createUserWithEmailAndPassword(this.state.email, this.state.password)
-            .then(() => this.props.navigation.navigate('main'))
-            .catch(error => this.setState({ errorMessage: error.message }))
+    state = { name: '', email: '', password: '', errorMessage: null }
+
+    storeUser = (userId, email, name, followedCategory) => {
+        firebase.database().ref('users/' + userId).set({
+          email,
+          name,
+          followedCategory
+        })
+      }
+
+    handleSignUp = async () => {
+        const { name, password } = this.state
+
+        const email = this.state.email.replace(/\s/g, '')
+        
+        try {
+            await firebase.auth().createUserWithEmailAndPassword(email, password)
+            const { currentUser } = firebase.auth()
+            this.props.navigation.navigate('main')
+
+            this.storeUser(currentUser.uid, email, name, {})
+
+        } catch(error) {
+            this.setState({
+                errorMessage: error.message
+            })
+        }
+
     }
+    
     render() {
         return (
             <View style={styles.container}>
@@ -19,6 +41,13 @@ export default class SignUp extends React.Component {
                 <Text style={{ color: 'red' }}>
                     {this.state.errorMessage}
                 </Text>}
+                <TextInput
+                    placeholder="Name"
+                    autoCapitalize="none"
+                    style={styles.textInput}
+                    onChangeText={name => this.setState({ name })}
+                    value={this.state.name}
+                />
                 <TextInput
                     placeholder="Email"
                     autoCapitalize="none"
