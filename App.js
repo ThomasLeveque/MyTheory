@@ -8,6 +8,7 @@ import HomeScreen from './screens/main/HomeScreen'
 import AddTheoryScreen from './screens/main/AddTheoryScreen'
 import ActivityScreen from './screens/main/ActivityScreen'
 import ProfilScreen from './screens/main/ProfilScreen'
+import db from './config/Database'
 
 // create our app's navigation stack
 const App = createSwitchNavigator(

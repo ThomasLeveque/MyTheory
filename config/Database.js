@@ -11,9 +11,3 @@ let config = {
 
 let app = firebase.initializeApp(config)
 export const db = app.database()
-
-export const addItem =  (item) => {
-    db.ref('/items').push({
-        name: item
-    })
-}
