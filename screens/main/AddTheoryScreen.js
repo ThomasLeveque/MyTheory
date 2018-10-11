@@ -8,37 +8,61 @@ import {
     Alert
 } from 'react-native';
 import {db} from "../../config/Database";
+import InputComponent from "../../components/InputComponent";
+import firebase from 'firebase'
 
 export default class AddTheoryScreen extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            name: ''
+        state = {
+            topic:'',
+            name: '',
+            description:'',
+            likes: [],
+            comments: [],
+            currentUser: null,
+            user: null
         }
-        this.handleChange = this.handleChange.bind(this);
-        this.handleSubmit = this.handleSubmit.bind(this);
+
+    componentWillMount () {
+        const { currentUser } = firebase.auth()
+        this.setState({ currentUser })
     }
-    handleChange(e) {
-        this.setState({
-            name: e.nativeEvent.text
-        });
+
+    componentDidMount () {
+        this.getUserData()
     }
-    handleSubmit() {
-        db.ref('/items').push({
-            name: this.state.name
+
+    getUserData = async () => {
+        const { currentUser } = this.state
+
+        let database = firebase.database()
+
+        let user = await database.ref('/users/' + currentUser.uid).once('value')
+        this.setState({ user: user.val() })
+
+    }
+
+    handleSubmit = () => {
+        const { topic, name, description, likes, comments, user} = this.state
+        db.ref('/theory').push({
+            date: firebase.database.ServerValue.TIMESTAMP,
+            topic: topic,
+            name: name,
+            description: description,
+            likes: likes,
+            comments: comments,
+            user: user
         })
         Alert.alert(
-            'Item saved successfully'
+            'Theory saved'
         );
     }
     render() {
         return (
             <View style={styles.main}>
-                <Text style={styles.title}>Add Item</Text>
-                <TextInput
-                    style={styles.itemInput}
-                    onChange={this.handleChange}
-                />
+                <Text style={styles.title}>Add theory</Text>
+                <InputComponent value={this.state.topic} onChangeValue={ topic => this.setState({ topic }) } placeholderInput={"Topic"} styleInput={styles.itemInput}/>
+                <InputComponent value={this.state.name} onChangeValue={ name => this.setState({ name }) } placeholderInput={"Name your theory"} styleInput={styles.itemInput}/>
+                <InputComponent value={this.state.description} onChangeValue={ description => this.setState({ description }) } placeholderInput={"Description"} styleInput={styles.itemInput}/>
                 <TouchableHighlight
                     style = {styles.button}
                     underlayColor= "white"
