@@ -7,6 +7,7 @@ export default class SignUp extends React.Component {
 
     storeUser = (userId, email, name, followedCategory) => {
         firebase.database().ref('users/' + userId).set({
+          id: userId,
           email,
           name,
           followedCategory
