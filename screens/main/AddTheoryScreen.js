@@ -19,7 +19,8 @@ export default class AddTheoryScreen extends Component {
             likes: [],
             comments: [],
             currentUser: null,
-            user: null
+            user: null,
+            error: ''
         }
 
     componentWillMount () {
@@ -43,18 +44,25 @@ export default class AddTheoryScreen extends Component {
 
     handleSubmit = () => {
         const { topic, name, description, likes, comments, user} = this.state
-        db.ref('/theory').push({
-            date: firebase.database.ServerValue.TIMESTAMP,
-            topic: topic,
-            name: name,
-            description: description,
-            likes: likes,
-            comments: comments,
-            user: user
-        })
-        Alert.alert(
-            'Theory saved'
-        );
+
+        if(topic.length > 0 && name.length > 0 && description.length > 0){
+            db.ref('/theory').push({
+                date: firebase.database.ServerValue.TIMESTAMP,
+                topic: topic,
+                name: name,
+                description: description,
+                likes: likes,
+                comments: comments,
+                user: user
+            })
+            this.setState({error: ''})
+            Alert.alert(
+                'Theory saved'
+            )
+        }else{
+            this.setState({error: 'Vous avez faux'})
+        }
+
     }
     render() {
         return (
@@ -73,6 +81,9 @@ export default class AddTheoryScreen extends Component {
                         Add
                     </Text>
                 </TouchableHighlight>
+                {this.state.error &&
+                    <Text>{this.state.error}</Text>
+                }
             </View>
         )
     }
