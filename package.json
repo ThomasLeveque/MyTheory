@@ -6,7 +6,8 @@
     "start": "expo start",
     "android": "expo start --android",
     "ios": "expo start --ios",
-    "eject": "expo eject"
+    "eject": "expo eject",
+    "react-devtools": "react-devtools"
   },
   "dependencies": {
     "expo": "^30.0.1",
@@ -15,5 +16,8 @@
     "react-native": "https://github.com/expo/react-native/archive/sdk-30.0.0.tar.gz",
     "react-native-firebase": "^5.0.0",
     "react-navigation": "^2.17.0"
+  },
+  "devDependencies": {
+    "react-devtools": "^3.4.0"
   }
 }
