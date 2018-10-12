@@ -1,3 +1,4 @@
+
 import React from 'react'
 import { StyleSheet, Text, View, ActivityIndicator } from 'react-native'
 import firebase from 'firebase'
@@ -5,7 +6,8 @@ import firebase from 'firebase'
 export default class ProfilScreen extends React.Component {
     state = {
         currentUser: null,
-        user: null
+        user: null,
+        userTheorys: []
     }
 
     componentWillMount () {
@@ -20,16 +22,25 @@ export default class ProfilScreen extends React.Component {
     getUserData = async () => {
         const { currentUser } = this.state
         
-        let database = firebase.database()
+        const database = firebase.database()
         
-        let user = await database.ref('/users/' + currentUser.uid).once('value')
-        this.setState({ user: user.val() })
+        const user = await database.ref('/users/' + currentUser.uid).once('value')
+
+        const getTheorys = await database.ref('/theory').once('value')
         
+        const arrayTheorys = Object.values(getTheorys.val())
+
+        const userTheorys = arrayTheorys.filter((theory) => theory.user.id === currentUser.uid)
+        
+        this.setState({ 
+            user: user.val(),
+            userTheorys
+         })
     }
 
     render() {
-        const { user } = this.state
-    
+        const { user, userTheorys } = this.state
+        
         if (!user) {
             return (
                 <View style={{ flex: 1, justifyContent: 'center' }}>
@@ -42,6 +53,20 @@ export default class ProfilScreen extends React.Component {
             <View style={styles.container}>
                 <Text>{user.name}</Text>
                 <Text>{user.email}</Text>
+
+                {userTheorys.map(theory => {
+                    return (
+                        <View key={theory.date} style={{marginTop: 20}}>
+                            <Text>{theory.name}</Text>
+                            <Text>{theory.description}</Text>
+                            <Text>{theory.topic}</Text>
+                            <Text>{theory.topic}</Text>
+                            <Text>{theory.user.name}</Text>
+                            <Text>{theory.user.email}</Text>
+                        </View>
+                    )
+                })}
+
             </View>
         )
     }
