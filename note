@@ -1,0 +1,116 @@
+<View id='infinite-list' style={styles.container}>
+                    <Text>
+                        Hi {currentUser && currentUser.email}!
+                    </Text>
+                    <Button
+                        onPress={this.signOutUser}
+                        title="Sign out"
+                    />
+                <FlastList>
+
+                    <View id='item' style={styles.containerCard}>
+
+                        <View style={styles.containerTopCard}>
+
+                            <View style={styles.userNameImg}>
+
+                                <Image source={{uri: 'https://facebook.github.io/react/logo-og.png'}}
+                                        style={{width: 40, height: 40, borderRadius: 20}}
+                                />
+
+                                <Text style={styles.nameProfile}>
+                                    Jennifer
+                                </Text>
+                            </View>
+
+                            <View style={styles.postedAt}>
+                                <Text style={styles.datePost}>
+                                    Il y a 2 heures
+                                </Text>
+                            </View>
+
+                        </View>
+
+                        <View style={styles.containerImgTheory}>
+
+                            <ImageBackground source={{uri: 'https://facebook.github.io/react/logo-og.png'}}
+                                        style={{width: '100%', height: '80%', shadowColor: '#000', shadowOffset: {width: 1, height: 4}, shadowOpacity: 1, shadowRadius: 7}}>
+
+                                <TouchableOpacity
+                                    style={styles.readButton}
+                                    onPress={console.log('prout')}
+                                    activeOpacity={0.8}
+                                    >
+                                    <Text style={styles.textButton}>Read</Text>
+                                </TouchableOpacity>
+
+                            </ImageBackground>
+
+                        </View>
+
+
+
+
+                    </View>
+                </FlastList>
+            </View>
+        )
+    }
+}
+const styles = StyleSheet.create({
+    container: {
+        paddingTop:  50,
+        backgroundColor: 'red',
+        height:'110%'
+    },
+    containerCard: {
+        margin: 20,
+        height: 300,
+        backgroundColor:'white',
+        borderColor: 'red',
+        borderWidth: 2,
+        borderRadius: 10,
+    },
+    containerTopCard: {
+        flexDirection: 'row',
+    },
+    userNameImg: {
+        flexDirection: 'row',
+        flex:4,
+        borderRadius: 20,
+        padding: 7,
+        backgroundColor: 'lightgrey'
+    },
+    postedAt: {
+        flex:3,
+        backgroundColor: 'white',
+        borderRadius: 20
+    },
+    nameProfile: {
+        color: 'black',
+        fontSize: 20,
+        fontWeight: 'bold',
+        padding: 7
+    },
+    datePost: {
+        color: 'black',
+        fontSize: 15,
+        fontWeight: 'bold',
+        padding: 10,
+    },
+    containerImgTheory: {
+
+    },
+    readButton: {
+        backgroundColor: 'grey',
+        marginTop: 140,
+        width: 75,
+        alignSelf:'center',
+        borderRadius: 20,
+        height: 30,
+    },
+    textButton: {
+        alignSelf:'center',
+        marginTop: 5
+    }
+})
