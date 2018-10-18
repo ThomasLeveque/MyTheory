@@ -1,7 +1,7 @@
 
 import React from 'react'
-import { StyleSheet, Text, View, ActivityIndicator, FlatList, Button } from 'react-native'
-import { List, ListItem, Card, Icon} from "react-native-elements";
+import { StyleSheet, Text, View, ActivityIndicator, FlatList } from 'react-native'
+import { List, ListItem, Card, Icon, Button} from "react-native-elements";
 import firebase from 'firebase'
 
 export default class ProfilScreen extends React.Component {
@@ -57,19 +57,22 @@ export default class ProfilScreen extends React.Component {
 
                 <FlatList
                     data={userTheorys}
+                    keyExtractor={item => item.date.toString()}
                     renderItem={({ item }) =>
-                            <Card
+                        <Card
                             title={item.name}
-                            image={('https://facebook.github.io/react/logo-og.png')}>
+                            image={{uri: 'https://s3.amazonaws.com/uifaces/faces/twitter/brynn/128.jpg'}}>
                             <Text style={{marginBottom: 10}}>{item.description}</Text>
                             <Text>{item.topic}</Text>
                             <Text>{item.user.name}</Text>
                             <Text>{item.user.email}</Text>
                             <Button
-                            icon={<Icon name='code' color='#ffffff' />}
-                            backgroundColor='#03A9F4'
-                            buttonStyle={{borderRadius: 0, marginLeft: 0, marginRight: 0, marginBottom: 0}}
-                            title='VIEW NOW' />
+                                icon={<Icon name='code' color='#ffffff' />}
+                                backgroundColor='#03A9F4'
+                                onPress={() =>{}}
+                                buttonStyle={{borderRadius: 0, marginLeft: 0, marginRight: 0, marginBottom: 0}}
+                                title='VIEW NOW' 
+                            />
                         </Card>}
                 />
             </View>
@@ -78,8 +81,7 @@ export default class ProfilScreen extends React.Component {
 }
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center'
+        paddingTop:  50,
+        flex: 1
     }
 })
