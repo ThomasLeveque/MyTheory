@@ -5,7 +5,7 @@ import {
     StyleSheet,
     TextInput,
     TouchableHighlight,
-    Alert
+    ActivityIndicator
 } from 'react-native';
 import {db} from "../../config/Database";
 import InputComponent from "../../components/InputComponent";
@@ -20,7 +20,8 @@ export default class AddTheoryScreen extends Component {
             comments: [],
             currentUser: null,
             user: null,
-            error: ''
+            error: '',
+            loading: false
         }
 
     componentWillMount () {
@@ -42,23 +43,22 @@ export default class AddTheoryScreen extends Component {
 
     }
 
-    handleSubmit = () => {
-        const { topic, name, description, likes, comments, user} = this.state
+    handleSubmit = async () => {
+        const { topic, name, description, likes, comments, user, loading } = this.state
 
         if(topic.length > 0 && name.length > 0 && description.length > 0){
-            db.ref('/theory').push({
+            this.setState({loading: true})
+            await db.ref('/theory').push({
                 date: firebase.database.ServerValue.TIMESTAMP,
-                topic: topic,
-                name: name,
-                description: description,
-                likes: likes,
-                comments: comments,
-                user: user
+                topic,
+                name,
+                description,
+                likes,
+                comments,
+                user
             })
-            this.setState({error: ''})
-            Alert.alert(
-                'Theory saved'
-            )
+            this.setState({loading: false})
+            console.log('Theory added')
         }else{
             this.setState({error: 'Vous avez faux'})
         }
@@ -83,6 +83,11 @@ export default class AddTheoryScreen extends Component {
                 </TouchableHighlight>
                 {this.state.error &&
                     <Text>{this.state.error}</Text>
+                }
+                {
+                    this.state.loading && <View>
+                        <ActivityIndicator size="large" color="red"/>
+                    </View>
                 }
             </View>
         )
