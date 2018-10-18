@@ -15,7 +15,7 @@ export default class Loading extends React.Component {
     {
         return (
             <View style={styles.container}>
-                <Text>Loading</Text>
+                <Text>My THeory !</Text>
                 <ActivityIndicator size="large"/>
             </View>
         )

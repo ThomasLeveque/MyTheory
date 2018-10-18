@@ -1,7 +1,7 @@
 import React from 'react'
 import firebase from 'firebase'
-import { List, ListItem, Card, Icon} from "react-native-elements";
-import { ActivityIndicator, FlatList, TouchableOpacity, StyleSheet, Platform, Image, ImageBackground, Text, View, ScrollView, Button } from 'react-native'
+import { List, ListItem, Card, Icon, Button} from "react-native-elements";
+import { ActivityIndicator, FlatList, TouchableOpacity, StyleSheet, Platform, Image, ImageBackground, Text, View, ScrollView } from 'react-native'
 export default class Main extends React.Component {
     state = {
         currentUser: null,
@@ -35,7 +35,10 @@ export default class Main extends React.Component {
         const database = firebase.database();
         const allTheories = await database.ref("/theory").once("value");
         const theories = Object.values(allTheories.val());
-        this.setState({ theories });
+        this.setState({ 
+            theories,
+            loading: false
+         });
 
     };
 
@@ -51,9 +54,17 @@ export default class Main extends React.Component {
     }
 
     render() {
-        const { currentUser, theories } = this.state
-        if(!theories){ return <ActivityIndicator size='large' animating /> }
-        console.log(theories);
+        const { theories, loading } = this.state
+
+        if(loading) {
+            return (
+                <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+                    <Text>Loading</Text>
+                    <ActivityIndicator size="large"/>
+                </View> 
+            )
+        }
+
         return (
             <View style={styles.container}>
 
@@ -62,19 +73,21 @@ export default class Main extends React.Component {
                     onEndReached={() => this.handleEnd()}
                     onEndReachedThreshold={0}
                     ListFooterComponent ={() => this.state.loading ? null : <ActivityIndicator size='large' animating /> }
-                    keyExtractor={(x, i) => i}
+                    keyExtractor={item => item.date.toString()}
                     renderItem={({ item }) =>
                             <Card
                             title={item.name}
-                            image={('https://facebook.github.io/react/logo-og.png')}>
+                            image={{uri: 'https://s3.amazonaws.com/uifaces/faces/twitter/brynn/128.jpg'}}>
                             <Text style={{marginBottom: 10}}>
-                            The idea with React Native Elements is more about component structure than actual design.
+                                {item.description}
                             </Text>
                             <Button
-                            icon={<Icon name='code' color='#ffffff' />}
-                            backgroundColor='#03A9F4'
-                            buttonStyle={{borderRadius: 0, marginLeft: 0, marginRight: 0, marginBottom: 0}}
-                            title='VIEW NOW' />
+                                backgroundColor='#03A9F4'
+                                onPress={() =>{}}
+                                icon={<Icon name='code' color='#ffffff' />}
+                                buttonStyle={{borderRadius: 0, marginLeft: 0, marginRight: 0, marginBottom: 0}}
+                                title='VIEW NOW' 
+                            />
                         </Card>}
                     />
             </View>
