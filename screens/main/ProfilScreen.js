@@ -1,6 +1,7 @@
 
 import React from 'react'
-import { StyleSheet, Text, View, ActivityIndicator } from 'react-native'
+import { StyleSheet, Text, View, ActivityIndicator, FlatList, Button } from 'react-native'
+import { List, ListItem, Card, Icon} from "react-native-elements";
 import firebase from 'firebase'
 
 export default class ProfilScreen extends React.Component {
@@ -54,19 +55,23 @@ export default class ProfilScreen extends React.Component {
                 <Text>{user.name}</Text>
                 <Text>{user.email}</Text>
 
-                {userTheorys.map(theory => {
-                    return (
-                        <View key={theory.date} style={{marginTop: 20}}>
-                            <Text>{theory.name}</Text>
-                            <Text>{theory.description}</Text>
-                            <Text>{theory.topic}</Text>
-                            <Text>{theory.topic}</Text>
-                            <Text>{theory.user.name}</Text>
-                            <Text>{theory.user.email}</Text>
-                        </View>
-                    )
-                })}
-
+                <FlatList
+                    data={userTheorys}
+                    renderItem={({ item }) =>
+                            <Card
+                            title={item.name}
+                            image={('https://facebook.github.io/react/logo-og.png')}>
+                            <Text style={{marginBottom: 10}}>{item.description}</Text>
+                            <Text>{item.topic}</Text>
+                            <Text>{item.user.name}</Text>
+                            <Text>{item.user.email}</Text>
+                            <Button
+                            icon={<Icon name='code' color='#ffffff' />}
+                            backgroundColor='#03A9F4'
+                            buttonStyle={{borderRadius: 0, marginLeft: 0, marginRight: 0, marginBottom: 0}}
+                            title='VIEW NOW' />
+                        </Card>}
+                />
             </View>
         )
     }

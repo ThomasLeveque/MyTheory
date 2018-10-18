@@ -46,9 +46,8 @@ export default class AddTheoryScreen extends Component {
     handleSubmit = async () => {
         const { topic, name, description, likes, comments, user, loading } = this.state
 
-        this.setState({loading: true})
-
         if(topic.length > 0 && name.length > 0 && description.length > 0){
+            this.setState({loading: true})
             await db.ref('/theory').push({
                 date: firebase.database.ServerValue.TIMESTAMP,
                 topic,
@@ -61,10 +60,7 @@ export default class AddTheoryScreen extends Component {
             this.setState({loading: false})
             console.log('Theory added')
         }else{
-            this.setState({
-                error: 'Vous avez faux',
-                loading: false
-        })
+            this.setState({error: 'Vous avez faux'})
         }
 
     }
