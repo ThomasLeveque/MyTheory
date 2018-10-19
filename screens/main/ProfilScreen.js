@@ -32,7 +32,7 @@ export default class ProfilScreen extends React.Component {
 
     const user = await db.ref('/users/' + currentUser.uid).once('value')
 
-    const getTheorys = await database.ref('/theory').once('value')
+    const getTheorys = await db.ref('/theory').once('value')
 
     const arrayTheorys = Object.values(getTheorys.val())
 
