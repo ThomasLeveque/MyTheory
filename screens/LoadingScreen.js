@@ -3,29 +3,26 @@ import { View, Text, ActivityIndicator, StyleSheet } from 'react-native'
 import firebase from 'firebase'
 
 export default class Loading extends React.Component {
-    componentDidMount() {
+  componentDidMount() {
+    firebase.auth().onAuthStateChanged(user => {
+      this.props.navigation.navigate(user ? 'main' : 'signUp')
+    })
+  }
 
-        firebase.auth().onAuthStateChanged(user => {
-            this.props.navigation.navigate(user ? 'main' : 'signUp')
-        })
-
-    }
-
-    render()
-    {
-        return (
-            <View style={styles.container}>
-                <Text>My THeory !</Text>
-                <ActivityIndicator size="large"/>
-            </View>
-        )
-    }
+  render() {
+    return (
+      <View style={styles.container}>
+        <Text>My THeory !</Text>
+        <ActivityIndicator size="large" />
+      </View>
+    )
+  }
 }
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-    }
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
 })
