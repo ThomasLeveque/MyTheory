@@ -1,5 +1,11 @@
 import React from 'react'
-import { createSwitchNavigator, createBottomTabNavigator } from 'react-navigation'
+import {
+  createSwitchNavigator,
+  createBottomTabNavigator,
+} from 'react-navigation'
+import { Provider } from 'react-redux'
+
+import store from './store'
 // import the different screens
 import LoadingScreen from './screens/LoadingScreen'
 import SignUpScreen from './screens/SignupScreen'
@@ -8,26 +14,38 @@ import HomeScreen from './screens/main/HomeScreen'
 import AddTheoryScreen from './screens/main/AddTheoryScreen'
 import ActivityScreen from './screens/main/ActivityScreen'
 import ProfilScreen from './screens/main/ProfilScreen'
-import db from './config/Database'
 
 // create our app's navigation stack
-const App = createSwitchNavigator(
-    {
+class App extends React.Component {
+  render() {
+    const MainNavigator = createSwitchNavigator(
+      {
         loading: LoadingScreen,
         signUp: SignUpScreen,
         login: LoginScreen,
-        main: createBottomTabNavigator({
-          home: HomeScreen,
-          addTheory: AddTheoryScreen,
-          activity: ActivityScreen,
-          profil: ProfilScreen
-        },
-        {
-          initialRouteName: 'home',
-        })
-    },
-    {
-        initialRouteName: 'loading'
-    }
-)
+        main: createBottomTabNavigator(
+          {
+            home: HomeScreen,
+            addTheory: AddTheoryScreen,
+            activity: ActivityScreen,
+            profil: ProfilScreen,
+          },
+          {
+            initialRouteName: 'home',
+          }
+        ),
+      },
+      {
+        initialRouteName: 'loading',
+      }
+    )
+
+    return(
+        <Provider store={store}>
+            <MainNavigator/>
+        </Provider>
+    )
+  }
+}
+
 export default App
