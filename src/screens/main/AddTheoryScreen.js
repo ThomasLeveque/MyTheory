@@ -1,15 +1,9 @@
-import React, { Component } from 'react'
-import {
-  View,
-  Text,
-  StyleSheet,
-  TouchableHighlight,
-  ActivityIndicator,
-} from 'react-native'
-import firebase from 'firebase'
+import React, { Component } from 'react';
+import { View, Text, StyleSheet, TouchableHighlight, ActivityIndicator } from 'react-native';
+import firebase from 'firebase';
 
-import { db } from '../../config/Database'
-import InputComponent from '../../components/InputComponent'
+import { db } from '../../config/Database';
+import InputComponent from '../../components/InputComponent';
 
 export default class AddTheoryScreen extends Component {
   state = {
@@ -22,37 +16,29 @@ export default class AddTheoryScreen extends Component {
     user: null,
     error: '',
     loading: false,
-  }
+  };
 
   componentWillMount() {
-    const { currentUser } = firebase.auth()
-    this.setState({ currentUser })
+    const { currentUser } = firebase.auth();
+    this.setState({ currentUser });
   }
 
   componentDidMount() {
-    this.getUserData()
+    this.getUserData();
   }
 
   getUserData = async () => {
-    const { currentUser } = this.state
+    const { currentUser } = this.state;
 
-    let user = await db.ref('/users/' + currentUser.uid).once('value')
-    this.setState({ user: user.val() })
-  }
+    let user = await db.ref('/users/' + currentUser.uid).once('value');
+    this.setState({ user: user.val() });
+  };
 
   handleSubmit = async () => {
-    const {
-      topic,
-      name,
-      description,
-      likes,
-      comments,
-      user,
-      loading,
-    } = this.state
+    const { topic, name, description, likes, comments, user, loading } = this.state;
 
     if (topic.length > 0 && name.length > 0 && description.length > 0) {
-      this.setState({ loading: true })
+      this.setState({ loading: true });
       await db.ref('/theory').push({
         date: firebase.database.ServerValue.TIMESTAMP,
         topic,
@@ -61,13 +47,13 @@ export default class AddTheoryScreen extends Component {
         likes,
         comments,
         user,
-      })
-      this.setState({ loading: false })
-      console.log('Theory added')
+      });
+      this.setState({ loading: false });
+      console.log('Theory added');
     } else {
-      this.setState({ error: 'Vous avez faux' })
+      this.setState({ error: 'Vous avez faux' });
     }
-  }
+  };
   render() {
     return (
       <View style={styles.main}>
@@ -90,10 +76,7 @@ export default class AddTheoryScreen extends Component {
           placeholderInput={'Description'}
           styleInput={styles.itemInput}
         />
-        <TouchableHighlight
-          style={styles.button}
-          underlayColor="white"
-          onPress={this.handleSubmit}>
+        <TouchableHighlight style={styles.button} underlayColor="white" onPress={this.handleSubmit}>
           <Text style={styles.buttonText}>Add</Text>
         </TouchableHighlight>
         {this.state.error && <Text>{this.state.error}</Text>}
@@ -103,7 +86,7 @@ export default class AddTheoryScreen extends Component {
           </View>
         )}
       </View>
-    )
+    );
   }
 }
 
@@ -147,4 +130,4 @@ const styles = StyleSheet.create({
     alignSelf: 'stretch',
     justifyContent: 'center',
   },
-})
+});

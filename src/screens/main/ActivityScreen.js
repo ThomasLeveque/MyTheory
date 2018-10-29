@@ -1,5 +1,5 @@
-import React from 'react'
-import { StyleSheet, Text, View } from 'react-native'
+import React from 'react';
+import { StyleSheet, Text, View } from 'react-native';
 
 export default class AddTheoryScreen extends React.Component {
   render() {
@@ -7,7 +7,7 @@ export default class AddTheoryScreen extends React.Component {
       <View style={styles.container}>
         <Text>Activity Screen</Text>
       </View>
-    )
+    );
   }
 }
 const styles = StyleSheet.create({
@@ -16,4 +16,4 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-})
+});

@@ -1,8 +1,8 @@
-import React from 'react'
-import { StyleSheet, Text, TextInput, View, Button } from 'react-native'
-import firebase from 'firebase'
+import React from 'react';
+import { StyleSheet, Text, TextInput, View, Button } from 'react-native';
+import firebase from 'firebase';
 
-import { db } from '../config/Database'
+import { db } from '../config/Database';
 
 export default class SignUp extends React.Component {
   state = {
@@ -10,7 +10,7 @@ export default class SignUp extends React.Component {
     email: '',
     password: '',
     errorMessage: null,
-  }
+  };
 
   storeUser = (userId, email, name, followedCategory) => {
     db.ref('users/' + userId).set({
@@ -18,34 +18,32 @@ export default class SignUp extends React.Component {
       email,
       name,
       followedCategory,
-    })
-  }
+    });
+  };
 
   handleSignUp = async () => {
-    const { name, password } = this.state
+    const { name, password } = this.state;
 
-    const email = this.state.email.replace(/\s/g, '')
+    const email = this.state.email.replace(/\s/g, '');
 
     try {
-      await firebase.auth().createUserWithEmailAndPassword(email, password)
-      const { currentUser } = firebase.auth()
-      this.props.navigation.navigate('main')
+      await firebase.auth().createUserWithEmailAndPassword(email, password);
+      const { currentUser } = firebase.auth();
+      this.props.navigation.navigate('main');
 
-      this.storeUser(currentUser.uid, email, name, {})
+      this.storeUser(currentUser.uid, email, name, {});
     } catch (error) {
       this.setState({
         errorMessage: error.message,
-      })
+      });
     }
-  }
+  };
 
   render() {
     return (
       <View style={styles.container}>
         <Text>Sign Up</Text>
-        {this.state.errorMessage && (
-          <Text style={{ color: 'red' }}>{this.state.errorMessage}</Text>
-        )}
+        {this.state.errorMessage && <Text style={{ color: 'red' }}>{this.state.errorMessage}</Text>}
         <TextInput
           placeholder="Name"
           autoCapitalize="none"
@@ -74,7 +72,7 @@ export default class SignUp extends React.Component {
           onPress={() => this.props.navigation.navigate('login')}
         />
       </View>
-    )
+    );
   }
 }
 const styles = StyleSheet.create({
@@ -90,4 +88,4 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     marginTop: 8,
   },
-})
+});

@@ -1,4 +1,4 @@
-import firebase from 'firebase'
+import firebase from 'firebase';
 
 let config = {
   apiKey: 'AIzaSyBHZn9I7pannM6aEVR6jG6F2rXHb91Hank',
@@ -7,8 +7,8 @@ let config = {
   projectId: 'mytheorie-317c9',
   storageBucket: 'mytheorie-317c9.appspot.com',
   messagingSenderId: '675898618947',
-}
+};
 
-let app = firebase.initializeApp(config)
+let app = firebase.initializeApp(config);
 
-export const db = app.database()
+export const db = app.database();
