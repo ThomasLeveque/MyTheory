@@ -38,9 +38,12 @@ export default class ProfilScreen extends React.Component {
     });
   };
 
+  signOutUser = async () => {
+    await firebase.auth().signOut();
+  };
+
   render() {
     const { user, userTheorys } = this.state;
-
     if (!user) {
       return (
         <View style={{ flex: 1, justifyContent: 'center' }}>
@@ -53,7 +56,7 @@ export default class ProfilScreen extends React.Component {
       <View style={styles.container}>
         <Text>{user.name}</Text>
         <Text>{user.email}</Text>
-
+        <Button title="Log Out" onPress={this.signOutUser} />
         <FlatList
           data={userTheorys}
           keyExtractor={item => item.date.toString()}

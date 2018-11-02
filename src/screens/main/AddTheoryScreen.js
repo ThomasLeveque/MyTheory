@@ -82,8 +82,8 @@ export default class AddTheoryScreen extends Component {
         description,
         likes,
         comments,
-        user,
         image,
+        user,
       });
       this.setState({ loading: false });
     } else {
