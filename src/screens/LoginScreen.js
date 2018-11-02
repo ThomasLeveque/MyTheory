@@ -1,30 +1,28 @@
-import React from 'react'
-import { StyleSheet, Text, TextInput, View, Button } from 'react-native'
-import firebase from 'firebase'
+import React from 'react';
+import { StyleSheet, Text, TextInput, View, Button } from 'react-native';
+import firebase from 'firebase';
 
 export default class Login extends React.Component {
   state = {
     email: '',
     password: '',
     errorMessage: null,
-  }
+  };
 
   handleLogin = () => {
-    const { email, password } = this.state
+    const { email, password } = this.state;
     firebase
       .auth()
       .signInWithEmailAndPassword(email, password)
       .then(() => this.props.navigation.navigate('main'))
-      .catch(error => this.setState({ errorMessage: error.message }))
-  }
+      .catch(error => this.setState({ errorMessage: error.message }));
+  };
 
   render() {
     return (
       <View style={styles.container}>
         <Text>Login</Text>
-        {this.state.errorMessage && (
-          <Text style={{ color: 'red' }}>{this.state.errorMessage}</Text>
-        )}
+        {this.state.errorMessage && <Text style={{ color: 'red' }}>{this.state.errorMessage}</Text>}
         <TextInput
           style={styles.textInput}
           autoCapitalize="none"
@@ -46,7 +44,7 @@ export default class Login extends React.Component {
           onPress={() => this.props.navigation.navigate('signUp')}
         />
       </View>
-    )
+    );
   }
 }
 const styles = StyleSheet.create({
@@ -62,4 +60,4 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     marginTop: 8,
   },
-})
+});

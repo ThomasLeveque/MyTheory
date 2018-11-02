@@ -1,67 +1,49 @@
-import React from 'react'
-import {
-  ActivityIndicator,
-  FlatList,
-  StyleSheet,
-  Text,
-  View,
-} from 'react-native'
-import { Card, Icon, Button } from 'react-native-elements'
-import firebase from 'firebase'
+import React from 'react';
+import { ActivityIndicator, FlatList, StyleSheet, Text, View } from 'react-native';
+import { Card, Icon, Button } from 'react-native-elements';
+import firebase from 'firebase';
 
-import { db } from '../../config/Database'
+import db from '../../config/Database';
 
 export default class Main extends React.Component {
   state = {
-    currentUser: null,
-    page: 0,
     loading: false,
     theories: [],
+  };
+
+  componentDidMount() {
+    this.fetchData();
   }
 
   signOutUser = async () => {
-    try {
-      await firebase.auth().signOut()
-    } catch (e) {
-      console.log(e)
-    }
-  }
-
-  componentWillMount() {
-    const { currentUser } = firebase.auth()
-    this.setState({ currentUser })
-  }
+    await firebase.auth().signOut();
+  };
 
   fetchData = async () => {
-    this.setState({ loading: true })
-    const allTheories = await db.ref('/theory').once('value')
-    const theories = Object.values(allTheories.val())
+    this.setState({ loading: true });
+    const allTheories = await db.ref('/theory').once('value');
+    const theories = Object.values(allTheories.val());
     this.setState({
       theories,
       loading: false,
-    })
-  }
+    });
+  };
 
   handleEnd = () => {
-    this.setState(state => ({ page: state.page + 1 }), () => this.fetchData())
-    this.fetchData()
-  }
-
-  componentDidMount() {
-    this.fetchData()
-  }
+    this.setState(state => ({ page: state.page + 1 }), () => this.fetchData());
+    this.fetchData();
+  };
 
   render() {
-    const { theories, loading } = this.state
+    const { theories, loading } = this.state;
 
     if (loading) {
       return (
-        <View
-          style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
           <Text>Loading</Text>
           <ActivityIndicator size="large" />
         </View>
-      )
+      );
     }
 
     return (
@@ -71,18 +53,16 @@ export default class Main extends React.Component {
           onEndReached={() => this.handleEnd()}
           onEndReachedThreshold={0}
           ListFooterComponent={() =>
-            this.state.loading ? null : (
-              <ActivityIndicator size="large" animating />
-            )
+            this.state.loading ? null : <ActivityIndicator size="large" animating />
           }
           keyExtractor={({ date }) => date.toString()}
           renderItem={({ item }) => (
             <Card
               title={item.name}
               image={{
-                uri:
-                  'https://s3.amazonaws.com/uifaces/faces/twitter/brynn/128.jpg',
-              }}>
+                uri: 'https://s3.amazonaws.com/uifaces/faces/twitter/brynn/128.jpg',
+              }}
+            >
               <Text style={{ marginBottom: 10 }}>{item.description}</Text>
               <Button
                 backgroundColor="#03A9F4"
@@ -100,7 +80,7 @@ export default class Main extends React.Component {
           )}
         />
       </View>
-    )
+    );
   }
 }
 const styles = StyleSheet.create({
@@ -109,4 +89,4 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     height: '110%',
   },
-})
+});

@@ -1,12 +1,12 @@
-import React from 'react'
-import { View, Text, ActivityIndicator, StyleSheet } from 'react-native'
-import firebase from 'firebase'
+import React from 'react';
+import { View, Text, ActivityIndicator, StyleSheet } from 'react-native';
+import firebase from 'firebase';
 
 export default class Loading extends React.Component {
   componentDidMount() {
     firebase.auth().onAuthStateChanged(user => {
-      this.props.navigation.navigate(user ? 'main' : 'signUp')
-    })
+      this.props.navigation.navigate(user ? 'main' : 'signUp');
+    });
   }
 
   render() {
@@ -15,7 +15,7 @@ export default class Loading extends React.Component {
         <Text>My THeory !</Text>
         <ActivityIndicator size="large" />
       </View>
-    )
+    );
   }
 }
 
@@ -25,4 +25,4 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-})
+});
