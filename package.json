@@ -10,7 +10,7 @@
     "react-devtools": "react-devtools",
     "prettier": "prettier --write src/*.js src/**/*.js src/**/**/*.js",
     "lint": "eslint --color --debug src/ ; exit 0",
-    "lint:write": "eslint --color --debug src/ --fix ; exit 0"
+    "lint:write": "eslint --color --debug src/ --fix"
   },
   "husky": {
     "hooks": {
