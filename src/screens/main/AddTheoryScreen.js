@@ -1,8 +1,18 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, TouchableHighlight, ActivityIndicator } from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableHighlight,
+  ActivityIndicator,
+  Alert,
+  Button,
+} from 'react-native';
 import firebase from 'firebase';
+import { ImagePicker } from 'expo';
+import { getPermAsync } from '../../utils/Utils';
 
-import { db } from '../../config/Database';
+import db from '../../config/Database';
 import InputComponent from '../../components/InputComponent';
 
 export default class AddTheoryScreen extends Component {
@@ -15,6 +25,7 @@ export default class AddTheoryScreen extends Component {
     currentUser: null,
     user: null,
     error: '',
+    image: '',
     loading: false,
   };
 
@@ -30,12 +41,37 @@ export default class AddTheoryScreen extends Component {
   getUserData = async () => {
     const { currentUser } = this.state;
 
-    let user = await db.ref('/users/' + currentUser.uid).once('value');
+    const user = await db.ref(`/users/${currentUser.uid}`).once('value');
     this.setState({ user: user.val() });
   };
 
+  onChooseImagePress = async () => {
+    if (getPermAsync()) {
+      const result = await ImagePicker.launchImageLibraryAsync();
+      if (!result.cancelled) {
+        try {
+          await this.uploadImage(result.uri, 'test-image');
+          Alert('Success');
+        } catch (error) {
+          Alert(error);
+        }
+      }
+    }
+  };
+
+  uploadImage = async (uri, imageName) => {
+    const response = await fetch(uri);
+    const blob = await response.blob();
+    this.setState({ image: `images/theories/${imageName}` });
+    const ref = firebase
+      .storage()
+      .ref()
+      .child(`images/theories/${imageName}`);
+    return ref.put(blob);
+  };
+
   handleSubmit = async () => {
-    const { topic, name, description, likes, comments, user, loading } = this.state;
+    const { topic, name, description, likes, comments, user, image } = this.state;
 
     if (topic.length > 0 && name.length > 0 && description.length > 0) {
       this.setState({ loading: true });
@@ -47,33 +83,35 @@ export default class AddTheoryScreen extends Component {
         likes,
         comments,
         user,
+        image,
       });
       this.setState({ loading: false });
-      console.log('Theory added');
     } else {
       this.setState({ error: 'Vous avez faux' });
     }
   };
+
   render() {
     return (
       <View style={styles.main}>
         <Text style={styles.title}>Add theory</Text>
+        <Button title="Choose image..." onPress={this.onChooseImagePress} />
         <InputComponent
           value={this.state.topic}
           onChangeValue={topic => this.setState({ topic })}
-          placeholderInput={'Topic'}
+          placeholderInput="Topic"
           styleInput={styles.itemInput}
         />
         <InputComponent
           value={this.state.name}
           onChangeValue={name => this.setState({ name })}
-          placeholderInput={'Name your theory'}
+          placeholderInput="Name your theory"
           styleInput={styles.itemInput}
         />
         <InputComponent
           value={this.state.description}
           onChangeValue={description => this.setState({ description })}
-          placeholderInput={'Description'}
+          placeholderInput="Description"
           styleInput={styles.itemInput}
         />
         <TouchableHighlight style={styles.button} underlayColor="white" onPress={this.handleSubmit}>

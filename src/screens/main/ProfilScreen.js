@@ -3,7 +3,7 @@ import { StyleSheet, Text, View, ActivityIndicator, FlatList } from 'react-nativ
 import { Card, Icon, Button } from 'react-native-elements';
 import firebase from 'firebase';
 
-import { db } from '../../config/Database';
+import db from '../../config/Database';
 
 export default class ProfilScreen extends React.Component {
   state = {
@@ -24,7 +24,7 @@ export default class ProfilScreen extends React.Component {
   getUserData = async () => {
     const { currentUser } = this.state;
 
-    const user = await db.ref('/users/' + currentUser.uid).once('value');
+    const user = await db.ref(`/users/${currentUser.uid}`).once('value');
 
     const getTheorys = await db.ref('/theory').once('value');
 

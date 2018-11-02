@@ -3,28 +3,21 @@ import { ActivityIndicator, FlatList, StyleSheet, Text, View } from 'react-nativ
 import { Card, Icon, Button } from 'react-native-elements';
 import firebase from 'firebase';
 
-import { db } from '../../config/Database';
+import db from '../../config/Database';
 
 export default class Main extends React.Component {
   state = {
-    currentUser: null,
-    page: 0,
     loading: false,
     theories: [],
   };
 
-  signOutUser = async () => {
-    try {
-      await firebase.auth().signOut();
-    } catch (e) {
-      console.log(e);
-    }
-  };
-
-  componentWillMount() {
-    const { currentUser } = firebase.auth();
-    this.setState({ currentUser });
+  componentDidMount() {
+    this.fetchData();
   }
+
+  signOutUser = async () => {
+    await firebase.auth().signOut();
+  };
 
   fetchData = async () => {
     this.setState({ loading: true });
@@ -40,10 +33,6 @@ export default class Main extends React.Component {
     this.setState(state => ({ page: state.page + 1 }), () => this.fetchData());
     this.fetchData();
   };
-
-  componentDidMount() {
-    this.fetchData();
-  }
 
   render() {
     const { theories, loading } = this.state;

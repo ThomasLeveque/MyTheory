@@ -13,36 +13,34 @@ import ActivityScreen from './screens/main/ActivityScreen';
 import ProfilScreen from './screens/main/ProfilScreen';
 
 // create our app's navigation stack
-class App extends React.Component {
-  render() {
-    const MainNavigator = createSwitchNavigator(
-      {
-        loading: LoadingScreen,
-        signUp: SignUpScreen,
-        login: LoginScreen,
-        main: createBottomTabNavigator(
-          {
-            home: HomeScreen,
-            addTheory: AddTheoryScreen,
-            activity: ActivityScreen,
-            profil: ProfilScreen,
-          },
-          {
-            initialRouteName: 'home',
-          },
-        ),
-      },
-      {
-        initialRouteName: 'loading',
-      },
-    );
+const App = () => {
+  const MainNavigator = createSwitchNavigator(
+    {
+      loading: LoadingScreen,
+      signUp: SignUpScreen,
+      login: LoginScreen,
+      main: createBottomTabNavigator(
+        {
+          home: HomeScreen,
+          addTheory: AddTheoryScreen,
+          activity: ActivityScreen,
+          profil: ProfilScreen,
+        },
+        {
+          initialRouteName: 'home',
+        },
+      ),
+    },
+    {
+      initialRouteName: 'loading',
+    },
+  );
 
-    return (
-      <Provider store={store}>
-        <MainNavigator />
-      </Provider>
-    );
-  }
-}
+  return (
+    <Provider store={store}>
+      <MainNavigator />
+    </Provider>
+  );
+};
 
 export default App;
