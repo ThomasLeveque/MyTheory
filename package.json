@@ -10,37 +10,40 @@
     "react-devtools": "react-devtools",
     "prettier": "prettier --write src/*.js src/**/*.js src/**/**/*.js",
     "lint": "eslint --color --debug src/ ; exit 0",
-    "lint:write": "eslint --color --debug src/ --fix"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged"
-    }
-  },
-  "lint-staged": {
-    "*.(js|jsx)": [
-      "npm run lint:write",
-      "git add"
-    ]
+    "lint:write": "eslint --color --debug src/ --fix",
+    "test": "node .github/setup.js"
   },
   "dependencies": {
-    "expo": "^30.0.1",
+    "@expo/vector-icons": "^10.0.0",
+    "expo": "^35.0.0",
+    "expo-font": "~7.0.0",
+    "expo-linear-gradient": "~7.0.0",
     "firebase": "^5.5.6",
-    "react": "16.3.1",
-    "react-native": "https://github.com/expo/react-native/archive/sdk-30.0.0.tar.gz",
-    "react-native-elements": "^1.0.0-beta6",
+    "formik": "^1.4.2",
+    "moment": "^2.22.2",
+    "moment-timezone": "^0.5.23",
+    "react": "16.8.3",
+    "react-moment": "^0.8.4",
+    "react-native": "https://github.com/expo/react-native/archive/sdk-35.0.0.tar.gz",
     "react-native-android-open-settings": "^1.2.0",
     "react-native-device-settings": "^1.2.0",
     "react-native-firebase": "^5.0.0",
+    "react-native-gesture-handler": "~1.3.0",
+    "react-native-gifted-chat": "^0.5.0",
+    "react-native-modal-selector": "^1.0.1",
     "react-native-open-settings": "^1.0.1",
     "react-native-permissions": "^1.1.1",
-    "react-navigation": "^2.18.2",
-    "react-redux": "^5.1.0",
-    "redux": "^4.0.1",
-    "redux-thunk": "^2.3.0"
+    "react-native-reanimated": "^1.4.0",
+    "react-navigation": "4.0.10",
+    "react-navigation-stack": "^1.10.3",
+    "react-navigation-tabs": "^2.5.6",
+    "react-timestamp": "^4.4.0",
+    "unstated": "^2.1.1",
+    "yup": "^0.26.10"
   },
   "devDependencies": {
     "babel-eslint": "^8.2.3",
+    "babel-preset-expo": "^7.1.0",
     "eslint": "^4.19.1",
     "eslint-config-airbnb": "^17.0.0",
     "eslint-config-jest-enzyme": "^6.0.2",
