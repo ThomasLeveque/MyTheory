@@ -2,87 +2,70 @@ import React from 'react';
 import { ActivityIndicator, FlatList, StyleSheet, Text, View } from 'react-native';
 import { Card, Icon, Button } from 'react-native-elements';
 import firebase from 'firebase';
+import { Subscribe } from 'unstated';
 
-import db from '../../config/Database';
+import GetTheories from '../../store/GetTheories';
 
-export default class Main extends React.Component {
-  state = {
-    loading: false,
-    theories: [],
-  };
+const Main = () => <Subscribe to={[GetTheories]}>{data => <Child data={data} />}</Subscribe>;
 
+class Child extends React.Component {
   componentDidMount() {
-    this.fetchData();
+    this.props.data.fetchData();
   }
 
   signOutUser = async () => {
     await firebase.auth().signOut();
   };
 
-  fetchData = async () => {
-    this.setState({ loading: true });
-    const allTheories = await db.ref('/theory').once('value');
-    const theories = Object.values(allTheories.val());
-    this.setState({
-      theories,
-      loading: false,
-    });
-  };
-
-  handleEnd = () => {
-    this.setState(state => ({ page: state.page + 1 }), () => this.fetchData());
-    this.fetchData();
-  };
-
   render() {
-    const { theories, loading } = this.state;
-
-    if (loading) {
-      return (
-        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-          <Text>Loading</Text>
-          <ActivityIndicator size="large" />
-        </View>
-      );
-    }
-
     return (
-      <View style={styles.container}>
-        <FlatList
-          data={theories}
-          onEndReached={() => this.handleEnd()}
-          onEndReachedThreshold={0}
-          ListFooterComponent={() =>
-            this.state.loading ? null : <ActivityIndicator size="large" animating />
+      <Subscribe to={[GetTheories]}>
+        {data => {
+          if (data.state.loading) {
+            return (
+              <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+                <Text>Loading</Text>
+                <ActivityIndicator size="large" />
+              </View>
+            );
           }
-          keyExtractor={({ date }) => date.toString()}
-          renderItem={({ item }) => (
-            <Card
-              title={item.name}
-              image={{
-                uri: 'https://s3.amazonaws.com/uifaces/faces/twitter/brynn/128.jpg',
-              }}
-            >
-              <Text style={{ marginBottom: 10 }}>{item.description}</Text>
-              <Button
-                backgroundColor="#03A9F4"
-                onPress={() => {}}
-                icon={<Icon name="code" color="#ffffff" />}
-                buttonStyle={{
-                  borderRadius: 0,
-                  marginLeft: 0,
-                  marginRight: 0,
-                  marginBottom: 0,
-                }}
-                title="VIEW NOW"
+
+          return (
+            <View style={styles.container}>
+              <FlatList
+                data={data.state.theories}
+                keyExtractor={({ date }) => date.toString()}
+                renderItem={({ item }) => (
+                  <Card
+                    title={item.name}
+                    image={{
+                      uri: 'https://s3.amazonaws.com/uifaces/faces/twitter/brynn/128.jpg',
+                    }}
+                  >
+                    <Text style={{ marginBottom: 10 }}>{item.description}</Text>
+                    <Button
+                      backgroundColor="#03A9F4"
+                      onPress={() => {}}
+                      icon={<Icon name="code" color="#ffffff" />}
+                      buttonStyle={{
+                        borderRadius: 0,
+                        marginLeft: 0,
+                        marginRight: 0,
+                        marginBottom: 0,
+                      }}
+                      title="VIEW NOW"
+                    />
+                  </Card>
+                )}
               />
-            </Card>
-          )}
-        />
-      </View>
+            </View>
+          );
+        }}
+      </Subscribe>
     );
   }
 }
+
 const styles = StyleSheet.create({
   container: {
     paddingTop: 50,
@@ -90,3 +73,5 @@ const styles = StyleSheet.create({
     height: '110%',
   },
 });
+
+export default Main;

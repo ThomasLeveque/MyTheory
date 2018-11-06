@@ -1,5 +1,6 @@
 import React from 'react';
 import { createSwitchNavigator, createBottomTabNavigator } from 'react-navigation';
+import { Provider } from 'unstated';
 
 // import the different screens
 import LoadingScreen from './screens/LoadingScreen';
@@ -34,7 +35,11 @@ const App = () => {
     },
   );
 
-  return <MainNavigator />;
+  return (
+    <Provider>
+      <MainNavigator />
+    </Provider>
+  );
 };
 
 export default App;
