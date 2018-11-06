@@ -1,8 +1,6 @@
 import React from 'react';
 import { createSwitchNavigator, createBottomTabNavigator } from 'react-navigation';
-import { Provider } from 'react-redux';
 
-import store from './store';
 // import the different screens
 import LoadingScreen from './screens/LoadingScreen';
 import SignUpScreen from './screens/SignupScreen';
@@ -36,11 +34,7 @@ const App = () => {
     },
   );
 
-  return (
-    <Provider store={store}>
-      <MainNavigator />
-    </Provider>
-  );
+  return <MainNavigator />;
 };
 
 export default App;
