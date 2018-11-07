@@ -2,38 +2,34 @@ import React from 'react';
 import { StyleSheet, Text, View, ActivityIndicator, FlatList } from 'react-native';
 import { Card, Icon, Button } from 'react-native-elements';
 import firebase from 'firebase';
+import { Subscribe } from 'unstated';
 
-import db from '../../config/Database';
+import UsersMethods from '../../store/UsersMethods';
+import GetTheories from '../../store/GetTheories';
 
-export default class ProfilScreen extends React.Component {
+const ProfilScreen = () => (
+  <Subscribe to={[UsersMethods, GetTheories]}>
+    {(userStore, theoryStore) => <Child userStore={userStore} theoryStore={theoryStore} />}
+  </Subscribe>
+);
+
+class Child extends React.Component {
   state = {
-    currentUser: null,
-    user: null,
     userTheorys: [],
   };
-
-  componentWillMount() {
-    const { currentUser } = firebase.auth();
-    this.setState({ currentUser });
-  }
 
   componentDidMount() {
     this.getUserData();
   }
 
   getUserData = async () => {
-    const { currentUser } = this.state;
+    const { currentUser } = firebase.auth();
 
-    const user = await db.ref(`/users/${currentUser.uid}`).once('value');
-
-    const getTheorys = await db.ref('/theory').once('value');
-
-    const arrayTheorys = Object.values(getTheorys.val());
-
-    const userTheorys = arrayTheorys.filter(theory => theory.user.id === currentUser.uid);
+    const userTheorys = this.props.theoryStore.state.theories.filter(
+      theory => theory.user.id === currentUser.uid,
+    );
 
     this.setState({
-      user: user.val(),
       userTheorys,
     });
   };
@@ -43,8 +39,9 @@ export default class ProfilScreen extends React.Component {
   };
 
   render() {
-    const { user, userTheorys } = this.state;
-    if (!user) {
+    const { userTheorys } = this.state;
+
+    if (!this.props.userStore.state.user) {
       return (
         <View style={{ flex: 1, justifyContent: 'center' }}>
           <ActivityIndicator size="large" />
@@ -54,8 +51,8 @@ export default class ProfilScreen extends React.Component {
 
     return (
       <View style={styles.container}>
-        <Text>{user.name}</Text>
-        <Text>{user.email}</Text>
+        <Text>{this.props.userStore.state.user.name}</Text>
+        <Text>{this.props.userStore.state.user.email}</Text>
         <Button title="Log Out" onPress={this.signOutUser} />
         <FlatList
           data={userTheorys}
@@ -96,3 +93,5 @@ const styles = StyleSheet.create({
     flex: 1,
   },
 });
+
+export default ProfilScreen;

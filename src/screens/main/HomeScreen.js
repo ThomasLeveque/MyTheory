@@ -4,18 +4,22 @@ import { Card, Icon, Button } from 'react-native-elements';
 import { Subscribe } from 'unstated';
 
 import GetTheories from '../../store/GetTheories';
+import UsersMethods from '../../store/UsersMethods';
 
 const HomeScreen = () => (
-  <Subscribe to={[GetTheories]}>{data => <Child getTheories={data} />}</Subscribe>
+  <Subscribe to={[UsersMethods, GetTheories]}>
+    {(userStore, theoryStore) => <Child userStore={userStore} theoryStore={theoryStore} />}
+  </Subscribe>
 );
 
 class Child extends React.Component {
   componentDidMount() {
-    this.props.getTheories.fetchData();
+    this.props.theoryStore.fetchData();
+    this.props.userStore.fetchUser();
   }
 
   render() {
-    if (this.props.getTheories.state.loading) {
+    if (this.props.theoryStore.state.loading) {
       return (
         <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
           <Text>Loading</Text>
@@ -27,7 +31,7 @@ class Child extends React.Component {
     return (
       <View style={styles.container}>
         <FlatList
-          data={this.props.getTheories.state.theories}
+          data={this.props.theoryStore.state.theories}
           keyExtractor={({ date }) => date.toString()}
           renderItem={({ item }) => (
             <Card
