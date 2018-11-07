@@ -1,8 +1,7 @@
 import React from 'react';
 import { createSwitchNavigator, createBottomTabNavigator } from 'react-navigation';
-import { Provider } from 'react-redux';
+import { Provider } from 'unstated';
 
-import store from './store';
 // import the different screens
 import LoadingScreen from './screens/LoadingScreen';
 import SignUpScreen from './screens/SignupScreen';
@@ -37,7 +36,7 @@ const App = () => {
   );
 
   return (
-    <Provider store={store}>
+    <Provider>
       <MainNavigator />
     </Provider>
   );

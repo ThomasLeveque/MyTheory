@@ -1,43 +1,25 @@
 import React from 'react';
 import { ActivityIndicator, FlatList, StyleSheet, Text, View } from 'react-native';
 import { Card, Icon, Button } from 'react-native-elements';
-import firebase from 'firebase';
+import { Subscribe } from 'unstated';
 
-import db from '../../config/Database';
+import GetTheories from '../../store/GetTheories';
+import UsersMethods from '../../store/UsersMethods';
 
-export default class Main extends React.Component {
-  state = {
-    loading: false,
-    theories: [],
-  };
+const HomeScreen = () => (
+  <Subscribe to={[UsersMethods, GetTheories]}>
+    {(userStore, theoryStore) => <Child userStore={userStore} theoryStore={theoryStore} />}
+  </Subscribe>
+);
 
+class Child extends React.Component {
   componentDidMount() {
-    this.fetchData();
+    this.props.theoryStore.fetchData();
+    this.props.userStore.fetchUser();
   }
 
-  signOutUser = async () => {
-    await firebase.auth().signOut();
-  };
-
-  fetchData = async () => {
-    this.setState({ loading: true });
-    const allTheories = await db.ref('/theory').once('value');
-    const theories = Object.values(allTheories.val());
-    this.setState({
-      theories,
-      loading: false,
-    });
-  };
-
-  handleEnd = () => {
-    this.setState(state => ({ page: state.page + 1 }), () => this.fetchData());
-    this.fetchData();
-  };
-
   render() {
-    const { theories, loading } = this.state;
-
-    if (loading) {
+    if (this.props.theoryStore.state.loading) {
       return (
         <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
           <Text>Loading</Text>
@@ -49,12 +31,7 @@ export default class Main extends React.Component {
     return (
       <View style={styles.container}>
         <FlatList
-          data={theories}
-          onEndReached={() => this.handleEnd()}
-          onEndReachedThreshold={0}
-          ListFooterComponent={() =>
-            this.state.loading ? null : <ActivityIndicator size="large" animating />
-          }
+          data={this.props.theoryStore.state.theories}
           keyExtractor={({ date }) => date.toString()}
           renderItem={({ item }) => (
             <Card
@@ -83,6 +60,7 @@ export default class Main extends React.Component {
     );
   }
 }
+
 const styles = StyleSheet.create({
   container: {
     paddingTop: 50,
@@ -90,3 +68,5 @@ const styles = StyleSheet.create({
     height: '110%',
   },
 });
+
+export default HomeScreen;
