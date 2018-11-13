@@ -24,7 +24,6 @@ class UsersMethods extends Container {
         await this.reauthenticateUser(currentPassword);
         await currentUser.updateEmail(newEmail);
       }
-      // change set to update et changer le user des theory
       await db.ref(`/users/${currentUser.uid}`).update({
         name: newName,
         email: newEmail,
