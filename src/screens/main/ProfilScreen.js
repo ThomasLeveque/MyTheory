@@ -3,13 +3,18 @@ import { StyleSheet, Text, View, ActivityIndicator, FlatList } from 'react-nativ
 import { Card, Icon, Button } from 'react-native-elements';
 import firebase from 'firebase';
 import { Subscribe } from 'unstated';
+import { createStackNavigator } from 'react-navigation';
 
 import UsersMethods from '../../store/UsersMethods';
 import GetTheories from '../../store/GetTheories';
 
-const ProfilScreen = () => (
+import SettingScreen from './SettingScreen';
+
+const ProfilScreen = props => (
   <Subscribe to={[UsersMethods, GetTheories]}>
-    {(userStore, theoryStore) => <Child userStore={userStore} theoryStore={theoryStore} />}
+    {(userStore, theoryStore) => (
+      <Child userStore={userStore} theoryStore={theoryStore} navigation={props.navigation} />
+    )}
   </Subscribe>
 );
 
@@ -19,10 +24,10 @@ class Child extends React.Component {
   };
 
   componentDidMount() {
-    this.getUserData();
+    this.FilterTheories();
   }
 
-  getUserData = async () => {
+  FilterTheories = async () => {
     const { currentUser } = firebase.auth();
 
     const userTheorys = this.props.theoryStore.state.theories.filter(
@@ -53,6 +58,12 @@ class Child extends React.Component {
       <View style={styles.container}>
         <Text>{this.props.userStore.state.user.name}</Text>
         <Text>{this.props.userStore.state.user.email}</Text>
+        <Button
+          title="Setting"
+          onPress={() => {
+            this.props.navigation.navigate('setting');
+          }}
+        />
         <Button title="Log Out" onPress={this.signOutUser} />
         <FlatList
           data={userTheorys}
@@ -94,4 +105,7 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ProfilScreen;
+export default createStackNavigator({
+  profil: ProfilScreen,
+  setting: SettingScreen,
+});
