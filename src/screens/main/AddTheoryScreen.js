@@ -10,39 +10,27 @@ import {
 } from 'react-native';
 import firebase from 'firebase';
 import { ImagePicker } from 'expo';
+import { Subscribe } from 'unstated';
 import { getPermAsync } from '../../utils/Utils';
 
 import db from '../../config/Database';
 import InputComponent from '../../components/InputComponent';
+import UsersMethods from '../../store/UsersMethods';
 
-export default class AddTheoryScreen extends Component {
+const AddTheoryScreen = () => (
+  <Subscribe to={[UsersMethods]}>{userStore => <Child userStore={userStore} />}</Subscribe>
+);
+
+class Child extends Component {
   state = {
     topic: '',
     name: '',
     description: '',
     likes: [],
     comments: [],
-    currentUser: null,
-    user: null,
     error: '',
     image: '',
     loading: false,
-  };
-
-  componentWillMount() {
-    const { currentUser } = firebase.auth();
-    this.setState({ currentUser });
-  }
-
-  componentDidMount() {
-    this.getUserData();
-  }
-
-  getUserData = async () => {
-    const { currentUser } = this.state;
-
-    const user = await db.ref(`/users/${currentUser.uid}`).once('value');
-    this.setState({ user: user.val() });
   };
 
   onChooseImagePress = async () => {
@@ -71,7 +59,7 @@ export default class AddTheoryScreen extends Component {
   };
 
   handleSubmit = async () => {
-    const { topic, name, description, likes, comments, user, image } = this.state;
+    const { topic, name, description, likes, comments, image } = this.state;
 
     if (topic.length > 0 && name.length > 0 && description.length > 0) {
       this.setState({ loading: true });
@@ -83,7 +71,7 @@ export default class AddTheoryScreen extends Component {
         likes,
         comments,
         image,
-        user,
+        user: this.props.userStore.state.user,
       });
       this.setState({ loading: false });
     } else {
@@ -169,3 +157,5 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
 });
+
+export default AddTheoryScreen;
