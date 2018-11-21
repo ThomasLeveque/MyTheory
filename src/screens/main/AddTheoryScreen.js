@@ -1,13 +1,5 @@
 import React, { Component } from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  TouchableHighlight,
-  ActivityIndicator,
-  Alert,
-  Button,
-} from 'react-native';
+import { View, Text, StyleSheet, Alert, Button } from 'react-native';
 import firebase from 'firebase';
 import { ImagePicker } from 'expo';
 import { Subscribe } from 'unstated';
@@ -16,6 +8,7 @@ import { getPermAsync } from '../../utils/Utils';
 import db from '../../config/Database';
 import InputComponent from '../../components/InputComponent';
 import UsersMethods from '../../store/UsersMethods';
+import ButtonComponent from '../../components/ButtonComponent';
 
 const AddTheoryScreen = () => (
   <Subscribe to={[UsersMethods]}>{userStore => <Child userStore={userStore} />}</Subscribe>
@@ -102,15 +95,14 @@ class Child extends Component {
           placeholderInput="Description"
           styleInput={styles.itemInput}
         />
-        <TouchableHighlight style={styles.button} underlayColor="white" onPress={this.handleSubmit}>
-          <Text style={styles.buttonText}>Add</Text>
-        </TouchableHighlight>
+        <ButtonComponent
+          textButton="Add theory"
+          styleButton={styles.button}
+          styleText={styles.buttonText}
+          onPress={this.handleSubmit}
+          loading={this.state.loading}
+        />
         {this.state.error && <Text>{this.state.error}</Text>}
-        {this.state.loading && (
-          <View>
-            <ActivityIndicator size="large" color="red" />
-          </View>
-        )}
       </View>
     );
   }
