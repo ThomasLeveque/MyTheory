@@ -1,8 +1,9 @@
 import React from 'react';
-import { StyleSheet, Text, TextInput, View, Button } from 'react-native';
+import { StyleSheet, Text, TextInput, View } from 'react-native';
 import firebase from 'firebase';
 
 import db from '../config/Database';
+import ButtonComponent from '../components/ButtonComponent';
 
 export default class SignUp extends React.Component {
   state = {
@@ -10,6 +11,7 @@ export default class SignUp extends React.Component {
     email: '',
     password: '',
     errorMessage: null,
+    loading: false,
   };
 
   storeUser = (userId, email, name, followedCategory) => {
@@ -26,15 +28,19 @@ export default class SignUp extends React.Component {
 
     const email = this.state.email.replace(/\s/g, '');
 
+    this.setState({ loading: true });
     try {
       await firebase.auth().createUserWithEmailAndPassword(email, password);
-      const { currentUser } = firebase.auth();
-      this.props.navigation.navigate('main');
 
-      this.storeUser(currentUser.uid, email, name, {});
+      const { currentUser } = firebase.auth();
+      await this.storeUser(currentUser.uid, email, name, {});
+
+      this.props.navigation.navigate('main');
+      this.setState({ loading: false });
     } catch (error) {
       this.setState({
         errorMessage: error.message,
+        loading: false,
       });
     }
   };
@@ -66,9 +72,13 @@ export default class SignUp extends React.Component {
           onChangeText={password => this.setState({ password })}
           value={this.state.password}
         />
-        <Button title="Sign Up" onPress={this.handleSignUp} />
-        <Button
-          title="Already have an account? Login"
+        <ButtonComponent
+          textButton="Sign Up"
+          onPress={this.handleSignUp}
+          loading={this.state.loading}
+        />
+        <ButtonComponent
+          textButton="Already have an account? Login"
           onPress={() => this.props.navigation.navigate('login')}
         />
       </View>

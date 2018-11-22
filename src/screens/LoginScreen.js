@@ -1,21 +1,28 @@
 import React from 'react';
-import { StyleSheet, Text, TextInput, View, Button } from 'react-native';
+import { StyleSheet, Text, TextInput, View } from 'react-native';
 import firebase from 'firebase';
+
+import ButtonComponent from '../components/ButtonComponent';
 
 export default class Login extends React.Component {
   state = {
     email: '',
     password: '',
     errorMessage: null,
+    loading: false,
   };
 
-  handleLogin = () => {
+  handleLogin = async () => {
     const { email, password } = this.state;
-    firebase
-      .auth()
-      .signInWithEmailAndPassword(email, password)
-      .then(() => this.props.navigation.navigate('main'))
-      .catch(error => this.setState({ errorMessage: error.message }));
+
+    this.setState({ loading: true });
+    try {
+      await firebase.auth().signInWithEmailAndPassword(email, password);
+      this.props.navigation.navigate('main');
+      this.setState({ loading: false });
+    } catch (error) {
+      this.setState({ errorMessage: error.message, loading: false });
+    }
   };
 
   render() {
@@ -38,9 +45,13 @@ export default class Login extends React.Component {
           onChangeText={password => this.setState({ password })}
           value={this.state.password}
         />
-        <Button title="Login" onPress={this.handleLogin} />
-        <Button
-          title="Don't have an account? Sign Up"
+        <ButtonComponent
+          textButton="Login"
+          onPress={this.handleLogin}
+          loading={this.state.loading}
+        />
+        <ButtonComponent
+          textButton="Don't have an account? Sign Up"
           onPress={() => this.props.navigation.navigate('signUp')}
         />
       </View>

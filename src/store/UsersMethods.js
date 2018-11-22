@@ -6,6 +6,7 @@ import db from '../config/Database';
 class UsersMethods extends Container {
   state = {
     user: null,
+    users: null,
     updateUserError: null,
   };
 
@@ -15,6 +16,12 @@ class UsersMethods extends Container {
     const user = await db.ref(`/users/${currentUser.uid}`).once('value');
 
     this.setState({ user: user.val() });
+  };
+
+  fetchUsers = async () => {
+    const users = await db.ref(`/users`).once('value');
+
+    this.setState({ users: users.val() });
   };
 
   updateUser = async ({ newName, newEmail, currentPassword }) => {

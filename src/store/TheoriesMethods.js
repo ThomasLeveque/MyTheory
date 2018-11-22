@@ -2,16 +2,21 @@ import { Container } from 'unstated';
 
 import db from '../config/Database';
 
-class GetTheories extends Container {
+class TheoriesMethods extends Container {
   state = {
     loading: false,
     theories: [],
   };
 
-  fetchData = async () => {
+  fetchData = async users => {
     this.setState({ loading: true });
     const allTheories = await db.ref('/theory').once('value');
-    const theories = Object.values(allTheories.val());
+    let theories = Object.values(allTheories.val());
+    theories = theories.map(theorie => ({
+      ...theorie,
+      user: users[theorie.userId],
+    }));
+
     this.setState({
       theories,
       loading: false,
@@ -19,4 +24,4 @@ class GetTheories extends Container {
   };
 }
 
-export default GetTheories;
+export default TheoriesMethods;

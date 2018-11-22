@@ -46,54 +46,61 @@ class Child extends React.Component {
   render() {
     const { userTheorys } = this.state;
 
-    if (!this.props.userStore.state.user) {
-      return (
-        <View style={{ flex: 1, justifyContent: 'center' }}>
-          <ActivityIndicator size="large" />
+    let content = (
+      <View style={{ flex: 1, justifyContent: 'center' }}>
+        <ActivityIndicator size="large" />
+      </View>
+    );
+
+    if (this.props.userStore.state.user) {
+      content = (
+        <View>
+          <Text>{this.props.userStore.state.user.name}</Text>
+          <Text>{this.props.userStore.state.user.email}</Text>
+          <Button
+            title="Setting"
+            onPress={() => {
+              this.props.navigation.navigate('setting');
+            }}
+          />
+
+          <FlatList
+            data={userTheorys}
+            keyExtractor={item => item.date.toString()}
+            renderItem={({ item }) => (
+              <Card
+                title={item.name}
+                image={{
+                  uri: 'https://s3.amazonaws.com/uifaces/faces/twitter/brynn/128.jpg',
+                }}
+              >
+                <Text style={{ marginBottom: 10 }}>{item.description}</Text>
+                <Text>{item.topic}</Text>
+                <Text>{item.user.name}</Text>
+                <Text>{item.user.email}</Text>
+                <Button
+                  icon={<Icon name="code" color="#ffffff" />}
+                  backgroundColor="#03A9F4"
+                  onPress={() => {}}
+                  buttonStyle={{
+                    borderRadius: 0,
+                    marginLeft: 0,
+                    marginRight: 0,
+                    marginBottom: 0,
+                  }}
+                  title="VIEW NOW"
+                />
+              </Card>
+            )}
+          />
         </View>
       );
     }
 
     return (
       <View style={styles.container}>
-        <Text>{this.props.userStore.state.user.name}</Text>
-        <Text>{this.props.userStore.state.user.email}</Text>
-        <Button
-          title="Setting"
-          onPress={() => {
-            this.props.navigation.navigate('setting');
-          }}
-        />
         <Button title="Log Out" onPress={this.signOutUser} />
-        <FlatList
-          data={userTheorys}
-          keyExtractor={item => item.date.toString()}
-          renderItem={({ item }) => (
-            <Card
-              title={item.name}
-              image={{
-                uri: 'https://s3.amazonaws.com/uifaces/faces/twitter/brynn/128.jpg',
-              }}
-            >
-              <Text style={{ marginBottom: 10 }}>{item.description}</Text>
-              <Text>{item.topic}</Text>
-              <Text>{item.user.name}</Text>
-              <Text>{item.user.email}</Text>
-              <Button
-                icon={<Icon name="code" color="#ffffff" />}
-                backgroundColor="#03A9F4"
-                onPress={() => {}}
-                buttonStyle={{
-                  borderRadius: 0,
-                  marginLeft: 0,
-                  marginRight: 0,
-                  marginBottom: 0,
-                }}
-                title="VIEW NOW"
-              />
-            </Card>
-          )}
-        />
+        {content}
       </View>
     );
   }
