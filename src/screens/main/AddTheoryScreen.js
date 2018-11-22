@@ -64,7 +64,7 @@ class Child extends Component {
         likes,
         comments,
         image,
-        user: this.props.userStore.state.user,
+        userId: this.props.userStore.state.user.id,
       });
       this.setState({ loading: false });
     } else {
