@@ -5,58 +5,33 @@ import firebase from 'firebase';
 import { Subscribe } from 'unstated';
 import { createStackNavigator } from 'react-navigation';
 
-import UsersMethods from '../../store/UsersMethods';
-import GetTheories from '../../store/GetTheories';
+import Store from '../../store';
 
 import SettingScreen from './SettingScreen';
 
 const ProfilScreen = props => (
-  <Subscribe to={[UsersMethods, GetTheories]}>
-    {(userStore, theoryStore) => (
-      <Child userStore={userStore} theoryStore={theoryStore} navigation={props.navigation} />
-    )}
+  <Subscribe to={[Store]}>
+    {store => <Child store={store} navigation={props.navigation} />}
   </Subscribe>
 );
 
 class Child extends React.Component {
-  state = {
-    userTheorys: [],
-  };
-
-  componentDidMount() {
-    this.FilterTheories();
-  }
-
-  FilterTheories = async () => {
-    const { currentUser } = firebase.auth();
-
-    const userTheorys = this.props.theoryStore.state.theories.filter(
-      theory => theory.user.id === currentUser.uid,
-    );
-
-    this.setState({
-      userTheorys,
-    });
-  };
-
   signOutUser = async () => {
     await firebase.auth().signOut();
   };
 
   render() {
-    const { userTheorys } = this.state;
-
     let content = (
       <View style={{ flex: 1, justifyContent: 'center' }}>
         <ActivityIndicator size="large" />
       </View>
     );
 
-    if (this.props.userStore.state.user) {
+    if (this.props.store.state.user) {
       content = (
         <View>
-          <Text>{this.props.userStore.state.user.name}</Text>
-          <Text>{this.props.userStore.state.user.email}</Text>
+          <Text>{this.props.store.state.user.name}</Text>
+          <Text>{this.props.store.state.user.email}</Text>
           <Button
             title="Setting"
             onPress={() => {
@@ -65,7 +40,7 @@ class Child extends React.Component {
           />
 
           <FlatList
-            data={userTheorys}
+            data={this.props.store.state.userTheories}
             keyExtractor={item => item.date.toString()}
             renderItem={({ item }) => (
               <Card

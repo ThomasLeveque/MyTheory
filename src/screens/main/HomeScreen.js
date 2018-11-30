@@ -3,24 +3,19 @@ import { ActivityIndicator, FlatList, StyleSheet, Text, View } from 'react-nativ
 import { Card, Icon, Button } from 'react-native-elements';
 import { Subscribe } from 'unstated';
 
-import UsersMethods from '../../store/UsersMethods';
-import TheoriesMethods from '../../store/TheoriesMethods';
+import Store from '../../store';
 
-const HomeScreen = () => (
-  <Subscribe to={[UsersMethods, TheoriesMethods]}>
-    {(userStore, theoryStore) => <Child userStore={userStore} theoryStore={theoryStore} />}
-  </Subscribe>
-);
+const HomeScreen = () => <Subscribe to={[Store]}>{store => <Child store={store} />}</Subscribe>;
 
 class Child extends React.Component {
   async componentDidMount() {
-    this.props.userStore.fetchUser();
-    await this.props.userStore.fetchUsers();
-    this.props.theoryStore.fetchData(this.props.userStore.state.users);
+    this.props.store.getUser();
+    await this.props.store.getUsers();
+    this.props.store.getTheories();
   }
 
   render() {
-    if (this.props.theoryStore.state.loading) {
+    if (this.props.store.state.loading) {
       return (
         <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
           <Text>Loading</Text>
@@ -32,11 +27,9 @@ class Child extends React.Component {
     return (
       <View style={styles.container}>
         <FlatList
-          data={this.props.theoryStore.state.theories}
+          data={this.props.store.state.theories}
           keyExtractor={({ date }) => date.toString()}
           renderItem={({ item }) => {
-            // user = this.props.theoryStore.state.users.find(user => user.id === item.userId);
-
             return (
               <Card
                 title={item.name}
