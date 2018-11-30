@@ -14,7 +14,7 @@ const TheoryScreen = props => {
       <Text>{theory.name}</Text>
       <Text>{theory.description}</Text>
       <View style={styles.containerInline}>
-        <Text>208 likes</Text>
+        <Text style={styles.elementInline}>208 likes</Text>
         <Button
           color="red"
           title="join chat"
