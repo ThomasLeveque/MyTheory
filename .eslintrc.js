@@ -47,6 +47,7 @@ module.exports = {
 		'react/prop-types': 'off',
 		'react/destructuring-assignment': 'off', //unable destructuring obligation
 		'no-use-before-define': 'off', // give the right to use var before declaration
+		'react/no-access-state-in-setstate': 'off',
 		
 		'react/no-find-dom-node': 'off', // I don't know
 		'react/no-did-mount-set-state': 'off',

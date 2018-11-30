@@ -4,27 +4,21 @@ import { Card, Icon, Button } from 'react-native-elements';
 import { Subscribe } from 'unstated';
 import { createStackNavigator } from 'react-navigation';
 
-import GetTheories from '../../store/GetTheories';
-import UsersMethods from '../../store/UsersMethods';
+import Store from '../../store';
 
 import TheoryScreen from './TheoryScreen';
 
-const HomeScreen = props => (
-  <Subscribe to={[UsersMethods, GetTheories]}>
-    {(userStore, theoryStore) => (
-      <Child userStore={userStore} theoryStore={theoryStore} navigation={props.navigation} />
-    )}
-  </Subscribe>
-);
+const HomeScreen = () => <Subscribe to={[Store]}>{store => <Child store={store} />}</Subscribe>;
 
 class Child extends React.Component {
-  componentDidMount() {
-    this.props.theoryStore.fetchData();
-    this.props.userStore.fetchUser();
+  async componentDidMount() {
+    this.props.store.getUser();
+    await this.props.store.getUsers();
+    this.props.store.getTheories();
   }
 
   render() {
-    if (this.props.theoryStore.state.loading) {
+    if (this.props.store.state.loading) {
       return (
         <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
           <Text>Loading</Text>
@@ -36,7 +30,7 @@ class Child extends React.Component {
     return (
       <View style={styles.container}>
         <FlatList
-          data={this.props.theoryStore.state.theories}
+          data={this.props.store.state.theories}
           keyExtractor={({ date }) => date.toString()}
           renderItem={({ item }) => (
             <Card
@@ -60,6 +54,8 @@ class Child extends React.Component {
                 }}
                 title="VIEW NOW"
               />
+              <Text>{item.user.name}</Text>
+              <Text style={{ marginBottom: 10 }}>{item.description}</Text>
             </Card>
           )}
         />
