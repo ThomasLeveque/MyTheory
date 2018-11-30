@@ -12,24 +12,22 @@ import {
   Alert,
 } from 'react-native';
 
-import UsersMethods from '../../store/UsersMethods';
+import Store from '../../store';
 
 const { width } = Dimensions.get('window');
 
-const SettingScreen = () => (
-  <Subscribe to={[UsersMethods]}>{userStore => <Child userStore={userStore} />}</Subscribe>
-);
+const SettingScreen = () => <Subscribe to={[Store]}>{store => <Child store={store} />}</Subscribe>;
 
 class Child extends React.Component {
   state = {
-    newName: this.props.userStore.state.user.name,
-    newEmail: this.props.userStore.state.user.email,
+    newName: this.props.store.state.user.name,
+    newEmail: this.props.store.state.user.email,
     currentPassword: null,
     modalVisible: false,
   };
 
   componentWillMount() {
-    this.props.userStore.ResetUserError();
+    this.props.store.ResetUserError();
   }
 
   setModalVisible(visible) {
@@ -55,18 +53,18 @@ class Child extends React.Component {
           value={this.state.newEmail}
           onChangeText={newEmail => this.setState({ newEmail })}
         />
-        {this.props.userStore.state.updateUserError && (
+        {this.props.store.state.updateUserError && (
           <View>
-            <Text>{this.props.userStore.state.updateUserError.message}</Text>
-            <Text>{this.props.userStore.state.updateUserError.code}</Text>
+            <Text>{this.props.store.state.updateUserError.message}</Text>
+            <Text>{this.props.store.state.updateUserError.code}</Text>
           </View>
         )}
         <Button
           title="Update data"
           onPress={() =>
-            this.props.userStore.state.user.email !== this.state.newEmail
+            this.props.store.state.user.email !== this.state.newEmail
               ? this.setModalVisible(!this.state.modalVisible)
-              : this.props.userStore.updateUser(this.state)
+              : this.props.store.updateUser(this.state)
           }
         />
         <Modal
@@ -95,7 +93,7 @@ class Child extends React.Component {
                 value={this.state.currentPassword}
                 onChangeText={currentPassword => this.setState({ currentPassword })}
               />
-              <Button title="Confirm" onPress={() => this.props.userStore.updateUser(this.state)} />
+              <Button title="Confirm" onPress={() => this.props.store.updateUser(this.state)} />
               <TouchableHighlight
                 onPress={() => {
                   this.setModalVisible(!this.state.modalVisible);

@@ -6,7 +6,7 @@ const TheoryScreen = props => {
   return (
     <View style={styles.container}>
       <Image
-        style={{ width: '100%', height: '50%'}}
+        style={{ width: '100%', height: '50%' }}
         source={{
           uri: 'https://s3.amazonaws.com/uifaces/faces/twitter/brynn/128.jpg',
         }}

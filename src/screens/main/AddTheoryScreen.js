@@ -7,11 +7,12 @@ import { getPermAsync } from '../../utils/Utils';
 
 import db from '../../config/Database';
 import InputComponent from '../../components/InputComponent';
-import UsersMethods from '../../store/UsersMethods';
 import ButtonComponent from '../../components/ButtonComponent';
 
+import Store from '../../store';
+
 const AddTheoryScreen = () => (
-  <Subscribe to={[UsersMethods]}>{userStore => <Child userStore={userStore} />}</Subscribe>
+  <Subscribe to={[Store]}>{store => <Child store={store} />}</Subscribe>
 );
 
 class Child extends Component {
@@ -64,8 +65,9 @@ class Child extends Component {
         likes,
         comments,
         image,
-        user: this.props.userStore.state.user,
+        userId: this.props.store.state.user.id,
       });
+      await this.props.store.getTheories();
       this.setState({ loading: false });
     } else {
       this.setState({ error: 'Vous avez faux' });
