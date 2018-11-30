@@ -4,7 +4,7 @@ import { TouchableOpacity, Text, ActivityIndicator, StyleSheet } from 'react-nat
 const ButtonComponent = ({ textButton, styleButton, styleText, onPress, loading }) => {
   return (
     <TouchableOpacity style={[styleButton, styles.container]} onPress={onPress}>
-      {loading && <ActivityIndicator size="large" color="green"/>}
+      {loading && <ActivityIndicator size="large" color="green" />}
       <Text style={[styleText, styles.text]}>{textButton}</Text>
     </TouchableOpacity>
   );
@@ -15,11 +15,11 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     paddingVertical: 5,
     backgroundColor: 'blue',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   text: {
-    color: 'white'
-  }
+    color: 'white',
+  },
 });
 
 export default ButtonComponent;
