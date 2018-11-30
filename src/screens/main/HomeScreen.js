@@ -2,13 +2,18 @@ import React from 'react';
 import { ActivityIndicator, FlatList, StyleSheet, Text, View } from 'react-native';
 import { Card, Icon, Button } from 'react-native-elements';
 import { Subscribe } from 'unstated';
+import { createStackNavigator } from 'react-navigation';
 
 import GetTheories from '../../store/GetTheories';
 import UsersMethods from '../../store/UsersMethods';
 
-const HomeScreen = () => (
+import TheoryScreen from './TheoryScreen';
+
+const HomeScreen = props => (
   <Subscribe to={[UsersMethods, GetTheories]}>
-    {(userStore, theoryStore) => <Child userStore={userStore} theoryStore={theoryStore} />}
+    {(userStore, theoryStore) => (
+      <Child userStore={userStore} theoryStore={theoryStore} navigation={props.navigation} />
+    )}
   </Subscribe>
 );
 
@@ -43,7 +48,9 @@ class Child extends React.Component {
               <Text style={{ marginBottom: 10 }}>{item.description}</Text>
               <Button
                 backgroundColor="#03A9F4"
-                onPress={() => {}}
+                onPress={() => {
+                  this.props.navigation.navigate('theory', { theory: item });
+                }}
                 icon={<Icon name="code" color="#ffffff" />}
                 buttonStyle={{
                   borderRadius: 0,
@@ -69,4 +76,7 @@ const styles = StyleSheet.create({
   },
 });
 
-export default HomeScreen;
+export default createStackNavigator({
+  home: HomeScreen,
+  theory: TheoryScreen,
+});
