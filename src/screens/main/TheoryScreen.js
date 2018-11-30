@@ -13,7 +13,21 @@ const TheoryScreen = props => {
       />
       <Text>{theory.name}</Text>
       <Text>{theory.description}</Text>
-      <Text>208 likes</Text>
+      <View style={styles.containerInline}>
+        <Text>208 likes</Text>
+        <Button
+          color="red"
+          title="join chat"
+          onPress={() => {}}
+          buttonStyle={{
+            borderRadius: 0,
+            marginLeft: 0,
+            marginRight: 0,
+            marginBottom: 0,
+          }}
+        />
+      </View>
+      <Text>Comments</Text>
     </View>
   );
 };
@@ -22,6 +36,10 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
+  },
+  containerInline: {
+    flex: 1,
+    flexDirection: 'row',
   },
 });
 
