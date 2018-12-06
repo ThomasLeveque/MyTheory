@@ -24,7 +24,6 @@ const TheoryScreen = props => {
             marginLeft: 0,
             marginRight: 0,
             marginBottom: 0,
-            flex: 2,
           }}
         />
       </View>
@@ -41,11 +40,6 @@ const styles = StyleSheet.create({
   containerInline: {
     flex: 1,
     flexDirection: 'row',
-    marginRight: 50,
-    marginLeft: 50,
-  },
-  elementInline: {
-    flex: 2,
   },
 });
 
