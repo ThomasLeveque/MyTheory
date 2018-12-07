@@ -1,5 +1,5 @@
 import React from 'react';
-import { GiftedChat } from 'react-native-gifted-chat'
+import { GiftedChat } from 'react-native-gifted-chat';
 import { Subscribe } from 'unstated';
 import { createStackNavigator } from 'react-navigation';
 
