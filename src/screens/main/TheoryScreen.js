@@ -17,6 +17,7 @@ class Child extends Component {
   state = {
     comment: '',
     comments: [],
+    loading: false,
   };
 
   getComments = async () => {
@@ -32,7 +33,7 @@ class Child extends Component {
   handleSubmit = async () => {
     const { comment } = this.state;
     const theory = this.props.navigation.state.params.theory;
-
+    this.setState({ loading: true });
     if (comment.length > 0) {
       const params = {
         idTheory: theory.id,
@@ -41,6 +42,7 @@ class Child extends Component {
       };
       this.props.store.addCommentTheory(params).then(() => {
         this.getComments();
+        this.setState({ loading: false });
       });
     }
   };
