@@ -1,9 +1,17 @@
 import React from 'react';
-import { View, Text, ActivityIndicator, StyleSheet } from 'react-native';
+import { Image, ActivityIndicator, StyleSheet } from 'react-native';
 import firebase from 'firebase';
+import { Font, LinearGradient } from 'expo';
+
+import fonts from '../assets/fonts';
+import colors from '../assets/colors';
+
+const logo = require('../assets/logo.png');
 
 export default class Loading extends React.Component {
-  componentDidMount() {
+  async componentDidMount() {
+    await Font.loadAsync(fonts);
+
     firebase.auth().onAuthStateChanged(user => {
       this.props.navigation.navigate(user ? 'main' : 'signUp');
     });
@@ -11,10 +19,13 @@ export default class Loading extends React.Component {
 
   render() {
     return (
-      <View style={styles.container}>
-        <Text>My THeory !</Text>
-        <ActivityIndicator size="large" />
-      </View>
+      <LinearGradient
+        style={styles.container}
+        colors={[colors.GRADIENT_START, colors.GRADIENT_END]}
+      >
+        <Image source={logo} style={styles.logo} />
+        <ActivityIndicator size="large" color="white" />
+      </LinearGradient>
     );
   }
 }
@@ -24,5 +35,10 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  logo: {
+    marginBottom: 50,
+    width: 80,
+    height: 80,
   },
 });
