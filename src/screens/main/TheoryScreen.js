@@ -40,7 +40,6 @@ const styles = StyleSheet.create({
   },
   containerInline: {
     flex: 1,
-    flexDirection: 'row',
     marginRight: 50,
     marginLeft: 50,
   },

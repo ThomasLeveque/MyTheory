@@ -2,6 +2,7 @@ import React from 'react';
 import { GiftedChat } from 'react-native-gifted-chat';
 import { Subscribe } from 'unstated';
 import { createStackNavigator } from 'react-navigation';
+import { KeyboardAvoidingView, StyleSheet } from 'react-native';
 
 import Store from '../../store';
 
@@ -41,16 +42,26 @@ class Child extends React.Component {
 
   render() {
     return (
-      <GiftedChat
-        messages={this.state.messages}
-        onSend={messages => this.onSend(messages)}
-        user={{
-          _id: 1,
-        }}
-      />
+      <KeyboardAvoidingView style={styles.container} enabled>
+        <GiftedChat
+          messages={this.state.messages}
+          onSend={messages => this.onSend(messages)}
+          user={{
+            _id: 1,
+          }}
+        />
+      </KeyboardAvoidingView>
     );
   }
 }
+
+const styles = StyleSheet.create({
+  container: {
+    paddingBottom: 50,
+    backgroundColor: 'white',
+    flex: 1,
+  },
+});
 
 export default createStackNavigator({
   chat: ChatScreen,
