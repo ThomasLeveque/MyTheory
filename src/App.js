@@ -10,6 +10,7 @@ import HomeScreen from './screens/main/HomeScreen';
 import AddTheoryScreen from './screens/main/AddTheoryScreen';
 import ActivityScreen from './screens/main/ActivityScreen';
 import ProfilScreen from './screens/main/ProfilScreen';
+import ChatScreen from './screens/main/ChatScreen';
 
 // create our app's navigation stack
 const App = () => {
@@ -24,6 +25,7 @@ const App = () => {
           addTheory: AddTheoryScreen,
           activity: ActivityScreen,
           profil: ProfilScreen,
+          chat: ChatScreen,
         },
         {
           initialRouteName: 'home',
