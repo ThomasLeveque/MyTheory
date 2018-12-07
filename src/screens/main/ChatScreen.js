@@ -53,5 +53,5 @@ class Child extends React.Component {
 }
 
 export default createStackNavigator({
-    chat: ChatScreen,
-  });
+  chat: ChatScreen,
+});
