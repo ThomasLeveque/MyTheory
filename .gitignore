@@ -4,3 +4,5 @@ npm-debug.*
 .DS_Store
 src/.DS_Store
 src/config
+package-lock.json
+
