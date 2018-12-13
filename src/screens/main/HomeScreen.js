@@ -31,10 +31,7 @@ class Child extends React.Component {
           data={this.props.store.state.theories}
           keyExtractor={({ date }) => date.toString()}
           renderItem={({ item }) => {
-            return (
-              <CardComponent user={item.user} />
-              // <Text>{item.user.name}</Text>
-            );
+            return <CardComponent user={item.user} />;
           }}
         />
       </View>
