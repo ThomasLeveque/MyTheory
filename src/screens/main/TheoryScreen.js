@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Button, Image, StyleSheet, Text, View, FlatList } from 'react-native';
 import { Subscribe } from 'unstated';
 import { Card } from 'react-native-elements';
+import firebase from 'firebase';
 import InputComponent from '../../components/InputComponent';
 import ButtonComponent from '../../components/ButtonComponent';
 
@@ -18,6 +19,7 @@ class Child extends Component {
     comment: '',
     comments: [],
     loading: false,
+    errorMessage: '',
   };
 
   getComments = async () => {
@@ -32,12 +34,14 @@ class Child extends Component {
 
   handleSubmit = async () => {
     const { comment } = this.state;
+    const { currentUser } = firebase.auth();
+
     const theory = this.props.navigation.state.params.theory;
     this.setState({ loading: true });
     if (comment.length > 0) {
       const params = {
         idTheory: theory.id,
-        idUser: theory.userId,
+        idUser: currentUser.uid,
         comment,
       };
       this.props.store.addCommentTheory(params).then(() => {
@@ -80,6 +84,7 @@ class Child extends Component {
           placeholderInput="Your comment"
           styleInput={styles.itemInput}
         />
+        {this.state.errorMessage && <Text style={{ color: 'red' }}>{this.state.errorMessage}</Text>}
         <ButtonComponent
           textButton="Add comment"
           styleButton={styles.button}
