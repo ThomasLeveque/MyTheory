@@ -1,6 +1,7 @@
 import { Container } from 'unstated';
 import firebase from 'firebase';
 
+import m from 'moment';
 import db from '../config/Database';
 
 class Store extends Container {
@@ -64,11 +65,12 @@ class Store extends Container {
     this.setState({ loading: true });
     const allTheories = await db.ref('/theory').once('value');
     let theories = Object.values(allTheories.val());
-    theories = theories.map(theorie => ({
+    const theoriesKey = Object.keys(allTheories.val());
+    theories = theories.map((theorie, index) => ({
       ...theorie,
       user: this.state.users[theorie.userId],
+      id: theoriesKey[index],
     }));
-
     this.setState(
       {
         theories,
@@ -84,6 +86,27 @@ class Store extends Container {
         });
       },
     );
+  };
+
+  addCommentTheory = async ({ idTheory, idUser, comment }) => {
+    await db.ref('/comments').push({
+      userId: idUser,
+      idTheory,
+      comment,
+      date: Date.now(),
+    });
+    return true;
+  };
+
+  getCommentsTheory = async () => {
+    const allComments = await db.ref(`/comments/`).once('value');
+    let comments = Object.values(allComments.val());
+    comments = comments.map(comment => ({
+      ...comment,
+      user: this.state.users[comment.userId],
+      dateFormat: m(comment.date).fromNow(),
+    }));
+    return comments;
   };
 }
 

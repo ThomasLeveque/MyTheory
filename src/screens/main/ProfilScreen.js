@@ -26,7 +26,6 @@ class Child extends React.Component {
         <ActivityIndicator size="large" />
       </View>
     );
-
     if (this.props.store.state.user) {
       content = (
         <View>

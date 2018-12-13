@@ -2,10 +2,17 @@ import React from 'react';
 import { ActivityIndicator, FlatList, StyleSheet, Text, View } from 'react-native';
 import { Card, Icon, Button } from 'react-native-elements';
 import { Subscribe } from 'unstated';
+import { createStackNavigator } from 'react-navigation';
 
 import Store from '../../store';
 
-const HomeScreen = () => <Subscribe to={[Store]}>{store => <Child store={store} />}</Subscribe>;
+import TheoryScreen from './TheoryScreen';
+
+const HomeScreen = props => (
+  <Subscribe to={[Store]}>
+    {store => <Child store={store} navigation={props.navigation} />}
+  </Subscribe>
+);
 
 class Child extends React.Component {
   async componentDidMount() {
@@ -29,31 +36,32 @@ class Child extends React.Component {
         <FlatList
           data={this.props.store.state.theories}
           keyExtractor={({ date }) => date.toString()}
-          renderItem={({ item }) => {
-            return (
-              <Card
-                title={item.name}
-                image={{
-                  uri: 'https://s3.amazonaws.com/uifaces/faces/twitter/brynn/128.jpg',
+          renderItem={({ item }) => (
+            <Card
+              title={item.name}
+              image={{
+                uri: 'https://s3.amazonaws.com/uifaces/faces/twitter/brynn/128.jpg',
+              }}
+            >
+              <Text style={{ marginBottom: 10 }}>{item.description}</Text>
+              <Button
+                backgroundColor="#03A9F4"
+                onPress={() => {
+                  this.props.navigation.navigate('theory', { theory: item });
                 }}
-              >
-                <Text>{item.user.name}</Text>
-                <Text style={{ marginBottom: 10 }}>{item.description}</Text>
-                <Button
-                  backgroundColor="#03A9F4"
-                  onPress={() => {}}
-                  icon={<Icon name="code" color="#ffffff" />}
-                  buttonStyle={{
-                    borderRadius: 0,
-                    marginLeft: 0,
-                    marginRight: 0,
-                    marginBottom: 0,
-                  }}
-                  title="VIEW NOW"
-                />
-              </Card>
-            );
-          }}
+                icon={<Icon name="code" color="#ffffff" />}
+                buttonStyle={{
+                  borderRadius: 0,
+                  marginLeft: 0,
+                  marginRight: 0,
+                  marginBottom: 0,
+                }}
+                title="VIEW NOW"
+              />
+              <Text>{item.user.name}</Text>
+              <Text style={{ marginBottom: 10 }}>{item.description}</Text>
+            </Card>
+          )}
         />
       </View>
     );
@@ -68,4 +76,7 @@ const styles = StyleSheet.create({
   },
 });
 
-export default HomeScreen;
+export default createStackNavigator({
+  home: HomeScreen,
+  theory: TheoryScreen,
+});

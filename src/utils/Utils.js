@@ -25,4 +25,3 @@ export const getPermAsync = async permissionsasked => {
 const checkOS = (callbackiOs, callbackAndroid) => {
   Platform.OS === 'ios' ? callbackiOs() : callbackAndroid();
 };
-
