@@ -2,9 +2,11 @@ import React from 'react';
 import { Subscribe } from 'unstated';
 import { createStackNavigator } from 'react-navigation';
 import { ActivityIndicator, FlatList, StyleSheet, Text, View } from 'react-native';
-import { Card, Icon, Button } from 'react-native-elements';
+//import { Card, Icon, Button } from 'react-native-elements';
 import Store from '../../store';
 import ChatScreen from './ChatScreen';
+import ButtonComponent from '../../components/ButtonComponent';
+import CardComponnent from '../../components/CardComponent';
 
 const ListChatScreen = props => (
   <Subscribe to={[Store]}>
@@ -35,22 +37,23 @@ class Child extends React.Component {
           data={this.props.store.state.theories}
           keyExtractor={({ date }) => date.toString()}
           renderItem={({ item }) => (
-            <Card title={item.name}>
-              <Button
-                backgroundColor="#03A9F4"
-                onPress={() => {
-                  this.props.navigation.navigate('chat');
-                }}
-                icon={<Icon name="code" color="#ffffff" />}
-                buttonStyle={{
-                  borderRadius: 0,
-                  marginLeft: 0,
-                  marginRight: 0,
-                  marginBottom: 0,
-                }}
-                title="CHAT NOW"
-              />
-            </Card>
+            <CardComponnent user={item.user} />
+            // <Card title={item.name}>
+            //   <Button
+            //     backgroundColor="#03A9F4"
+            //     onPress={() => {
+            //       this.props.navigation.navigate('chat');
+            //     }}
+            //     icon={<Icon name="code" color="#ffffff" />}
+            //     buttonStyle={{
+            //       borderRadius: 0,
+            //       marginLeft: 0,
+            //       marginRight: 0,
+            //       marginBottom: 0,
+            //     }}
+            //     title="CHAT NOW"
+            //   />
+            // </CarD>
           )}
         />
       </View>

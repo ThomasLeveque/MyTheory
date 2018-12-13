@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import { Button, Image, StyleSheet, Text, View, FlatList } from 'react-native';
 import { Subscribe } from 'unstated';
-import { Card } from 'react-native-elements';
+// import { Card } from 'react-native-elements';
 import firebase from 'firebase';
 import InputComponent from '../../components/InputComponent';
 import ButtonComponent from '../../components/ButtonComponent';
+import CardComponent from '../../components/CardComponent';
 
 import Store from '../../store';
 
@@ -96,11 +97,12 @@ class Child extends Component {
           data={this.state.comments}
           keyExtractor={({ date }) => date.toString()}
           renderItem={({ item }) => (
-            <Card>
-              <Text style={{ marginBottom: 10, color: 'black' }}>{item.comment}</Text>
-              <Text>{item.user.name}</Text>
-              <Text>{item.dateFormat}</Text>
-            </Card>
+            <CardComponent user={item.user} />
+            // <Card>
+            //   <Text style={{ marginBottom: 10, color: 'black' }}>{item.comment}</Text>
+            //   <Text>{item.user.name}</Text>
+            //   <Text>{item.dateFormat}</Text>
+            // </Card>
           )}
         />
       </View>
