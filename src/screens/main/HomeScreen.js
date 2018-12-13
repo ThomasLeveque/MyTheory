@@ -1,9 +1,10 @@
 import React from 'react';
 import { ActivityIndicator, FlatList, StyleSheet, Text, View } from 'react-native';
-import { Card, Icon, Button } from 'react-native-elements';
+// import { Card, Icon, Button } from 'react-native-elements';
 import { Subscribe } from 'unstated';
 
 import Store from '../../store';
+import CardComponent from '../../components/CardComponent';
 
 const HomeScreen = () => <Subscribe to={[Store]}>{store => <Child store={store} />}</Subscribe>;
 
@@ -31,27 +32,8 @@ class Child extends React.Component {
           keyExtractor={({ date }) => date.toString()}
           renderItem={({ item }) => {
             return (
-              <Card
-                title={item.name}
-                image={{
-                  uri: 'https://s3.amazonaws.com/uifaces/faces/twitter/brynn/128.jpg',
-                }}
-              >
-                <Text>{item.user.name}</Text>
-                <Text style={{ marginBottom: 10 }}>{item.description}</Text>
-                <Button
-                  backgroundColor="#03A9F4"
-                  onPress={() => {}}
-                  icon={<Icon name="code" color="#ffffff" />}
-                  buttonStyle={{
-                    borderRadius: 0,
-                    marginLeft: 0,
-                    marginRight: 0,
-                    marginBottom: 0,
-                  }}
-                  title="VIEW NOW"
-                />
-              </Card>
+              <CardComponent user={item.user} />
+              // <Text>{item.user.name}</Text>
             );
           }}
         />

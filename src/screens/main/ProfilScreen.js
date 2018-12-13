@@ -1,9 +1,11 @@
 import React from 'react';
-import { StyleSheet, Text, View, ActivityIndicator, FlatList } from 'react-native';
-import { Card, Icon, Button } from 'react-native-elements';
+import { StyleSheet, Text, View, ActivityIndicator, FlatList, Button } from 'react-native';
+// import { Card, Icon, Button } from 'react-native-elements';
 import firebase from 'firebase';
 import { Subscribe } from 'unstated';
 import { createStackNavigator } from 'react-navigation';
+import ButtonComponent from '../../components/ButtonComponent';
+import CardComponent from '../../components/CardComponent';
 
 import Store from '../../store';
 
@@ -32,8 +34,8 @@ class Child extends React.Component {
         <View>
           <Text>{this.props.store.state.user.name}</Text>
           <Text>{this.props.store.state.user.email}</Text>
-          <Button
-            title="Setting"
+          <ButtonComponent
+            textButton="Setting"
             onPress={() => {
               this.props.navigation.navigate('setting');
             }}
@@ -42,31 +44,9 @@ class Child extends React.Component {
           <FlatList
             data={this.props.store.state.userTheories}
             keyExtractor={item => item.date.toString()}
-            renderItem={({ item }) => (
-              <Card
-                title={item.name}
-                image={{
-                  uri: 'https://s3.amazonaws.com/uifaces/faces/twitter/brynn/128.jpg',
-                }}
-              >
-                <Text style={{ marginBottom: 10 }}>{item.description}</Text>
-                <Text>{item.topic}</Text>
-                <Text>{item.user.name}</Text>
-                <Text>{item.user.email}</Text>
-                <Button
-                  icon={<Icon name="code" color="#ffffff" />}
-                  backgroundColor="#03A9F4"
-                  onPress={() => {}}
-                  buttonStyle={{
-                    borderRadius: 0,
-                    marginLeft: 0,
-                    marginRight: 0,
-                    marginBottom: 0,
-                  }}
-                  title="VIEW NOW"
-                />
-              </Card>
-            )}
+            renderItem={({ item }) => {
+              return <CardComponent user={item.user} />;
+            }}
           />
         </View>
       );
