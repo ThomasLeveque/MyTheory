@@ -1,15 +1,12 @@
 import React from 'react';
-import { ActivityIndicator, FlatList, StyleSheet, Text, View } from 'react-native';
-// import { Card, Icon, Button } from 'react-native-elements';
 import { Subscribe } from 'unstated';
 import { createStackNavigator } from 'react-navigation';
-
+import { ActivityIndicator, FlatList, StyleSheet, Text, View } from 'react-native';
+import { Card, Icon, Button } from 'react-native-elements';
 import Store from '../../store';
-import CardComponent from '../../components/CardComponent';
+import ChatScreen from './ChatScreen';
 
-import TheoryScreen from './TheoryScreen';
-
-const HomeScreen = props => (
+const ListChatScreen = props => (
   <Subscribe to={[Store]}>
     {store => <Child store={store} navigation={props.navigation} />}
   </Subscribe>
@@ -37,9 +34,24 @@ class Child extends React.Component {
         <FlatList
           data={this.props.store.state.theories}
           keyExtractor={({ date }) => date.toString()}
-          renderItem={({ item }) => {
-            return <CardComponent user={item.user} />;
-          }}
+          renderItem={({ item }) => (
+            <Card title={item.name}>
+              <Button
+                backgroundColor="#03A9F4"
+                onPress={() => {
+                  this.props.navigation.navigate('chat');
+                }}
+                icon={<Icon name="code" color="#ffffff" />}
+                buttonStyle={{
+                  borderRadius: 0,
+                  marginLeft: 0,
+                  marginRight: 0,
+                  marginBottom: 0,
+                }}
+                title="CHAT NOW"
+              />
+            </Card>
+          )}
         />
       </View>
     );
@@ -55,6 +67,6 @@ const styles = StyleSheet.create({
 });
 
 export default createStackNavigator({
-  home: HomeScreen,
-  theory: TheoryScreen,
+  listChat: ListChatScreen,
+  chat: ChatScreen,
 });
