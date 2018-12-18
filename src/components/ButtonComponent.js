@@ -95,8 +95,6 @@ const styles = StyleSheet.create({
     bottom: 0,
     left: 0,
     width: secondaryGradientWidth,
-    borderTopLeftRadius: 5,
-    borderBottomLeftRadius: 5,
   },
   secondaryText: {
     color: 'black',
