@@ -3,9 +3,11 @@ import { StyleSheet, Text, TextInput, View } from 'react-native';
 import firebase from 'firebase';
 
 import db from '../config/Database';
-import ButtonComponent from '../components/ButtonComponent';
+import { PrimaryButton } from '../components/ButtonComponent';
 
-export default class SignUp extends React.Component {
+import colors from '../assets/colors';
+
+export default class SignUpScreen extends React.Component {
   state = {
     name: '',
     email: '',
@@ -72,14 +74,18 @@ export default class SignUp extends React.Component {
           onChangeText={password => this.setState({ password })}
           value={this.state.password}
         />
-        <ButtonComponent
-          textButton="Sign Up"
+        <PrimaryButton
+          title="Sign Up"
           onPress={this.handleSignUp}
           loading={this.state.loading}
+          startColor={colors.GRADIENT_START}
+          endColor={colors.GRADIENT_END}
         />
-        <ButtonComponent
-          textButton="Already have an account? Login"
+        <PrimaryButton
+          title="Already have an account? Login"
           onPress={() => this.props.navigation.navigate('login')}
+          startColor={colors.GRAY}
+          endColor={colors.GRAY}
         />
       </View>
     );

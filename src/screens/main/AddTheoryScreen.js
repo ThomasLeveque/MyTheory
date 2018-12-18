@@ -1,18 +1,22 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, Alert, Button } from 'react-native';
+import { Text, StyleSheet, Alert, Button } from 'react-native';
 import firebase from 'firebase';
 import { ImagePicker } from 'expo';
 import { Subscribe } from 'unstated';
 import { getPermAsync } from '../../utils/Utils';
 
 import db from '../../config/Database';
+import Layout from '../../components/Layout';
 import InputComponent from '../../components/InputComponent';
-import ButtonComponent from '../../components/ButtonComponent';
+import { PrimaryButton, SecondaryButton } from '../../components/ButtonComponent';
 
+import colors from '../../assets/colors';
 import Store from '../../store';
 
-const AddTheoryScreen = () => (
-  <Subscribe to={[Store]}>{store => <Child store={store} />}</Subscribe>
+const AddTheoryScreen = props => (
+  <Subscribe to={[Store]}>
+    {store => <Child store={store} navigation={props.navigation} />}
+  </Subscribe>
 );
 
 class Child extends Component {
@@ -76,7 +80,7 @@ class Child extends Component {
 
   render() {
     return (
-      <View style={styles.main}>
+      <Layout>
         <Text style={styles.title}>Add theory</Text>
         <Button title="Choose image..." onPress={this.onChooseImagePress} />
         <InputComponent
@@ -97,15 +101,21 @@ class Child extends Component {
           placeholderInput="Description"
           styleInput={styles.itemInput}
         />
-        <ButtonComponent
-          textButton="Add theory"
-          styleButton={styles.button}
-          styleText={styles.buttonText}
+        <PrimaryButton
+          title="Add theory"
           onPress={this.handleSubmit}
           loading={this.state.loading}
+          startColor={colors.GRADIENT_START}
+          endColor={colors.GRADIENT_END}
+          pictoName="file-upload"
         />
-        {this.state.error && <Text>{this.state.error}</Text>}
-      </View>
+        <SecondaryButton
+          title="Vos informations"
+          onPress={() => this.props.navigation.navigate('setting')}
+          pictoName="settings"
+        />
+        {this.state.error && <Text style={{ textAlign: 'center' }}>{this.state.error}</Text>}
+      </Layout>
     );
   }
 }
@@ -113,10 +123,6 @@ class Child extends Component {
 const styles = StyleSheet.create({
   main: {
     flex: 1,
-    padding: 30,
-    flexDirection: 'column',
-    justifyContent: 'center',
-    backgroundColor: '#2a8ab7',
   },
   title: {
     marginBottom: 20,
@@ -132,23 +138,6 @@ const styles = StyleSheet.create({
     borderColor: 'white',
     borderRadius: 8,
     color: 'white',
-  },
-  buttonText: {
-    fontSize: 18,
-    color: '#111',
-    alignSelf: 'center',
-  },
-  button: {
-    height: 45,
-    flexDirection: 'row',
-    backgroundColor: 'white',
-    borderColor: 'white',
-    borderWidth: 1,
-    borderRadius: 8,
-    marginBottom: 10,
-    marginTop: 10,
-    alignSelf: 'stretch',
-    justifyContent: 'center',
   },
 });
 

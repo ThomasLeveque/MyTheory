@@ -1,11 +1,13 @@
 import React from 'react';
-import { Image, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Image, Text, TouchableOpacity, StyleSheet } from 'react-native';
 
-const CardComponent = ({ image, title, category, user, description, likes, comments, peoples}) => {
-    console.log(user);
-    return (
-        <Text style={{color: 'black', backgroundColor: 'white'}}>{user.name}</Text>
-    );
-}
+const CardComponent = ({ image, title, category, user, description, likes, comments, peoples }) => {
+  return (
+    <View>
+      <Text style={{ color: 'black' }}>{user.name}</Text>;
+      <Text style={{ color: 'black' }}>{title}</Text>;
+    </View>
+  );
+};
 
 export default CardComponent;

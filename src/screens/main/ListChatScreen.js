@@ -2,10 +2,8 @@ import React from 'react';
 import { Subscribe } from 'unstated';
 import { createStackNavigator } from 'react-navigation';
 import { ActivityIndicator, FlatList, StyleSheet, Text, View } from 'react-native';
-//import { Card, Icon, Button } from 'react-native-elements';
 import Store from '../../store';
 import ChatScreen from './ChatScreen';
-import ButtonComponent from '../../components/ButtonComponent';
 import CardComponnent from '../../components/CardComponent';
 
 const ListChatScreen = props => (
