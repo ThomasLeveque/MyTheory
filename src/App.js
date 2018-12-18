@@ -28,7 +28,7 @@ const App = () => {
           listChat: ListChatScreen,
         },
         {
-          initialRouteName: 'listChat',
+          initialRouteName: 'home',
         },
       ),
     },
