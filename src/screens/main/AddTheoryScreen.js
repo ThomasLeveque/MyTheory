@@ -1,12 +1,17 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, Alert, Button } from 'react-native';
+import { View, Text, StyleSheet, Alert } from 'react-native';
 import firebase from 'firebase';
 import { ImagePicker } from 'expo';
 import { Subscribe } from 'unstated';
 import { getPermAsync } from '../../utils/Utils';
 
 import db from '../../config/Database';
-import InputComponent from '../../components/InputComponent';
+import {
+  TextInputComponent,
+  TextAreaComponent,
+  AddImgComponent,
+} from '../../components/InputComponent';
+
 import ButtonComponent from '../../components/ButtonComponent';
 
 import Store from '../../store';
@@ -78,24 +83,31 @@ class Child extends Component {
     return (
       <View style={styles.main}>
         <Text style={styles.title}>Add theory</Text>
-        <Button title="Choose image..." onPress={this.onChooseImagePress} />
-        <InputComponent
-          value={this.state.topic}
+        <AddImgComponent
+          onPressValue={this.onChooseImagePress}
+          styleAddImg={styles.AddImg}
+          nameInput="Add your image"
+        />
+        <TextInputComponent
+          nameInput="Sujet"
           onChangeValue={topic => this.setState({ topic })}
+          styleInput={styles.itemInput}
           placeholderInput="Topic"
-          styleInput={styles.itemInput}
+          value={this.state.topic}
         />
-        <InputComponent
-          value={this.state.name}
+        <TextInputComponent
+          nameInput="Nom de la théorie"
           onChangeValue={name => this.setState({ name })}
+          styleInput={styles.itemInput}
           placeholderInput="Name your theory"
-          styleInput={styles.itemInput}
+          value={this.state.name}
         />
-        <InputComponent
-          value={this.state.description}
+        <TextAreaComponent
+          nameInput="Description"
           onChangeValue={description => this.setState({ description })}
-          placeholderInput="Description"
           styleInput={styles.itemInput}
+          placeholderInput="Description"
+          value={this.state.description}
         />
         <ButtonComponent
           textButton="Add theory"
@@ -116,22 +128,12 @@ const styles = StyleSheet.create({
     padding: 30,
     flexDirection: 'column',
     justifyContent: 'center',
-    backgroundColor: '#2a8ab7',
+    backgroundColor: 'white',
   },
   title: {
     marginBottom: 20,
     fontSize: 25,
     textAlign: 'center',
-  },
-  itemInput: {
-    height: 50,
-    padding: 4,
-    marginRight: 5,
-    fontSize: 23,
-    borderWidth: 1,
-    borderColor: 'white',
-    borderRadius: 8,
-    color: 'white',
   },
   buttonText: {
     fontSize: 18,
