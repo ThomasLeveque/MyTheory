@@ -7,10 +7,10 @@ import LoadingScreen from './screens/LoadingScreen';
 import SignUpScreen from './screens/SignupScreen';
 import LoginScreen from './screens/LoginScreen';
 import HomeScreen from './screens/main/HomeScreen';
-import AddTheoryScreen from './screens/main/AddTheoryScreen';
 import ActivityScreen from './screens/main/ActivityScreen';
 import ProfilScreen from './screens/main/ProfilScreen';
 import ListChatScreen from './screens/main/ListChatScreen';
+import theoriesScreen from './screens/main/TheoriesScreen';
 
 // create our app's navigation stack
 const App = () => {
@@ -22,13 +22,13 @@ const App = () => {
       main: createBottomTabNavigator(
         {
           home: HomeScreen,
-          addTheory: AddTheoryScreen,
+          theories: theoriesScreen,
           activity: ActivityScreen,
           profil: ProfilScreen,
           listChat: ListChatScreen,
         },
         {
-          initialRouteName: 'listChat',
+          initialRouteName: 'theories',
         },
       ),
     },
@@ -38,7 +38,7 @@ const App = () => {
   );
 
   return (
-    <Provider>
+    <Provider style={{ margin: 20 }}>
       <MainNavigator />
     </Provider>
   );

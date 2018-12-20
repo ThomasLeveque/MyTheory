@@ -25,7 +25,6 @@ class Store extends Container {
 
   getUsers = async () => {
     const users = await db.ref(`/users`).once('value');
-
     this.setState({ users: users.val() });
   };
 
