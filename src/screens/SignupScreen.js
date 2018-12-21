@@ -3,7 +3,7 @@ import { StyleSheet, Text, TextInput, View } from 'react-native';
 import firebase from 'firebase';
 
 import db from '../config/Database';
-import { PrimaryButton } from '../components/ButtonComponent';
+import { PrimaryButton, TextButton } from '../components/ButtonComponent';
 
 import colors from '../assets/colors';
 
@@ -80,12 +80,11 @@ export default class SignUpScreen extends React.Component {
           loading={this.state.loading}
           startColor={colors.GRADIENT_START}
           endColor={colors.GRADIENT_END}
+          styleButton={{ alignSelf: 'center' }}
         />
-        <PrimaryButton
+        <TextButton
           title="Already have an account? Login"
           onPress={() => this.props.navigation.navigate('login')}
-          startColor={colors.GRAY}
-          endColor={colors.GRAY}
         />
       </View>
     );
@@ -96,12 +95,5 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-  },
-  textInput: {
-    height: 40,
-    width: '90%',
-    borderColor: 'gray',
-    borderWidth: 1,
-    marginTop: 8,
   },
 });

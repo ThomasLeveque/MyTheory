@@ -14,47 +14,51 @@ const PrimaryButton = ({
   loading,
   startColor,
   endColor,
-  pictoName,
+  pictoName, // Only MaterialIcons for now
 }) => {
   return (
-    <View style={[styleButton, styles.primaryContainer]}>
-      <TouchableOpacity onPress={onPress}>
-        <LinearGradient
-          start={{ x: 0, y: 1 }}
-          end={{ x: 1, y: 1 }}
-          style={styles.primaryGradient}
-          colors={[startColor, endColor]}
-        >
-          {loading ? (
-            <ActivityIndicator size="small" color="white" style={{ marginRight: 10 }} />
-          ) : (
-            pictoName && (
-              <MaterialIcons name={pictoName} size={20} color="white" style={{ marginRight: 10 }} />
-            )
-          )}
-          <Text style={[styleText, styles.primaryText]}>{title}</Text>
-        </LinearGradient>
-      </TouchableOpacity>
-    </View>
+    <TouchableOpacity onPress={onPress} style={[styles.primaryContainer, styleButton]}>
+      <LinearGradient
+        start={{ x: 0, y: 1 }}
+        end={{ x: 1, y: 1 }}
+        style={styles.primaryGradient}
+        colors={[startColor, endColor]}
+      >
+        {loading ? (
+          <ActivityIndicator size="small" color="white" style={{ marginRight: 10 }} />
+        ) : (
+          pictoName && (
+            <MaterialIcons name={pictoName} size={20} color="white" style={{ marginRight: 10 }} />
+          )
+        )}
+        <Text style={[styleText, styles.primaryText]}>{title}</Text>
+      </LinearGradient>
+    </TouchableOpacity>
   );
 };
 
 const SecondaryButton = ({ title, styleButton, styleText, onPress, pictoName }) => {
   return (
-    <View style={[styleButton, styles.secondaryContainer]}>
-      <TouchableOpacity style={{ ...colors.SHADOW }} onPress={onPress}>
-        <View style={styles.secondaryView}>
-          <LinearGradient
-            style={styles.secondaryGradient}
-            colors={[colors.GRADIENT_START, colors.GRADIENT_END]}
-          />
-          {pictoName && (
-            <MaterialIcons name={pictoName} size={16} color="black" style={{ marginRight: 10 }} />
-          )}
-          <Text style={[styleText, styles.secondaryText]}>{title}</Text>
-        </View>
-      </TouchableOpacity>
-    </View>
+    <TouchableOpacity style={[styles.secondaryContainer, styleButton]} onPress={onPress}>
+      <View style={styles.secondaryView}>
+        <LinearGradient
+          style={styles.secondaryGradient}
+          colors={[colors.GRADIENT_START, colors.GRADIENT_END]}
+        />
+        {pictoName && (
+          <MaterialIcons name={pictoName} size={16} color="black" style={{ marginRight: 10 }} />
+        )}
+        <Text style={[styleText, styles.secondaryText]}>{title}</Text>
+      </View>
+    </TouchableOpacity>
+  );
+};
+
+const TextButton = ({ title, styleButton, styleText, onPress }) => {
+  return (
+    <TouchableOpacity style={styles.textButtonContainer} onPress={onPress}>
+      <Text style={[styleText, styles.textButtonText]}>{title}</Text>
+    </TouchableOpacity>
   );
 };
 
@@ -62,7 +66,7 @@ const secondaryGradientWidth = 8;
 
 const styles = StyleSheet.create({
   primaryContainer: {
-    alignItems: 'center',
+    alignSelf: 'flex-start',
   },
   primaryGradient: {
     padding: 15,
@@ -72,11 +76,12 @@ const styles = StyleSheet.create({
   },
   primaryText: {
     color: 'white',
-    fontFamily: 'montserratBold',
+    fontFamily: 'montserratSemiBold',
     fontSize: 14,
   },
   secondaryContainer: {
-    alignItems: 'center',
+    alignSelf: 'flex-start',
+    ...colors.SHADOW,
   },
   secondaryView: {
     flexDirection: 'row',
@@ -101,6 +106,11 @@ const styles = StyleSheet.create({
     fontFamily: 'montserratBold',
     fontSize: 12,
   },
+  textButtonText: {
+    color: 'black',
+    fontFamily: 'montserratBold',
+    fontSize: 12,
+  },
 });
 
-export { PrimaryButton, SecondaryButton };
+export { PrimaryButton, SecondaryButton, TextButton };
