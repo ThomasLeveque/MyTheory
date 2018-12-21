@@ -1,5 +1,5 @@
 import React from 'react';
-import { FlatList, StyleSheet, View } from 'react-native';
+import { FlatList } from 'react-native';
 // import { Card, Icon, Button } from 'react-native-elements';
 import { Subscribe } from 'unstated';
 import { createStackNavigator } from 'react-navigation';
@@ -8,6 +8,7 @@ import Store from '../../store';
 import CardComponent from '../../components/CardComponent';
 
 import TheoryScreen from './TheoryScreen';
+import Layout from '../../components/Layout';
 
 const HomeScreen = props => (
   <Subscribe to={[Store]}>
@@ -18,7 +19,7 @@ const HomeScreen = props => (
 class Child extends React.Component {
   render() {
     return (
-      <View style={styles.container}>
+      <Layout>
         <FlatList
           data={this.props.store.state.theories}
           keyExtractor={({ date }) => date.toString()}
@@ -26,16 +27,10 @@ class Child extends React.Component {
             return <CardComponent user={item.user} title={item.name} />;
           }}
         />
-      </View>
+      </Layout>
     );
   }
 }
-
-const styles = StyleSheet.create({
-  container: {
-    backgroundColor: 'white',
-  },
-});
 
 export default createStackNavigator({
   home: HomeScreen,

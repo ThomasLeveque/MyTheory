@@ -38,14 +38,18 @@ class Child extends React.Component {
             startColor={colors.GRAY}
             endColor={colors.GRAY}
           />
-
-          <FlatList
-            data={this.props.store.state.userTheories}
-            keyExtractor={item => item.date.toString()}
-            renderItem={({ item }) => {
-              return <CardComponent user={item.user} title={item.name} />;
-            }}
-          />
+          {this.props.store.state.userTheories.length === 0 && (
+            <Text>RAJOUTES DES THEORIES PELO</Text>
+          )}
+          {this.props.store.state.userTheories && (
+            <FlatList
+              data={this.props.store.state.userTheories}
+              keyExtractor={item => item.date.toString()}
+              renderItem={({ item }) => {
+                return <CardComponent user={item.user} title={item.name} />;
+              }}
+            />
+          )}
         </View>
       </Layout>
     );
