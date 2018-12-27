@@ -6,11 +6,7 @@ import { Subscribe } from 'unstated';
 import { getPermAsync } from '../../utils/Utils';
 
 import db from '../../config/Database';
-import {
-  TextInputComponent,
-  TextAreaComponent,
-  AddImgComponent,
-} from '../../components/InputComponent';
+import { InputComponent, AddImgComponent } from '../../components/InputComponent';
 
 import ButtonComponent from '../../components/ButtonComponent';
 
@@ -88,31 +84,27 @@ class Child extends Component {
           styleAddImg={styles.AddImg}
           nameInput="Add your image"
         />
-        <TextInputComponent
+        <InputComponent
           nameInput="Sujet"
           onChangeValue={topic => this.setState({ topic })}
-          styleInput={styles.itemInput}
           placeholderInput="Topic"
           value={this.state.topic}
         />
-        <TextInputComponent
+        <InputComponent
           nameInput="Nom de la théorie"
           onChangeValue={name => this.setState({ name })}
-          styleInput={styles.itemInput}
           placeholderInput="Name your theory"
           value={this.state.name}
         />
-        <TextAreaComponent
+        <InputComponent
           nameInput="Description"
           onChangeValue={description => this.setState({ description })}
-          styleInput={styles.itemInput}
           placeholderInput="Description"
           value={this.state.description}
+          isTextArea
         />
         <ButtonComponent
           textButton="Add theory"
-          styleButton={styles.button}
-          styleText={styles.buttonText}
           onPress={this.handleSubmit}
           loading={this.state.loading}
         />
@@ -134,23 +126,6 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     fontSize: 25,
     textAlign: 'center',
-  },
-  buttonText: {
-    fontSize: 18,
-    color: '#111',
-    alignSelf: 'center',
-  },
-  button: {
-    height: 45,
-    flexDirection: 'row',
-    backgroundColor: 'white',
-    borderColor: 'white',
-    borderWidth: 1,
-    borderRadius: 8,
-    marginBottom: 10,
-    marginTop: 10,
-    alignSelf: 'stretch',
-    justifyContent: 'center',
   },
 });
 

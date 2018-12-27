@@ -1,91 +1,82 @@
 import React from 'react';
 import { TextInput, View, StyleSheet, Text, TouchableOpacity } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
+
 import { getPermAsync } from '../utils/Utils';
+import colors from '../assets/colors';
 
-const TextInputComponent = ({ nameInput, onChangeValue, styleInput, placeholderInput, valueInput }) => {
+const InputComponent = ({
+  nameInput,
+  onChangeValue,
+  styleInput,
+  placeholderInput,
+  valueInput,
+  isTextArea,
+}) => {
   return (
     <View>
       <Text style={styles.nameInput}>{nameInput}</Text>
       <TextInput
+        multiline={!!isTextArea}
+        numberOfLines={isTextArea ? 6 : 0}
         onChangeText={onChangeValue}
-        style={[styleInput, styles.textInput]}
+        style={[styles.textInput, isTextArea && styles.heightArea, styleInput]}
         placeholder={placeholderInput}
         value={valueInput}
+        placeholderTextColor={colors.GRAY_TXT}
       />
     </View>
   );
 };
 
-const TextAreaComponent = ({ nameInput, onChangeValue, styleInput, placeholderInput, valueInput }) => {
-  return (
-    <View>
-      <Text style={styles.nameInput}>{nameInput}</Text>
-      <TextInput
-        multiline={true}
-        numberOfLines={6}
-        onChangeText={onChangeValue}
-        style={[styleInput, styles.textInput, styles.heightArea]}
-        placeholder={placeholderInput}
-        value={valueInput}
-      />
-    </View>
-  );
-};
-
-const AddImgComponent = ({ nameInput, onPressValue, styleAddImg }) => {
+const AddImgComponent = ({ nameInput, onPressValue, styleAddImg, styleTextAddImg }) => {
   return (
     <View>
       <Text style={styles.nameInput}>Ajouter une image</Text>
-      <TouchableOpacity style={[styleAddImg, styles.addImg]} onPress={onPressValue}>``
-        <Text style={[styleAddImg, styles.textAddImage]}>
-          <MaterialIcons name='add' size={40} color="white" style={[styles.iconAddImage]} />
-          {"\n"}{nameInput}...
-        </Text>
+      <TouchableOpacity style={[styles.addImgContainer, styleAddImg]} onPress={onPressValue}>
+        <MaterialIcons name="add" size={36} color={colors.GRAY_TXT} />
+        <Text style={[styles.textAddImage, styleTextAddImg]}>{nameInput}</Text>
       </TouchableOpacity>
     </View>
   );
 };
 
+const inputBottomMargin = 16;
+
 const styles = StyleSheet.create({
   textInput: {
-    paddingTop: 10,
-    paddingBottom: 10,
-    paddingLeft: 15,
-    paddingRight: 15,
-    marginTop: 5,
-    marginBottom: 5,
-    backgroundColor: '#F6F6F6',
-    fontSize: 23,
+    paddingVertical: 15,
+    paddingHorizontal: 20,
+    backgroundColor: colors.GRAY_BG,
+    fontSize: 16,
     borderBottomWidth: 3,
-    borderColor: '#E0E0E0',
-    color: '#000000',
-    fontWeight: '400',
-    height: 50,
-  },
-  textAddImage: {
-    textAlign:'center',
-    marginTop: 20,
-    marginBottom: 20,
-    fontWeight: '900',
-    color: '#E0E0E0',
-  },
-  iconAddImage: {
-    color: '#E0E0E0',
-  },
-  addImg: {
-    backgroundColor: '#F6F6F6',
-    borderBottomWidth: 3,
-    borderColor: '#E0E0E0',
+    fontFamily: 'montserratBold',
+    borderColor: colors.GRAY_TXT,
+    color: 'black',
+    marginBottom: inputBottomMargin,
   },
   nameInput: {
-    marginTop: 12,
-    marginBottom: 5,
-    fontWeight: 'bold',
+    fontSize: 14,
+    fontFamily: 'montserratBold',
+    color: 'black',
+    marginBottom: 10,
   },
   heightArea: {
     height: 250,
   },
+  textAddImage: {
+    color: colors.GRAY_TXT,
+    fontSize: 16,
+    fontFamily: 'montserratBold',
+  },
+  addImgContainer: {
+    alignItems: 'center',
+    paddingVertical: 15,
+    backgroundColor: colors.GRAY_BG,
+    borderBottomWidth: 3,
+    borderColor: colors.GRAY_TXT,
+    marginBottom: inputBottomMargin,
+  },
 });
 
-export { TextInputComponent, TextAreaComponent, AddImgComponent };
+export { InputComponent, AddImgComponent };
