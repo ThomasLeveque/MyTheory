@@ -1,6 +1,5 @@
 import React from 'react';
 import { StyleSheet, Text, View, ActivityIndicator, FlatList, Button } from 'react-native';
-// import { Card, Icon, Button } from 'react-native-elements';
 import firebase from 'firebase';
 import { Subscribe } from 'unstated';
 import { createStackNavigator } from 'react-navigation';
