@@ -39,15 +39,60 @@ class Child extends React.Component {
     const categoriesKeys = Object.keys(allCategories.val());
     const categoriesArray = categoriesValues.map((category, index) => ({
       ...category,
-      name: categoriesValues[index].name,
       id: categoriesKeys[index],
     }));
     this.setState({ categories: categoriesArray });
   }
 
   render() {
+    let content = (
+      <View>
+        <Text style={{ fontSize: 18, fontFamily: 'montserratBold', marginBottom: 10 }}>
+          Categories
+        </Text>
+        <FlatList
+          data={this.state.categories}
+          keyExtractor={({ name }) => name}
+          renderItem={({ item }) => {
+            return (
+              <TouchableOpacity
+                style={styles.category}
+                onPress={() => {
+                  this.setState({ currentCategory: item.name });
+                }}
+              >
+                <LinearGradient
+                  start={{ x: 0, y: 0.75 }}
+                  end={{ x: 1, y: 0.25 }}
+                  colors={[item.startColor, item.endColor]}
+                  style={styles.imageContainer}
+                >
+                  <ImageBackground source={this.images[item.img]} style={styles.imageBack} />
+                </LinearGradient>
+                <Text style={styles.categoryText}>{item.name}</Text>
+              </TouchableOpacity>
+            );
+          }}
+        />
+      </View>
+    );
+    if (this.state.currentCategory !== '') {
+      content = (
+        <View>
+          <Text
+            onPress={() => {
+              this.setState({ currentCategory: '' });
+            }}
+          />
+          <Text style={{ fontSize: 18, fontFamily: 'montserratBold', marginBottom: 10 }}>
+            {this.state.currentCategory}
+          </Text>
+          <Text>TO DO</Text>
+        </View>
+      );
+    }
     return (
-      <View style={{ margin: 20 }}>
+      <View>
         <Text style={{ fontSize: 35, fontFamily: 'montserratBold', marginBottom: 20 }}>
           Theories
         </Text>
@@ -64,53 +109,7 @@ class Child extends React.Component {
             <Text style={{ color: 'black' }}>Add Theory</Text>
           </ImageBackground>
         </TouchableOpacity>
-        {this.state.currentCategory === '' && (
-          <View>
-            <Text style={{ fontSize: 18, fontFamily: 'montserratBold', marginBottom: 10 }}>
-              Categories
-            </Text>
-            <FlatList
-              data={this.state.categories}
-              keyExtractor={({ name }) => name}
-              renderItem={({ item }) => {
-                return (
-                  <TouchableOpacity
-                    style={styles.category}
-                    onPress={() => {
-                      this.setState({ currentCategory: item.name });
-                    }}
-                  >
-                    <LinearGradient
-                      start={{ x: 0, y: 0.75 }}
-                      end={{ x: 1, y: 0.25 }}
-                      colors={[item.startColor, item.endColor]}
-                      style={styles.imageContainer}
-                    >
-                      <ImageBackground source={this.images[item.img]} style={styles.imageBack} />
-                    </LinearGradient>
-                    <Text style={styles.categoryText}>{item.name}</Text>
-                  </TouchableOpacity>
-                );
-              }}
-            />
-          </View>
-        )}
-        {this.state.currentCategory !== '' && (
-          <View>
-            <Text
-              onPress={() => {
-                this.setState({ currentCategory: '' });
-              }}
-            >
-              {' '}
-              &#60;{' '}
-            </Text>
-            <Text style={{ fontSize: 18, fontFamily: 'montserratBold', marginBottom: 10 }}>
-              {this.state.currentCategory}
-            </Text>
-            <Text>TO DO</Text>
-          </View>
-        )}
+        {content}
       </View>
     );
   }

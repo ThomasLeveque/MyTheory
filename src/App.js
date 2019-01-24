@@ -28,7 +28,7 @@ const App = () => {
           listChat: ListChatScreen,
         },
         {
-          initialRouteName: 'theories',
+          initialRouteName: 'home',
         },
       ),
     },
@@ -38,7 +38,7 @@ const App = () => {
   );
 
   return (
-    <Provider style={{ margin: 20 }}>
+    <Provider>
       <MainNavigator />
     </Provider>
   );
