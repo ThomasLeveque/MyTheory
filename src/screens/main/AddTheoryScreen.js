@@ -3,6 +3,9 @@ import { View, Text, StyleSheet, Alert } from 'react-native';
 import firebase from 'firebase';
 import { ImagePicker } from 'expo';
 import { Subscribe } from 'unstated';
+import { Formik } from 'formik';
+import * as yup from 'yup';
+
 import { getPermAsync } from '../../utils/Utils';
 
 import db from '../../config/Database';
@@ -18,9 +21,6 @@ const AddTheoryScreen = () => (
 
 class Child extends Component {
   state = {
-    topic: '',
-    name: '',
-    description: '',
     likes: [],
     comments: [],
     error: '',
@@ -79,35 +79,58 @@ class Child extends Component {
     return (
       <View style={styles.main}>
         <Text style={styles.title}>Add theory</Text>
-        <AddImgComponent
-          onPressValue={this.onChooseImagePress}
-          styleAddImg={styles.AddImg}
-          nameInput="Add your image"
-        />
-        <InputComponent
-          nameInput="Sujet"
-          onChangeValue={topic => this.setState({ topic })}
-          placeholderInput="Topic"
-          value={this.state.topic}
-        />
-        <InputComponent
-          nameInput="Nom de la théorie"
-          onChangeValue={name => this.setState({ name })}
-          placeholderInput="Name your theory"
-          value={this.state.name}
-        />
-        <InputComponent
-          nameInput="Description"
-          onChangeValue={description => this.setState({ description })}
-          placeholderInput="Description"
-          value={this.state.description}
-          isTextArea
-        />
-        <ButtonComponent
-          textButton="Add theory"
-          onPress={this.handleSubmit}
-          loading={this.state.loading}
-        />
+        <Formik
+          initialValues={{ img: '', topic: '', name: '', description: '' }}
+          onSubmit={() => {}}
+          validationSchema={yup.object().shape({
+            topic: yup.string().required('required'),
+            name: yup.string().required('required'),
+            description: yup.string().required('required'),
+          })}
+        >
+          {props => {
+            return (
+              <View>
+                <AddImgComponent
+                  pressed={this.onChooseImagePress}
+                  styleAddImg={styles.AddImg}
+                  label="Add your image"
+                />
+                <InputComponent
+                  label="Sujet"
+                  onBlur={props.handleBlur('topic')}
+                  onChangeText={props.handleChange('topic')}
+                  placeholder="Topic"
+                  value={props.values.topic}
+                  hasError={!!(props.touched.topic && props.errors.topic)}
+                />
+                <InputComponent
+                  label="Nom de la théorie"
+                  onBlur={props.handleBlur('name')}
+                  onChangeText={props.handleChange('name')}
+                  placeholder="Name your theory"
+                  value={props.values.name}
+                  hasError={!!(props.touched.name && props.errors.name)}
+                />
+                <InputComponent
+                  label="Description"
+                  onChangeText={props.handleChange('description')}
+                  onBlur={props.handleBlur('description')}
+                  placeholder="Description"
+                  value={props.values.description}
+                  isTextArea
+                  hasError={!!(props.touched.description && props.errors.description)}
+                />
+                <ButtonComponent
+                  textButton="Add theory"
+                  onPress={props.handleSubmit}
+                  loading={this.state.loading}
+                />
+              </View>
+            );
+          }}
+        </Formik>
+
         {this.state.error && <Text>{this.state.error}</Text>}
       </View>
     );
@@ -127,6 +150,7 @@ const styles = StyleSheet.create({
     fontSize: 25,
     textAlign: 'center',
   },
+  error: { fontSize: 14, color: 'red' },
 });
 
 export default AddTheoryScreen;

@@ -6,36 +6,44 @@ import { getPermAsync } from '../utils/Utils';
 import colors from '../assets/colors';
 
 const InputComponent = ({
-  nameInput,
-  onChangeValue,
+  label,
+  onChangeText,
+  onBlur,
   styleInput,
-  placeholderInput,
-  valueInput,
+  placeholder,
+  value,
   isTextArea,
+  hasError,
 }) => {
   return (
     <View>
-      <Text style={styles.nameInput}>{nameInput}</Text>
+      <Text style={styles.nameInput}>{label}</Text>
       <TextInput
         multiline={!!isTextArea}
         numberOfLines={isTextArea ? 6 : 0}
-        onChangeText={onChangeValue}
-        style={[styles.textInput, isTextArea && styles.heightArea, styleInput]}
-        placeholder={placeholderInput}
-        value={valueInput}
+        onChangeText={onChangeText}
+        onBlur={onBlur}
+        style={[
+          styles.textInput,
+          isTextArea && styles.heightArea,
+          styleInput,
+          hasError && { borderColor: 'red' },
+        ]}
+        placeholder={placeholder}
+        value={value}
         placeholderTextColor={colors.GRAY_TXT}
       />
     </View>
   );
 };
 
-const AddImgComponent = ({ nameInput, onPressValue, styleAddImg, styleTextAddImg }) => {
+const AddImgComponent = ({ label, pressed, styleAddImg, styleTextAddImg }) => {
   return (
     <View>
       <Text style={styles.nameInput}>Ajouter une image</Text>
-      <TouchableOpacity style={[styles.addImgContainer, styleAddImg]} onPress={onPressValue}>
+      <TouchableOpacity style={[styles.addImgContainer, styleAddImg]} onPress={pressed}>
         <MaterialIcons name="add" size={36} color={colors.GRAY_TXT} />
-        <Text style={[styles.textAddImage, styleTextAddImg]}>{nameInput}</Text>
+        <Text style={[styles.textAddImage, styleTextAddImg]}>{label}</Text>
       </TouchableOpacity>
     </View>
   );
