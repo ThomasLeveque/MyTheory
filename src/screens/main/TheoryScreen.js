@@ -4,10 +4,11 @@ import { Subscribe } from 'unstated';
 // import { Card } from 'react-native-elements';
 import firebase from 'firebase';
 import InputComponent from '../../components/InputComponent';
-import ButtonComponent from '../../components/ButtonComponent';
+import { PrimaryButton } from '../../components/ButtonComponent';
 import CardComponent from '../../components/CardComponent';
 
 import Store from '../../store';
+import colors from '../../assets/colors';
 
 const TheoryScreen = props => (
   <Subscribe to={[Store]}>
@@ -86,24 +87,19 @@ class Child extends Component {
           styleInput={styles.itemInput}
         />
         {this.state.errorMessage && <Text style={{ color: 'red' }}>{this.state.errorMessage}</Text>}
-        <ButtonComponent
-          textButton="Add comment"
+        <PrimaryButton
+          title="Add comment"
           styleButton={styles.button}
           styleText={styles.buttonText}
           onPress={this.handleSubmit}
           loading={this.state.loading}
+          startColor={colors.GRAY}
+          endColor={colors.GRAY}
         />
         <FlatList
           data={this.state.comments}
           keyExtractor={({ date }) => date.toString()}
-          renderItem={({ item }) => (
-            <CardComponent user={item.user} />
-            // <Card>
-            //   <Text style={{ marginBottom: 10, color: 'black' }}>{item.comment}</Text>
-            //   <Text>{item.user.name}</Text>
-            //   <Text>{item.dateFormat}</Text>
-            // </Card>
-          )}
+          renderItem={({ item }) => <CardComponent user={item.user} />}
         />
       </View>
     );

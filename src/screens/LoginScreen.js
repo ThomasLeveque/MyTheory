@@ -2,9 +2,10 @@ import React from 'react';
 import { StyleSheet, Text, TextInput, View } from 'react-native';
 import firebase from 'firebase';
 
-import ButtonComponent from '../components/ButtonComponent';
+import { PrimaryButton, TextButton } from '../components/ButtonComponent';
+import colors from '../assets/colors';
 
-export default class Login extends React.Component {
+export default class LoginScreen extends React.Component {
   state = {
     email: '',
     password: '',
@@ -45,13 +46,16 @@ export default class Login extends React.Component {
           onChangeText={password => this.setState({ password })}
           value={this.state.password}
         />
-        <ButtonComponent
-          textButton="Login"
+        <PrimaryButton
+          title="Login"
           onPress={this.handleLogin}
           loading={this.state.loading}
+          startColor={colors.GRADIENT_START}
+          endColor={colors.GRADIENT_END}
+          styleButton={{ alignSelf: 'center' }}
         />
-        <ButtonComponent
-          textButton="Don't have an account? Sign Up"
+        <TextButton
+          title="Don't have an account? Sign Up"
           onPress={() => this.props.navigation.navigate('signUp')}
         />
       </View>
@@ -63,12 +67,5 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-  },
-  textInput: {
-    height: 40,
-    width: '90%',
-    borderColor: 'gray',
-    borderWidth: 1,
-    marginTop: 8,
   },
 });

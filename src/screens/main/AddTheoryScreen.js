@@ -8,16 +8,19 @@ import * as yup from 'yup';
 import ModalSelector from 'react-native-modal-selector';
 
 import { getPermAsync } from '../../utils/Utils';
-
 import db from '../../config/Database';
+
+import Layout from '../../components/Layout';
 import { InputComponent, AddImgComponent } from '../../components/InputComponent';
+import { PrimaryButton, SecondaryButton } from '../../components/ButtonComponent';
 
-import ButtonComponent from '../../components/ButtonComponent';
-
+import colors from '../../assets/colors';
 import Store from '../../store';
 
-const AddTheoryScreen = () => (
-  <Subscribe to={[Store]}>{store => <Child store={store} />}</Subscribe>
+const AddTheoryScreen = props => (
+  <Subscribe to={[Store]}>
+    {store => <Child store={store} navigation={props.navigation} />}
+  </Subscribe>
 );
 
 class Child extends Component {
@@ -89,7 +92,7 @@ class Child extends Component {
       { key: index++, label: 'Vegetable', customKey: 'Not a fruit' },
     ];
     return (
-      <View style={styles.main}>
+      <Layout>
         <ModalSelector
           data={data}
           initValue="Select something yummy!"
@@ -161,11 +164,19 @@ class Child extends Component {
                   isTextArea
                   hasError={!!(props.touched.description && props.errors.description)}
                 />
-                <ButtonComponent
-                  textButton="Add theory"
+                <PrimaryButton
+                  title="Add theory"
                   onPress={props.handleSubmit}
                   loading={this.state.loading}
+                  startColor={colors.GRADIENT_START}
+                  endColor={colors.GRADIENT_END}
+                  pictoName="file-upload"
                   disabled={!props.isValid || props.isSubmitting}
+                />
+                <SecondaryButton
+                  title="Vos informations"
+                  onPress={() => this.props.navigation.navigate('setting')}
+                  pictoName="settings"
                 />
               </View>
             );
@@ -173,7 +184,7 @@ class Child extends Component {
         </Formik>
 
         {this.state.error && <Text>{this.state.error}</Text>}
-      </View>
+      </Layout>
     );
   }
 }
@@ -181,10 +192,6 @@ class Child extends Component {
 const styles = StyleSheet.create({
   main: {
     flex: 1,
-    padding: 30,
-    flexDirection: 'column',
-    justifyContent: 'center',
-    backgroundColor: 'white',
   },
   title: {
     marginBottom: 20,

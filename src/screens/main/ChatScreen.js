@@ -57,7 +57,6 @@ class Child extends React.Component {
 
 const styles = StyleSheet.create({
   container: {
-    paddingBottom: 50,
     backgroundColor: 'white',
     flex: 1,
   },
