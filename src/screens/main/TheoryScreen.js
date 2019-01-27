@@ -99,14 +99,7 @@ class Child extends Component {
         <FlatList
           data={this.state.comments}
           keyExtractor={({ date }) => date.toString()}
-          renderItem={({ item }) => (
-            <CardComponent user={item.user} />
-            // <Card>
-            //   <Text style={{ marginBottom: 10, color: 'black' }}>{item.comment}</Text>
-            //   <Text>{item.user.name}</Text>
-            //   <Text>{item.dateFormat}</Text>
-            // </Card>
-          )}
+          renderItem={({ item }) => <CardComponent user={item.user} />}
         />
       </View>
     );
