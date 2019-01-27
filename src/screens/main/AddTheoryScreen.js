@@ -5,6 +5,7 @@ import { ImagePicker } from 'expo';
 import { Subscribe } from 'unstated';
 import { Formik } from 'formik';
 import * as yup from 'yup';
+import ModalSelector from 'react-native-modal-selector';
 
 import { getPermAsync } from '../../utils/Utils';
 
@@ -21,11 +22,10 @@ const AddTheoryScreen = () => (
 
 class Child extends Component {
   state = {
-    likes: [],
-    comments: [],
     error: '',
-    image: '',
+    // image: '',
     loading: false,
+    textInputValue: '',
   };
 
   onChooseImagePress = async () => {
@@ -45,7 +45,7 @@ class Child extends Component {
   uploadImage = async (uri, imageName) => {
     const response = await fetch(uri);
     const blob = await response.blob();
-    this.setState({ image: `images/theories/${imageName}` });
+    // this.setState({ image: `images/theories/${imageName}` });
     const ref = firebase
       .storage()
       .ref()
@@ -53,37 +53,77 @@ class Child extends Component {
     return ref.put(blob);
   };
 
-  handleSubmit = async () => {
-    const { topic, name, description, likes, comments, image } = this.state;
-
-    if (topic.length > 0 && name.length > 0 && description.length > 0) {
-      this.setState({ loading: true });
-      await db.ref('/theory').push({
-        date: firebase.database.ServerValue.TIMESTAMP,
-        topic,
-        name,
-        description,
-        likes,
-        comments,
-        image,
-        userId: this.props.store.state.user.id,
-      });
-      await this.props.store.getTheories();
-      this.setState({ loading: false });
-    } else {
-      this.setState({ error: 'Vous avez faux' });
+  handleSubmit = async ({ category, name, description, likes, comments, img }) => {
+    try {
+      if (category.length > 0 && name.length > 0 && description.length > 0) {
+        this.setState({ loading: true });
+        await db.ref('/theory').push({
+          date: firebase.database.ServerValue.TIMESTAMP,
+          category,
+          name,
+          description,
+          likes,
+          comments,
+          img,
+          userId: this.props.store.state.user.id,
+        });
+        await this.props.store.getTheories();
+        this.setState({ loading: false });
+      } else {
+        this.setState({ error: 'Vous avez faux', loading: false });
+      }
+    } catch (error) {
+      this.setState({ error, loading: false });
     }
   };
 
   render() {
+    let index = 0;
+    const data = [
+      { key: index++, section: true, label: 'Fruits' },
+      { key: index++, label: 'Red Apples' },
+      { key: index++, label: 'Cherries' },
+      { key: index++, label: 'Cranberries', accessibilityLabel: 'Tap here for cranberries' },
+      // etc...
+      // Can also add additional custom keys which are passed to the onChange callback
+      { key: index++, label: 'Vegetable', customKey: 'Not a fruit' },
+    ];
     return (
       <View style={styles.main}>
+        <ModalSelector
+          data={data}
+          initValue="Select something yummy!"
+          supportedOrientations={['landscape', 'portrait']}
+          accessible
+          scrollViewAccessibilityLabel="Scrollable options"
+          cancelButtonAccessibilityLabel="Cancel Button"
+          onChange={option => {
+            this.setState({ textInputValue: option.label });
+          }}
+        >
+          <InputComponent
+            placeholder="Select something yummy!"
+            value={this.state.textInputValue}
+            isEditable={false}
+          />
+        </ModalSelector>
+
         <Text style={styles.title}>Add theory</Text>
         <Formik
-          initialValues={{ img: '', topic: '', name: '', description: '' }}
-          onSubmit={() => {}}
+          initialValues={{
+            img: '',
+            category: '',
+            name: '',
+            description: '',
+            likes: [],
+            comments: [],
+          }}
+          onSubmit={async (values, { setSubmitting }) => {
+            await this.handleSubmit(values);
+            setSubmitting(false);
+          }}
           validationSchema={yup.object().shape({
-            topic: yup.string().required('required'),
+            category: yup.string().required('required'),
             name: yup.string().required('required'),
             description: yup.string().required('required'),
           })}
@@ -97,20 +137,20 @@ class Child extends Component {
                   label="Add your image"
                 />
                 <InputComponent
-                  label="Sujet"
-                  onBlur={props.handleBlur('topic')}
-                  onChangeText={props.handleChange('topic')}
-                  placeholder="Topic"
-                  value={props.values.topic}
-                  hasError={!!(props.touched.topic && props.errors.topic)}
-                />
-                <InputComponent
                   label="Nom de la théorie"
                   onBlur={props.handleBlur('name')}
                   onChangeText={props.handleChange('name')}
                   placeholder="Name your theory"
                   value={props.values.name}
                   hasError={!!(props.touched.name && props.errors.name)}
+                />
+                <InputComponent
+                  label="Categorie"
+                  onBlur={props.handleBlur('category')}
+                  onChangeText={props.handleChange('category')}
+                  placeholder="Category"
+                  value={props.values.category}
+                  hasError={!!(props.touched.category && props.errors.category)}
                 />
                 <InputComponent
                   label="Description"
@@ -125,6 +165,7 @@ class Child extends Component {
                   textButton="Add theory"
                   onPress={props.handleSubmit}
                   loading={this.state.loading}
+                  disabled={!props.isValid || props.isSubmitting}
                 />
               </View>
             );

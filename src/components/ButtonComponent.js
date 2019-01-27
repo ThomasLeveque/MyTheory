@@ -1,9 +1,9 @@
 import React from 'react';
 import { TouchableOpacity, Text, ActivityIndicator, StyleSheet } from 'react-native';
 
-const ButtonComponent = ({ textButton, styleButton, styleText, onPress, loading }) => {
+const ButtonComponent = ({ textButton, styleButton, styleText, onPress, loading, disabled }) => {
   return (
-    <TouchableOpacity style={[styleButton, styles.container]} onPress={onPress}>
+    <TouchableOpacity style={[styleButton, styles.container]} onPress={onPress} disabled={disabled}>
       {loading && <ActivityIndicator size="large" color="green" />}
       <Text style={[styleText, styles.text]}>{textButton}</Text>
     </TouchableOpacity>

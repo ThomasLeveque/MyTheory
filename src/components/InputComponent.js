@@ -14,6 +14,7 @@ const InputComponent = ({
   value,
   isTextArea,
   hasError,
+  isEditable,
 }) => {
   return (
     <View>
@@ -32,6 +33,7 @@ const InputComponent = ({
         placeholder={placeholder}
         value={value}
         placeholderTextColor={colors.GRAY_TXT}
+        editable={isEditable}
       />
     </View>
   );
@@ -62,6 +64,8 @@ const styles = StyleSheet.create({
     borderColor: colors.GRAY_TXT,
     color: 'black',
     marginBottom: inputBottomMargin,
+    borderTopLeftRadius: 5,
+    borderTopRightRadius: 5,
   },
   nameInput: {
     fontSize: 14,
@@ -84,6 +88,8 @@ const styles = StyleSheet.create({
     borderBottomWidth: 3,
     borderColor: colors.GRAY_TXT,
     marginBottom: inputBottomMargin,
+    borderTopLeftRadius: 5,
+    borderTopRightRadius: 5,
   },
 });
 
