@@ -1,14 +1,16 @@
 import React from 'react';
-import { StyleSheet, Text, View, ActivityIndicator, FlatList, Button } from 'react-native';
+import { Text, View, FlatList, Button } from 'react-native';
 import firebase from 'firebase';
 import { Subscribe } from 'unstated';
 import { createStackNavigator } from 'react-navigation';
-import ButtonComponent from '../../components/ButtonComponent';
+import { PrimaryButton } from '../../components/ButtonComponent';
 import CardComponent from '../../components/CardComponent';
+import Layout from '../../components/Layout';
 
 import Store from '../../store';
 
 import SettingScreen from './SettingScreen';
+import colors from '../../assets/colors';
 
 const ProfilScreen = props => (
   <Subscribe to={[Store]}>
@@ -22,48 +24,37 @@ class Child extends React.Component {
   };
 
   render() {
-    let content = (
-      <View style={{ flex: 1, justifyContent: 'center' }}>
-        <ActivityIndicator size="large" />
-      </View>
-    );
-    if (this.props.store.state.user) {
-      content = (
+    return (
+      <Layout>
+        <Button title="Log Out" onPress={this.signOutUser} />
         <View>
           <Text>{this.props.store.state.user.name}</Text>
           <Text>{this.props.store.state.user.email}</Text>
-          <ButtonComponent
-            textButton="Setting"
+          <PrimaryButton
+            title="Setting"
             onPress={() => {
               this.props.navigation.navigate('setting');
             }}
+            startColor={colors.GRAY}
+            endColor={colors.GRAY}
           />
-
-          <FlatList
-            data={this.props.store.state.userTheories}
-            keyExtractor={item => item.date.toString()}
-            renderItem={({ item }) => {
-              return <CardComponent user={item.user} />;
-            }}
-          />
+          {this.props.store.state.userTheories.length === 0 && (
+            <Text>RAJOUTES DES THEORIES PELO</Text>
+          )}
+          {this.props.store.state.userTheories && (
+            <FlatList
+              data={this.props.store.state.userTheories}
+              keyExtractor={item => item.date.toString()}
+              renderItem={({ item }) => {
+                return <CardComponent user={item.user} title={item.name} />;
+              }}
+            />
+          )}
         </View>
-      );
-    }
-
-    return (
-      <View style={styles.container}>
-        <Button title="Log Out" onPress={this.signOutUser} />
-        {content}
-      </View>
+      </Layout>
     );
   }
 }
-const styles = StyleSheet.create({
-  container: {
-    paddingTop: 50,
-    flex: 1,
-  },
-});
 
 export default createStackNavigator({
   profil: ProfilScreen,

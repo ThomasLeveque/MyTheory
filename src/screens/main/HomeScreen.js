@@ -1,5 +1,6 @@
 import React from 'react';
-import { ActivityIndicator, FlatList, StyleSheet, Text, View } from 'react-native';
+import { FlatList } from 'react-native';
+// import { Card, Icon, Button } from 'react-native-elements';
 import { Subscribe } from 'unstated';
 import { createStackNavigator } from 'react-navigation';
 
@@ -7,6 +8,7 @@ import Store from '../../store';
 import CardComponent from '../../components/CardComponent';
 
 import TheoryScreen from './TheoryScreen';
+import Layout from '../../components/Layout';
 
 const HomeScreen = props => (
   <Subscribe to={[Store]}>
@@ -15,43 +17,20 @@ const HomeScreen = props => (
 );
 
 class Child extends React.Component {
-  async componentDidMount() {
-    this.props.store.getUser();
-    await this.props.store.getUsers();
-    this.props.store.getTheories();
-  }
-
   render() {
-    if (this.props.store.state.loading) {
-      return (
-        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-          <Text>Loading</Text>
-          <ActivityIndicator size="large" />
-        </View>
-      );
-    }
-
     return (
-      <View style={styles.container}>
+      <Layout>
         <FlatList
           data={this.props.store.state.theories}
           keyExtractor={({ date }) => date.toString()}
           renderItem={({ item }) => {
-            return <CardComponent user={item.user} />;
+            return <CardComponent user={item.user} title={item.name} />;
           }}
         />
-      </View>
+      </Layout>
     );
   }
 }
-
-const styles = StyleSheet.create({
-  container: {
-    paddingTop: 50,
-    backgroundColor: 'white',
-    height: '110%',
-  },
-});
 
 export default createStackNavigator({
   home: HomeScreen,
