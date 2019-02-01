@@ -5,6 +5,7 @@ import { FlatList, StyleSheet, Text, View, TouchableOpacity, ImageBackground } f
 import { LinearGradient } from 'expo';
 
 import AddTheoryScreen from './AddTheoryScreen';
+import Layout from '../../components/Layout';
 import Store from '../../store';
 import db from '../../config/Database';
 
@@ -12,6 +13,7 @@ import games from '../../assets/imageCategory/games.png';
 import history from '../../assets/imageCategory/history.png';
 import series from '../../assets/imageCategory/series.png';
 import political from '../../assets/imageCategory/political.jpg';
+import common from '../../utils/common';
 
 const TheoriesScreen = props => (
   <Subscribe to={[Store]}>
@@ -92,7 +94,7 @@ class Child extends React.Component {
       );
     }
     return (
-      <View>
+      <Layout additionalGlobalStyle={styles.main}>
         <Text style={{ fontSize: 35, fontFamily: 'montserratBold', marginBottom: 20 }}>
           Theories
         </Text>
@@ -110,7 +112,7 @@ class Child extends React.Component {
           </ImageBackground>
         </TouchableOpacity>
         {content}
-      </View>
+      </Layout>
     );
   }
 }
@@ -121,6 +123,9 @@ export default createStackNavigator({
 });
 
 const styles = StyleSheet.create({
+  main: {
+    paddingHorizontal: common.horizontalGlobalPadding,
+  },
   addTheory: {
     width: '100%',
     height: 100,

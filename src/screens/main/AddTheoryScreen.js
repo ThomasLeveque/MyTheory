@@ -4,7 +4,7 @@ import firebase from 'firebase';
 import { ImagePicker } from 'expo';
 import { Subscribe } from 'unstated';
 import { Formik } from 'formik';
-import * as yup from 'yup';
+// import * as yup from 'yup';
 import ModalSelector from 'react-native-modal-selector';
 
 import { getPermAsync } from '../../utils/Utils';
@@ -16,6 +16,7 @@ import { PrimaryButton, SecondaryButton } from '../../components/ButtonComponent
 
 import colors from '../../assets/colors';
 import Store from '../../store';
+import common from '../../utils/common';
 
 const AddTheoryScreen = props => (
   <Subscribe to={[Store]}>
@@ -82,7 +83,7 @@ class Child extends Component {
 
   render() {
     let index = 0;
-    const data = [
+    const categories = [
       { key: index++, section: true, label: 'Fruits' },
       { key: index++, label: 'Red Apples' },
       { key: index++, label: 'Cherries' },
@@ -91,45 +92,29 @@ class Child extends Component {
       // Can also add additional custom keys which are passed to the onChange callback
       { key: index++, label: 'Vegetable', customKey: 'Not a fruit' },
     ];
-    return (
-      <Layout>
-        <ModalSelector
-          data={data}
-          initValue="Select something yummy!"
-          supportedOrientations={['landscape', 'portrait']}
-          accessible
-          scrollViewAccessibilityLabel="Scrollable options"
-          cancelButtonAccessibilityLabel="Cancel Button"
-          onChange={option => {
-            this.setState({ textInputValue: option.label });
-          }}
-        >
-          <InputComponent
-            placeholder="Select something yummy!"
-            value={this.state.textInputValue}
-            isEditable={false}
-          />
-        </ModalSelector>
 
+    return (
+      <Layout additionalGlobalStyle={styles.main}>
         <Text style={styles.title}>Add theory</Text>
         <Formik
           initialValues={{
             img: '',
-            category: '',
+            category: this.state.textInputValue,
             name: '',
             description: '',
             likes: [],
             comments: [],
           }}
           onSubmit={async (values, { setSubmitting }) => {
-            await this.handleSubmit(values);
+            // await this.handleSubmit(values);
+            // console.log(values);
             setSubmitting(false);
           }}
-          validationSchema={yup.object().shape({
-            category: yup.string().required('required'),
-            name: yup.string().required('required'),
-            description: yup.string().required('required'),
-          })}
+          // validationSchema={yup.object().shape({
+          //   category: yup.string().required('required'),
+          //   name: yup.string().required('required'),
+          //   description: yup.string().required('required'),
+          // })}
         >
           {props => {
             return (
@@ -147,14 +132,27 @@ class Child extends Component {
                   value={props.values.name}
                   hasError={!!(props.touched.name && props.errors.name)}
                 />
-                <InputComponent
-                  label="Categorie"
-                  onBlur={props.handleBlur('category')}
-                  onChangeText={props.handleChange('category')}
-                  placeholder="Category"
-                  value={props.values.category}
-                  hasError={!!(props.touched.category && props.errors.category)}
-                />
+                <ModalSelector
+                  data={categories}
+                  initValue="Category"
+                  supportedOrientations={['landscape', 'portrait']}
+                  accessible
+                  scrollViewAccessibilityLabel="Scrollable options"
+                  cancelButtonAccessibilityLabel="Cancel Button"
+                  onChange={category => {
+                    this.setState({ textInputValue: category.label });
+                  }}
+                >
+                  <InputComponent // this.state.textInputValue
+                    label="Categorie"
+                    onBlur={props.handleBlur('category')}
+                    onChangeText={props.handleChange('category')}
+                    placeholder="Category"
+                    value={props.values.category}
+                    hasError={!!(props.touched.category && props.errors.category)}
+                    isEditable={false}
+                  />
+                </ModalSelector>
                 <InputComponent
                   label="Description"
                   onChangeText={props.handleChange('description')}
@@ -171,7 +169,7 @@ class Child extends Component {
                   startColor={colors.GRADIENT_START}
                   endColor={colors.GRADIENT_END}
                   pictoName="file-upload"
-                  disabled={!props.isValid || props.isSubmitting}
+                  disabled={props.isSubmitting} // !props.isValid ||
                 />
                 <SecondaryButton
                   title="Vos informations"
@@ -191,7 +189,7 @@ class Child extends Component {
 
 const styles = StyleSheet.create({
   main: {
-    flex: 1,
+    paddingHorizontal: common.horizontalGlobalPadding,
   },
   title: {
     marginBottom: 20,
