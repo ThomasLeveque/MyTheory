@@ -25,6 +25,7 @@ class Child extends React.Component {
         await this.props.store.getUser();
         await this.props.store.getUsers();
         await this.props.store.getTheories();
+        await this.props.store.getCategories();
         this.props.navigation.navigate('main');
       } else {
         this.props.navigation.navigate('signUp');

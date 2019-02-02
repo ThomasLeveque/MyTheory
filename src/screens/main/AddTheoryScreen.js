@@ -4,7 +4,7 @@ import firebase from 'firebase';
 import { ImagePicker } from 'expo';
 import { Subscribe } from 'unstated';
 import { Formik } from 'formik';
-// import * as yup from 'yup';
+import * as yup from 'yup';
 import ModalSelector from 'react-native-modal-selector';
 
 import { getPermAsync } from '../../utils/Utils';
@@ -30,6 +30,8 @@ class Child extends Component {
     // image: '',
     loading: false,
     textInputValue: '',
+    hasError: true,
+    modalClosed: false,
   };
 
   onChooseImagePress = async () => {
@@ -59,39 +61,40 @@ class Child extends Component {
 
   handleSubmit = async ({ category, name, description, likes, comments, img }) => {
     try {
-      if (category.length > 0 && name.length > 0 && description.length > 0) {
-        this.setState({ loading: true });
-        await db.ref('/theory').push({
-          date: firebase.database.ServerValue.TIMESTAMP,
-          category,
-          name,
-          description,
-          likes,
-          comments,
-          img,
-          userId: this.props.store.state.user.id,
-        });
-        await this.props.store.getTheories();
-        this.setState({ loading: false });
-      } else {
-        this.setState({ error: 'Vous avez faux', loading: false });
-      }
+      this.setState({ loading: true });
+      await db.ref('/theory').push({
+        date: firebase.database.ServerValue.TIMESTAMP,
+        category,
+        name,
+        description,
+        likes,
+        comments,
+        img,
+        userId: this.props.store.state.user.id,
+      });
+      await this.props.store.getTheories();
+      this.setState({ loading: false });
     } catch (error) {
       this.setState({ error, loading: false });
     }
   };
 
+  validateCategory = value => {
+    if (value === '') {
+      this.setState({ hasError: true, modalClosed: true });
+    } else {
+      this.setState({ hasError: false, modalClosed: false });
+    }
+  };
+
   render() {
-    let index = 0;
-    const categories = [
-      { key: index++, section: true, label: 'Fruits' },
-      { key: index++, label: 'Red Apples' },
-      { key: index++, label: 'Cherries' },
-      { key: index++, label: 'Cranberries', accessibilityLabel: 'Tap here for cranberries' },
-      // etc...
-      // Can also add additional custom keys which are passed to the onChange callback
-      { key: index++, label: 'Vegetable', customKey: 'Not a fruit' },
-    ];
+    const categories = this.props.store.state.categories.map((cat, index) => {
+      return {
+        key: index,
+        label: cat.name,
+        accessibilityLabel: `Tap here for ${cat.name}`,
+      };
+    });
 
     return (
       <Layout additionalGlobalStyle={styles.main}>
@@ -99,22 +102,22 @@ class Child extends Component {
         <Formik
           initialValues={{
             img: '',
-            category: this.state.textInputValue,
+            category: '',
             name: '',
             description: '',
             likes: [],
             comments: [],
           }}
           onSubmit={async (values, { setSubmitting }) => {
-            // await this.handleSubmit(values);
-            // console.log(values);
+            const formatedValues = { ...values, category: this.state.textInputValue };
+
+            await this.handleSubmit(formatedValues);
             setSubmitting(false);
           }}
-          // validationSchema={yup.object().shape({
-          //   category: yup.string().required('required'),
-          //   name: yup.string().required('required'),
-          //   description: yup.string().required('required'),
-          // })}
+          validationSchema={yup.object().shape({
+            name: yup.string().required('required'),
+            description: yup.string().required('required'),
+          })}
         >
           {props => {
             return (
@@ -140,16 +143,19 @@ class Child extends Component {
                   scrollViewAccessibilityLabel="Scrollable options"
                   cancelButtonAccessibilityLabel="Cancel Button"
                   onChange={category => {
-                    this.setState({ textInputValue: category.label });
+                    this.setState({ textInputValue: category.label }, () =>
+                      this.validateCategory(this.state.textInputValue),
+                    );
                   }}
+                  onModalClose={() => this.validateCategory(this.state.textInputValue)}
                 >
                   <InputComponent // this.state.textInputValue
                     label="Categorie"
                     onBlur={props.handleBlur('category')}
                     onChangeText={props.handleChange('category')}
                     placeholder="Category"
-                    value={props.values.category}
-                    hasError={!!(props.touched.category && props.errors.category)}
+                    value={this.state.textInputValue}
+                    hasError={!!(this.state.hasError && this.state.modalClosed)}
                     isEditable={false}
                   />
                 </ModalSelector>
@@ -169,7 +175,7 @@ class Child extends Component {
                   startColor={colors.GRADIENT_START}
                   endColor={colors.GRADIENT_END}
                   pictoName="file-upload"
-                  disabled={props.isSubmitting} // !props.isValid ||
+                  disabled={!props.isValid || props.isSubmitting || this.state.hasError}
                 />
                 <SecondaryButton
                   title="Vos informations"
