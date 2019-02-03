@@ -16,7 +16,6 @@ import { PrimaryButton, SecondaryButton } from '../../components/ButtonComponent
 
 import colors from '../../assets/colors';
 import Store from '../../store';
-import common from '../../utils/common';
 
 const AddTheoryScreen = props => (
   <Subscribe to={[Store]}>
@@ -97,7 +96,7 @@ class Child extends Component {
     });
 
     return (
-      <Layout additionalGlobalStyle={styles.main}>
+      <Layout>
         <Text style={styles.title}>Add theory</Text>
         <Formik
           initialValues={{
@@ -194,9 +193,6 @@ class Child extends Component {
 }
 
 const styles = StyleSheet.create({
-  main: {
-    paddingHorizontal: common.horizontalGlobalPadding,
-  },
   title: {
     marginBottom: 20,
     fontSize: 25,

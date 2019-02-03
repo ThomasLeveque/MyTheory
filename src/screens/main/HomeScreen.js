@@ -1,6 +1,5 @@
 import React from 'react';
 import { FlatList } from 'react-native';
-// import { Card, Icon, Button } from 'react-native-elements';
 import { Subscribe } from 'unstated';
 import { createStackNavigator } from 'react-navigation';
 

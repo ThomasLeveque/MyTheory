@@ -1,20 +1,39 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, FlatList } from 'react-native';
+import { SafeAreaView } from 'react-navigation';
+import { Subscribe } from 'unstated';
 
-const AddTheoryScreen = () => {
+import Layout from '../../components/Layout';
+import CardComponent from '../../components/CardComponent';
+import Store from '../../store/index';
+
+const ActivityScreen = props => (
+  <Subscribe to={[Store]}>
+    {store => <Child store={store} navigation={props.navigation} />}
+  </Subscribe>
+);
+
+const Child = props => {
   return (
-    <View style={styles.container}>
-      <Text>Activity Screen</Text>
-    </View>
+    <Layout>
+      <SafeAreaView forceInset={{ bottom: 'never' }} style={styles.container}>
+        <FlatList
+          data={props.store.state.theories}
+          keyExtractor={({ date }) => date.toString()}
+          renderItem={({ item }) => {
+            return <CardComponent user={item.user} title={item.name} />;
+          }}
+        />
+      </SafeAreaView>
+    </Layout>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+    backgroundColor: 'white',
   },
 });
 
-export default AddTheoryScreen;
+export default ActivityScreen;

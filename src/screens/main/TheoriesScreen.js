@@ -12,7 +12,6 @@ import games from '../../assets/imageCategory/games.png';
 import history from '../../assets/imageCategory/history.png';
 import series from '../../assets/imageCategory/series.png';
 import political from '../../assets/imageCategory/political.jpg';
-import common from '../../utils/common';
 
 const TheoriesScreen = props => (
   <Subscribe to={[Store]}>
@@ -81,7 +80,7 @@ class Child extends React.Component {
       );
     }
     return (
-      <Layout additionalGlobalStyle={styles.main}>
+      <Layout>
         <Text style={{ fontSize: 35, fontFamily: 'montserratBold', marginBottom: 20 }}>
           Theories
         </Text>
@@ -110,9 +109,6 @@ export default createStackNavigator({
 });
 
 const styles = StyleSheet.create({
-  main: {
-    paddingHorizontal: common.horizontalGlobalPadding,
-  },
   addTheory: {
     width: '100%',
     height: 100,

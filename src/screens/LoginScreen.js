@@ -3,7 +3,9 @@ import { StyleSheet, Text, TextInput, View } from 'react-native';
 import firebase from 'firebase';
 
 import { PrimaryButton, TextButton } from '../components/ButtonComponent';
+
 import colors from '../assets/colors';
+import common from '../utils/common';
 
 export default class LoginScreen extends React.Component {
   state = {
@@ -67,5 +69,6 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+    paddingHorizontal: common.horizontalGlobalPadding,
   },
 });

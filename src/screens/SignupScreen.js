@@ -6,6 +6,7 @@ import db from '../config/Database';
 import { PrimaryButton, TextButton } from '../components/ButtonComponent';
 
 import colors from '../assets/colors';
+import common from '../utils/common';
 
 export default class SignUpScreen extends React.Component {
   state = {
@@ -95,5 +96,6 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+    paddingHorizontal: common.horizontalGlobalPadding,
   },
 });
