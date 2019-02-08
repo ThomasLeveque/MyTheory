@@ -26,7 +26,8 @@ const AddTheoryScreen = props => (
 class Child extends Component {
   state = {
     error: '',
-    // image: '',
+    imgUrl: '',
+    resultImg: null,
     loading: false,
     textInputValue: '',
     hasError: true,
@@ -38,13 +39,12 @@ class Child extends Component {
 
     if (hasPermission) {
       const result = await ImagePicker.launchImageLibraryAsync();
-      // console.log(result);
       if (!result.cancelled) {
         try {
-          await this.uploadImage(result.uri, 'test-image');
-          Alert('Success');
+          this.setState({ resultImg: result });
+          Alert.alert('Success');
         } catch (error) {
-          Alert(error);
+          Alert.alert(error);
         }
       }
     }
@@ -53,17 +53,20 @@ class Child extends Component {
   uploadImage = async (uri, imageName) => {
     const response = await fetch(uri);
     const blob = await response.blob();
-    // this.setState({ image: `images/theories/${imageName}` });
+
     const ref = firebase
       .storage()
       .ref()
       .child(`images/theories/${imageName}`);
-    return ref.put(blob);
+
+    await ref.put(blob);
+
+    const imgUrl = await ref.getDownloadURL();
+    this.setState({ imgUrl });
   };
 
   handleSubmit = async ({ category, name, description, likes, comments, img }) => {
     try {
-      this.setState({ loading: true });
       await db.ref('/theory').push({
         date: firebase.database.ServerValue.TIMESTAMP,
         category,
@@ -111,9 +114,18 @@ class Child extends Component {
             comments: [],
           }}
           onSubmit={async (values, { setSubmitting }) => {
-            // const formatedValues = { ...values, category: this.state.textInputValue };
-            // console.log(this.state.image);
-            // await this.handleSubmit(formatedValues);
+            this.setState({ loading: true });
+            if (this.state.resultImg) {
+              await this.uploadImage(this.state.resultImg.uri, values.name);
+            }
+
+            const formatedValues = {
+              ...values,
+              category: this.state.textInputValue,
+              img: this.state.imgUrl,
+            };
+
+            await this.handleSubmit(formatedValues);
             setSubmitting(false);
           }}
           validationSchema={yup.object().shape({
@@ -125,7 +137,7 @@ class Child extends Component {
             return (
               <View>
                 <AddImgComponent
-                  pressed={this.onChooseImagePress}
+                  pressed={() => this.onChooseImagePress(props.values.name)}
                   styleAddImg={styles.AddImg}
                   label="Add your image"
                 />
