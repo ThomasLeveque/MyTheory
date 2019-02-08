@@ -15,6 +15,7 @@ const InputComponent = ({
   isTextArea,
   hasError,
   isEditable,
+  secureTextEntry,
 }) => {
   return (
     <View>
@@ -34,6 +35,7 @@ const InputComponent = ({
         value={value}
         placeholderTextColor={colors.GRAY_TXT}
         editable={isEditable}
+        secureTextEntry={secureTextEntry}
       />
     </View>
   );
@@ -60,7 +62,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.GRAY_BG,
     fontSize: 16,
     borderBottomWidth: 3,
-    fontFamily: 'montserratBold',
+    fontFamily: 'montserratSemiBold',
     borderColor: colors.GRAY_TXT,
     color: 'black',
     marginBottom: inputBottomMargin,

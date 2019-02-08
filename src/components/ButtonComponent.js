@@ -65,7 +65,11 @@ const SecondaryButton = ({ title, styleButton, styleText, onPress, pictoName, di
 
 const TextButton = ({ title, styleButton, styleText, onPress, disabled }) => {
   return (
-    <TouchableOpacity style={styles.textButtonContainer} onPress={onPress} disabled={disabled}>
+    <TouchableOpacity
+      style={[styles.textButtonContainer, styleButton]}
+      onPress={onPress}
+      disabled={disabled}
+    >
       <Text style={[styleText, styles.textButtonText]}>{title}</Text>
     </TouchableOpacity>
   );
@@ -112,7 +116,7 @@ const styles = StyleSheet.create({
   },
   secondaryText: {
     color: 'black',
-    fontFamily: 'montserratBold',
+    fontFamily: 'montserratSemiBold',
     fontSize: 12,
   },
   textButtonText: {

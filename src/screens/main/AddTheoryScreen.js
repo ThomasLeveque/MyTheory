@@ -12,7 +12,7 @@ import db from '../../config/Database';
 
 import Layout from '../../components/Layout';
 import { InputComponent, AddImgComponent } from '../../components/InputComponent';
-import { PrimaryButton, SecondaryButton } from '../../components/ButtonComponent';
+import { PrimaryButton } from '../../components/ButtonComponent';
 
 import colors from '../../assets/colors';
 import Store from '../../store';
@@ -34,8 +34,11 @@ class Child extends Component {
   };
 
   onChooseImagePress = async () => {
-    if (getPermAsync()) {
+    const hasPermission = getPermAsync();
+
+    if (hasPermission) {
       const result = await ImagePicker.launchImageLibraryAsync();
+      // console.log(result);
       if (!result.cancelled) {
         try {
           await this.uploadImage(result.uri, 'test-image');
@@ -108,9 +111,9 @@ class Child extends Component {
             comments: [],
           }}
           onSubmit={async (values, { setSubmitting }) => {
-            const formatedValues = { ...values, category: this.state.textInputValue };
-
-            await this.handleSubmit(formatedValues);
+            // const formatedValues = { ...values, category: this.state.textInputValue };
+            // console.log(this.state.image);
+            // await this.handleSubmit(formatedValues);
             setSubmitting(false);
           }}
           validationSchema={yup.object().shape({
@@ -127,7 +130,7 @@ class Child extends Component {
                   label="Add your image"
                 />
                 <InputComponent
-                  label="Nom de la théorie"
+                  label="Nom de la théorie *"
                   onBlur={props.handleBlur('name')}
                   onChangeText={props.handleChange('name')}
                   placeholder="Name your theory"
@@ -149,7 +152,7 @@ class Child extends Component {
                   onModalClose={() => this.validateCategory(this.state.textInputValue)}
                 >
                   <InputComponent // this.state.textInputValue
-                    label="Categorie"
+                    label="Categorie *"
                     onBlur={props.handleBlur('category')}
                     onChangeText={props.handleChange('category')}
                     placeholder="Category"
@@ -159,7 +162,7 @@ class Child extends Component {
                   />
                 </ModalSelector>
                 <InputComponent
-                  label="Description"
+                  label="Description *"
                   onChangeText={props.handleChange('description')}
                   onBlur={props.handleBlur('description')}
                   placeholder="Description"
@@ -175,11 +178,6 @@ class Child extends Component {
                   endColor={colors.GRADIENT_END}
                   pictoName="file-upload"
                   disabled={!props.isValid || props.isSubmitting || this.state.hasError}
-                />
-                <SecondaryButton
-                  title="Vos informations"
-                  onPress={() => this.props.navigation.navigate('setting')}
-                  pictoName="settings"
                 />
               </View>
             );
