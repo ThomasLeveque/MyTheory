@@ -9,9 +9,22 @@ class Store extends Container {
     loading: false,
     theories: [],
     userTheories: [],
+    categories: [],
     user: null,
     users: null,
     updateUserError: null,
+  };
+
+  // CATEGORY //
+  getCategories = async () => {
+    const allCategories = await db.ref(`/categories`).once('value');
+    const categoriesValues = Object.values(allCategories.val());
+    const categoriesKeys = Object.keys(allCategories.val());
+    const categoriesArray = categoriesValues.map((category, index) => ({
+      ...category,
+      id: categoriesKeys[index],
+    }));
+    this.setState({ categories: categoriesArray });
   };
 
   // USER //

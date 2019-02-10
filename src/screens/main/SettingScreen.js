@@ -13,6 +13,7 @@ import {
 } from 'react-native';
 
 import Store from '../../store';
+import Layout from '../../components/Layout';
 
 const { width } = Dimensions.get('window');
 
@@ -36,7 +37,7 @@ class Child extends React.Component {
 
   render() {
     return (
-      <View style={styles.container}>
+      <Layout>
         <Text>Name</Text>
         <TextInput
           style={styles.textInput}
@@ -104,20 +105,14 @@ class Child extends React.Component {
             </View>
           </View>
         </Modal>
-      </View>
+      </Layout>
     );
   }
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
   textInput: {
     height: 40,
-    width: '90%',
     borderColor: 'gray',
     borderWidth: 1,
     marginTop: 8,

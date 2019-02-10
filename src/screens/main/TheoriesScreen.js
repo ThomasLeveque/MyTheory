@@ -5,8 +5,8 @@ import { FlatList, StyleSheet, Text, View, TouchableOpacity, ImageBackground } f
 import { LinearGradient } from 'expo';
 
 import AddTheoryScreen from './AddTheoryScreen';
+import Layout from '../../components/Layout';
 import Store from '../../store';
-import db from '../../config/Database';
 
 import games from '../../assets/imageCategory/games.png';
 import history from '../../assets/imageCategory/history.png';
@@ -21,7 +21,6 @@ const TheoriesScreen = props => (
 
 class Child extends React.Component {
   state = {
-    categories: [],
     currentCategory: '',
   };
 
@@ -33,17 +32,6 @@ class Child extends React.Component {
     political,
   };
 
-  async componentWillMount() {
-    const allCategories = await db.ref(`/categories`).once('value');
-    const categoriesValues = Object.values(allCategories.val());
-    const categoriesKeys = Object.keys(allCategories.val());
-    const categoriesArray = categoriesValues.map((category, index) => ({
-      ...category,
-      id: categoriesKeys[index],
-    }));
-    this.setState({ categories: categoriesArray });
-  }
-
   render() {
     let content = (
       <View>
@@ -51,8 +39,8 @@ class Child extends React.Component {
           Categories
         </Text>
         <FlatList
-          data={this.state.categories}
-          keyExtractor={({ name }) => name}
+          data={this.props.store.state.categories}
+          keyExtractor={({ id }) => id}
           renderItem={({ item }) => {
             return (
               <TouchableOpacity
@@ -92,7 +80,7 @@ class Child extends React.Component {
       );
     }
     return (
-      <View>
+      <Layout>
         <Text style={{ fontSize: 35, fontFamily: 'montserratBold', marginBottom: 20 }}>
           Theories
         </Text>
@@ -110,7 +98,7 @@ class Child extends React.Component {
           </ImageBackground>
         </TouchableOpacity>
         {content}
-      </View>
+      </Layout>
     );
   }
 }

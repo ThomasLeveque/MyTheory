@@ -21,7 +21,7 @@ class Child extends React.Component {
         <FlatList
           data={this.props.store.state.theories}
           keyExtractor={({ date }) => date.toString()}
-          renderItem={({ item }) => <CardComponnent title={item.name} />}
+          renderItem={({ item }) => <CardComponnent user={item.user} />}
         />
       </Layout>
     );

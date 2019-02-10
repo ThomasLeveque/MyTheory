@@ -14,10 +14,15 @@ const PrimaryButton = ({
   loading,
   startColor,
   endColor,
-  pictoName, // Only MaterialIcons for now
+  pictoName,
+  disabled, // Only MaterialIcons for now
 }) => {
   return (
-    <TouchableOpacity onPress={onPress} style={[styles.primaryContainer, styleButton]}>
+    <TouchableOpacity
+      onPress={onPress}
+      style={[styles.primaryContainer, styleButton]}
+      disabled={disabled}
+    >
       <LinearGradient
         start={{ x: 0, y: 1 }}
         end={{ x: 1, y: 1 }}
@@ -37,9 +42,13 @@ const PrimaryButton = ({
   );
 };
 
-const SecondaryButton = ({ title, styleButton, styleText, onPress, pictoName }) => {
+const SecondaryButton = ({ title, styleButton, styleText, onPress, pictoName, disabled }) => {
   return (
-    <TouchableOpacity style={[styles.secondaryContainer, styleButton]} onPress={onPress}>
+    <TouchableOpacity
+      style={[styles.secondaryContainer, styleButton]}
+      onPress={onPress}
+      disabled={disabled}
+    >
       <View style={styles.secondaryView}>
         <LinearGradient
           style={styles.secondaryGradient}
@@ -54,9 +63,13 @@ const SecondaryButton = ({ title, styleButton, styleText, onPress, pictoName }) 
   );
 };
 
-const TextButton = ({ title, styleButton, styleText, onPress }) => {
+const TextButton = ({ title, styleButton, styleText, onPress, disabled }) => {
   return (
-    <TouchableOpacity style={styles.textButtonContainer} onPress={onPress}>
+    <TouchableOpacity
+      style={[styles.textButtonContainer, styleButton]}
+      onPress={onPress}
+      disabled={disabled}
+    >
       <Text style={[styleText, styles.textButtonText]}>{title}</Text>
     </TouchableOpacity>
   );
@@ -103,7 +116,7 @@ const styles = StyleSheet.create({
   },
   secondaryText: {
     color: 'black',
-    fontFamily: 'montserratBold',
+    fontFamily: 'montserratSemiBold',
     fontSize: 12,
   },
   textButtonText: {
