@@ -21,7 +21,8 @@ const TheoriesScreen = props => (
 
 class Child extends React.Component {
   state = {
-    currentCategory: '',
+    currentCategory: null,
+    currentTheories: null,
   };
 
   // can't use require in a loop, so create an object to require images with the good key
@@ -30,6 +31,16 @@ class Child extends React.Component {
     history,
     series,
     political,
+  };
+
+  setCurrentCategory = category => {
+    const theories = this.props.store.state.theories.filter(
+      theory => theory.category === category.name,
+    );
+    this.setState({
+      currentCategory: category.name,
+      currentTheories: theories,
+    });
   };
 
   render() {
@@ -45,9 +56,7 @@ class Child extends React.Component {
             return (
               <TouchableOpacity
                 style={styles.category}
-                onPress={() => {
-                  this.setState({ currentCategory: item.name });
-                }}
+                onPress={() => this.setCurrentCategory(item)}
               >
                 <LinearGradient
                   start={{ x: 0, y: 0.75 }}
@@ -64,18 +73,22 @@ class Child extends React.Component {
         />
       </View>
     );
-    if (this.state.currentCategory !== '') {
+    if (this.state.currentCategory) {
       content = (
         <View>
           <Text
             onPress={() => {
-              this.setState({ currentCategory: '' });
+              this.setState({ currentCategory: null });
             }}
-          />
+          >
+            Go back
+          </Text>
           <Text style={{ fontSize: 18, fontFamily: 'montserratBold', marginBottom: 10 }}>
             {this.state.currentCategory}
           </Text>
-          <Text>TO DO</Text>
+          {this.state.currentTheories.map(theory => {
+            return <Text key={theory.id}>{theory.name}</Text>;
+          })}
         </View>
       );
     }
