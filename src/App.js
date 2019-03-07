@@ -12,6 +12,9 @@ import ActivityScreen from './screens/main/ActivityScreen';
 import ProfilScreen from './screens/main/ProfilScreen';
 import TheoriesScreen from './screens/main/TheoriesScreen';
 
+// import button component for header
+import HeaderButton from './components/HeaderButton';
+
 // create our app's navigation stack
 const App = () => {
   const TabsNavigator = createBottomTabNavigator(
@@ -26,17 +29,17 @@ const App = () => {
     },
   );
 
-  TabsNavigator.navigationOptions = {
-    header: null,
-  };
-
   TabsNavigator.navigationOptions = ({ navigation }) => {
     const { routeName } = navigation.state.routes[navigation.state.index];
-    const headerTitle = routeName;
+
+    const Capitalize = str => {
+      return str.charAt(0).toUpperCase() + str.slice(1);
+    };
+
     return {
-      headerLeft: <Text>oui</Text>,
-      headerTitle,
-      headerRight: <Text>oui</Text>,
+      headerLeft: <HeaderButton navigation={navigation} />,
+      headerTitle: <Text style={{ fontFamily: 'montserratBold' }}>{Capitalize(routeName)}</Text>,
+      headerRight: null,
     };
   };
 
