@@ -1,5 +1,6 @@
 import React from 'react';
-import { createSwitchNavigator, createBottomTabNavigator } from 'react-navigation';
+import { createStackNavigator, createBottomTabNavigator } from 'react-navigation';
+import { Text } from 'react-native';
 import { Provider } from 'unstated';
 
 // import the different screens
@@ -14,23 +15,36 @@ import theoriesScreen from './screens/main/TheoriesScreen';
 
 // create our app's navigation stack
 const App = () => {
-  const MainNavigator = createSwitchNavigator(
+  const TabsNavigator = createBottomTabNavigator(
+    {
+      home: HomeScreen,
+      theories: theoriesScreen,
+      activity: ActivityScreen,
+      profil: ProfilScreen,
+      listChat: ListChatScreen,
+    },
+    {
+      initialRouteName: 'home',
+    },
+  );
+
+  TabsNavigator.navigationOptions = ({ navigation }) => {
+    const { routeName } = navigation.state.routes[navigation.state.index];
+    const headerTitle = routeName;
+
+    return {
+      headerLeft: <Text>oui</Text>,
+      headerTitle,
+      headerRight: <Text>oui</Text>,
+    };
+  };
+
+  const MainNavigator = createStackNavigator(
     {
       loading: LoadingScreen,
       signUp: SignUpScreen,
       login: LoginScreen,
-      main: createBottomTabNavigator(
-        {
-          home: HomeScreen,
-          theories: theoriesScreen,
-          activity: ActivityScreen,
-          profil: ProfilScreen,
-          listChat: ListChatScreen,
-        },
-        {
-          initialRouteName: 'home',
-        },
-      ),
+      main: TabsNavigator,
     },
     {
       initialRouteName: 'loading',
@@ -38,7 +52,7 @@ const App = () => {
   );
 
   return (
-    <Provider>
+    <Provider style={{ margin: 20 }}>
       <MainNavigator />
     </Provider>
   );
