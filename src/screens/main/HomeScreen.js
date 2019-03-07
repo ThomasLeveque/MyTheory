@@ -54,6 +54,16 @@ const styles = StyleSheet.create({
 });
 
 export default createStackNavigator({
-  home: HomeScreen,
-  theory: TheoryScreen,
+  home: {
+    screen: HomeScreen,
+    navigationOptions: {
+      header: null,
+    },
+  },
+  theory: {
+    screen: TheoryScreen,
+    navigationOptions: {
+      header: null,
+    },
+  },
 });

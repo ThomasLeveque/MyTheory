@@ -10,28 +10,29 @@ import LoginScreen from './screens/LoginScreen';
 import HomeScreen from './screens/main/HomeScreen';
 import ActivityScreen from './screens/main/ActivityScreen';
 import ProfilScreen from './screens/main/ProfilScreen';
-import ListChatScreen from './screens/main/ListChatScreen';
-import theoriesScreen from './screens/main/TheoriesScreen';
+import TheoriesScreen from './screens/main/TheoriesScreen';
 
 // create our app's navigation stack
 const App = () => {
   const TabsNavigator = createBottomTabNavigator(
     {
       home: HomeScreen,
-      theories: theoriesScreen,
+      theories: TheoriesScreen,
       activity: ActivityScreen,
       profil: ProfilScreen,
-      listChat: ListChatScreen,
     },
     {
       initialRouteName: 'home',
     },
   );
 
+  TabsNavigator.navigationOptions = {
+    header: null,
+  };
+
   TabsNavigator.navigationOptions = ({ navigation }) => {
     const { routeName } = navigation.state.routes[navigation.state.index];
     const headerTitle = routeName;
-
     return {
       headerLeft: <Text>oui</Text>,
       headerTitle,
@@ -41,9 +42,24 @@ const App = () => {
 
   const MainNavigator = createStackNavigator(
     {
-      loading: LoadingScreen,
-      signUp: SignUpScreen,
-      login: LoginScreen,
+      loading: {
+        screen: LoadingScreen,
+        navigationOptions: {
+          header: null,
+        },
+      },
+      signUp: {
+        screen: SignUpScreen,
+        navigationOptions: {
+          header: null,
+        },
+      },
+      login: {
+        screen: LoginScreen,
+        navigationOptions: {
+          header: null,
+        },
+      },
       main: TabsNavigator,
     },
     {

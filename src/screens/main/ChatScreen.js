@@ -13,6 +13,10 @@ const ChatScreen = props => (
 );
 
 class Child extends React.Component {
+  static navigationOptions = {
+    header: null,
+  };
+
   state = {
     messages: [],
   };

@@ -116,8 +116,18 @@ class Child extends React.Component {
 }
 
 export default createStackNavigator({
-  theories: TheoriesScreen,
-  addtheory: AddTheoryScreen,
+  theories: {
+    screen: TheoriesScreen,
+    navigationOptions: {
+      header: null,
+    },
+  },
+  addtheory: {
+    screen: AddTheoryScreen,
+    navigationOptions: {
+      header: null,
+    },
+  },
 });
 
 const styles = StyleSheet.create({
