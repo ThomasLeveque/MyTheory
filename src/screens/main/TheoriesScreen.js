@@ -5,8 +5,8 @@ import { FlatList, StyleSheet, Text, View, TouchableOpacity, ImageBackground } f
 import { LinearGradient } from 'expo';
 
 import AddTheoryScreen from './AddTheoryScreen';
+import Layout from '../../components/Layout';
 import Store from '../../store';
-import db from '../../config/Database';
 
 import games from '../../assets/imageCategory/games.png';
 import history from '../../assets/imageCategory/history.png';
@@ -21,8 +21,8 @@ const TheoriesScreen = props => (
 
 class Child extends React.Component {
   state = {
-    categories: [],
-    currentCategory: '',
+    currentCategory: null,
+    currentTheories: null,
   };
 
   // can't use require in a loop, so create an object to require images with the good key
@@ -33,16 +33,15 @@ class Child extends React.Component {
     political,
   };
 
-  async componentWillMount() {
-    const allCategories = await db.ref(`/categories`).once('value');
-    const categoriesValues = Object.values(allCategories.val());
-    const categoriesKeys = Object.keys(allCategories.val());
-    const categoriesArray = categoriesValues.map((category, index) => ({
-      ...category,
-      id: categoriesKeys[index],
-    }));
-    this.setState({ categories: categoriesArray });
-  }
+  setCurrentCategory = category => {
+    const theories = this.props.store.state.theories.filter(
+      theory => theory.category === category.name,
+    );
+    this.setState({
+      currentCategory: category.name,
+      currentTheories: theories,
+    });
+  };
 
   render() {
     let content = (
@@ -51,15 +50,13 @@ class Child extends React.Component {
           Categories
         </Text>
         <FlatList
-          data={this.state.categories}
-          keyExtractor={({ name }) => name}
+          data={this.props.store.state.categories}
+          keyExtractor={({ id }) => id}
           renderItem={({ item }) => {
             return (
               <TouchableOpacity
                 style={styles.category}
-                onPress={() => {
-                  this.setState({ currentCategory: item.name });
-                }}
+                onPress={() => this.setCurrentCategory(item)}
               >
                 <LinearGradient
                   start={{ x: 0, y: 0.75 }}
@@ -76,23 +73,27 @@ class Child extends React.Component {
         />
       </View>
     );
-    if (this.state.currentCategory !== '') {
+    if (this.state.currentCategory) {
       content = (
         <View>
           <Text
             onPress={() => {
-              this.setState({ currentCategory: '' });
+              this.setState({ currentCategory: null });
             }}
-          />
+          >
+            Go back
+          </Text>
           <Text style={{ fontSize: 18, fontFamily: 'montserratBold', marginBottom: 10 }}>
             {this.state.currentCategory}
           </Text>
-          <Text>TO DO</Text>
+          {this.state.currentTheories.map(theory => {
+            return <Text key={theory.id}>{theory.name}</Text>;
+          })}
         </View>
       );
     }
     return (
-      <View>
+      <Layout>
         <Text style={{ fontSize: 35, fontFamily: 'montserratBold', marginBottom: 20 }}>
           Theories
         </Text>
@@ -110,7 +111,7 @@ class Child extends React.Component {
           </ImageBackground>
         </TouchableOpacity>
         {content}
-      </View>
+      </Layout>
     );
   }
 }
