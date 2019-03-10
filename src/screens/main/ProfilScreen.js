@@ -57,6 +57,16 @@ class Child extends React.Component {
 }
 
 export default createStackNavigator({
-  profil: ProfilScreen,
-  setting: SettingScreen,
+  profil: {
+    screen: ProfilScreen,
+    navigationOptions: {
+      header: null,
+    },
+  },
+  setting: {
+    screen: SettingScreen,
+    navigationOptions: {
+      header: null,
+    },
+  },
 });

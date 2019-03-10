@@ -32,6 +32,16 @@ class Child extends React.Component {
 }
 
 export default createStackNavigator({
-  home: HomeScreen,
-  theory: TheoryScreen,
+  home: {
+    screen: HomeScreen,
+    navigationOptions: {
+      header: null,
+    },
+  },
+  theory: {
+    screen: TheoryScreen,
+    navigationOptions: {
+      header: null,
+    },
+  },
 });
