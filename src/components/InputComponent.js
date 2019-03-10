@@ -2,7 +2,7 @@ import React from 'react';
 import { TextInput, View, StyleSheet, Text, TouchableOpacity } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 
-import { getPermAsync } from '../utils/Utils';
+import { getPermAsync } from '../utils/utils';
 import colors from '../assets/colors';
 
 const InputComponent = ({

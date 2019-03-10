@@ -1,19 +1,20 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { Text, View } from 'react-native';
 import firebase from 'firebase';
-
 import { Formik } from 'formik';
-import * as yup from 'yup';
-import db from '../config/Database';
+
 import { PrimaryButton, TextButton } from '../components/ButtonComponent';
 import { InputComponent } from '../components/InputComponent';
+import ErrorsComponent from '../components/ErrorsComponent';
 
+import db from '../config/Database';
+import { SignupSchema } from '../schema/userSchema';
+import { userStyle } from '../utils/commonStyles';
 import colors from '../assets/colors';
-import common from '../utils/common';
 
 export default class SignUpScreen extends React.Component {
   state = {
-    errorMessage: null,
+    error: null,
     loading: false,
   };
 
@@ -39,7 +40,7 @@ export default class SignUpScreen extends React.Component {
       this.props.navigation.navigate('main');
     } catch (error) {
       this.setState({
-        errorMessage: error.message,
+        error,
         loading: false,
       });
     }
@@ -47,9 +48,8 @@ export default class SignUpScreen extends React.Component {
 
   render() {
     return (
-      <View style={styles.container}>
-        <Text style={styles.title}>Sign Up</Text>
-        {this.state.errorMessage && <Text style={{ color: 'red' }}>{this.state.errorMessage}</Text>}
+      <View style={userStyle.userContainer}>
+        <Text style={userStyle.userTitle}>Sign Up</Text>
         <Formik
           initialValues={{
             name: '',
@@ -60,17 +60,7 @@ export default class SignUpScreen extends React.Component {
             await this.handleSignUp(values);
             setSubmitting(false);
           }}
-          validationSchema={yup.object().shape({
-            name: yup.string().required('required'),
-            email: yup
-              .string()
-              .required('required')
-              .email('Not an email'),
-            password: yup
-              .string()
-              .required('required')
-              .min(6, 'To short !'),
-          })}
+          validationSchema={SignupSchema}
         >
           {props => {
             return (
@@ -110,6 +100,7 @@ export default class SignUpScreen extends React.Component {
                   disabled={!props.isValid || props.isSubmitting}
                   styleButton={{ alignSelf: 'center', marginTop: 10 }}
                 />
+                {this.state.error && <ErrorsComponent error={this.state.error} />}
                 <TextButton
                   title="Already have an account? login"
                   onPress={() => this.props.navigation.navigate('login')}
@@ -123,16 +114,3 @@ export default class SignUpScreen extends React.Component {
     );
   }
 }
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    paddingHorizontal: common.horizontalGlobalPadding,
-  },
-  title: {
-    fontFamily: 'montserratBold',
-    textAlign: 'center',
-    fontSize: 34,
-    marginBottom: 30,
-  },
-});

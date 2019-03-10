@@ -1,18 +1,19 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { Text, View } from 'react-native';
 import firebase from 'firebase';
-
 import { Formik } from 'formik';
-import * as yup from 'yup';
+
 import { PrimaryButton, TextButton } from '../components/ButtonComponent';
 import { InputComponent } from '../components/InputComponent';
+import ErrorsComponent from '../components/ErrorsComponent';
 
 import colors from '../assets/colors';
-import common from '../utils/common';
+import { userStyle } from '../utils/commonStyles';
+import { LoginSchema } from '../schema/userSchema';
 
 export default class LoginScreen extends React.Component {
   state = {
-    errorMessage: null,
+    error: null,
     loading: false,
   };
 
@@ -23,15 +24,14 @@ export default class LoginScreen extends React.Component {
 
       this.props.navigation.navigate('main');
     } catch (error) {
-      this.setState({ errorMessage: error.message, loading: false });
+      this.setState({ error, loading: false });
     }
   };
 
   render() {
     return (
-      <View style={styles.container}>
-        <Text style={styles.title}>Login</Text>
-        {this.state.errorMessage && <Text style={{ color: 'red' }}>{this.state.errorMessage}</Text>}
+      <View style={userStyle.userContainer}>
+        <Text style={userStyle.userTitle}>Login</Text>
         <Formik
           initialValues={{
             email: '',
@@ -41,16 +41,7 @@ export default class LoginScreen extends React.Component {
             await this.handleLogin(values);
             setSubmitting(false);
           }}
-          validationSchema={yup.object().shape({
-            email: yup
-              .string()
-              .required('required')
-              .email('Not an email'),
-            password: yup
-              .string()
-              .required('required')
-              .min(6, 'To short !'),
-          })}
+          validationSchema={LoginSchema}
         >
           {props => {
             return (
@@ -82,6 +73,7 @@ export default class LoginScreen extends React.Component {
                   disabled={!props.isValid || props.isSubmitting}
                   styleButton={{ alignSelf: 'center', marginTop: 10 }}
                 />
+                {this.state.error && <ErrorsComponent error={this.state.error} />}
                 <TextButton
                   title="Don't have an account? Sign Up"
                   onPress={() => this.props.navigation.navigate('signUp')}
@@ -95,16 +87,3 @@ export default class LoginScreen extends React.Component {
     );
   }
 }
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    paddingHorizontal: common.horizontalGlobalPadding,
-  },
-  title: {
-    fontFamily: 'montserratBold',
-    textAlign: 'center',
-    fontSize: 34,
-    marginBottom: 30,
-  },
-});
