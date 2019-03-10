@@ -71,7 +71,7 @@ const App = () => {
   );
 
   return (
-    <Provider style={{ margin: 20 }}>
+    <Provider>
       <MainNavigator />
     </Provider>
   );
