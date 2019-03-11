@@ -22,10 +22,11 @@ class Child extends React.Component {
 
     firebase.auth().onAuthStateChanged(async user => {
       if (user) {
+        // setting the loading to false inside the last call, getTheories here
         await this.props.store.getUser();
         await this.props.store.getUsers();
-        await this.props.store.getTheories();
         await this.props.store.getCategories();
+        await this.props.store.getTheories();
         this.props.navigation.navigate('main');
       } else {
         this.props.navigation.navigate('signUp');

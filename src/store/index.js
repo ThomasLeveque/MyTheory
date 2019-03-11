@@ -13,6 +13,7 @@ class Store extends Container {
     user: null,
     users: null,
     updateUserError: null,
+    error: null,
   };
 
   // CATEGORY //
@@ -30,9 +31,7 @@ class Store extends Container {
   // USER //
   getUser = async () => {
     const { currentUser } = firebase.auth();
-
     const user = await db.ref(`/users/${currentUser.uid}`).once('value');
-
     this.setState({ user: user.val() });
   };
 
@@ -41,9 +40,43 @@ class Store extends Container {
     this.setState({ users: users.val() });
   };
 
-  updateUser = async ({ newName, newEmail, currentPassword }) => {
-    const { currentUser } = firebase.auth();
+  storeUser = (userId, email, name, followedCategory) => {
+    db.ref(`users/${userId}`).set({
+      id: userId,
+      email,
+      name,
+      followedCategory,
+    });
+  };
+
+  handleSignUp = async ({ email, name, password }) => {
     try {
+      const formatedEmail = email.replace(/\s/g, '');
+      this.setState({ loading: true });
+      await firebase.auth().createUserWithEmailAndPassword(formatedEmail, password);
+
+      const { currentUser } = firebase.auth();
+      await this.storeUser(currentUser.uid, formatedEmail, name, {});
+    } catch (error) {
+      this.setState({
+        error,
+        loading: false,
+      });
+    }
+  };
+
+  handleLogin = async ({ email, password }) => {
+    try {
+      this.setState({ loading: true });
+      await firebase.auth().signInWithEmailAndPassword(email, password);
+    } catch (error) {
+      this.setState({ error, loading: false });
+    }
+  };
+
+  updateUser = async ({ newName, newEmail, currentPassword }) => {
+    try {
+      const { currentUser } = firebase.auth();
       if (newEmail !== currentUser.email) {
         await this.reauthenticateUser(currentPassword);
         await currentUser.updateEmail(newEmail);
@@ -74,10 +107,11 @@ class Store extends Container {
   // THEORY //
   getTheories = async () => {
     const { currentUser } = firebase.auth();
-    this.setState({ loading: true });
     const allTheories = await db.ref('/theory').once('value');
+
     let theories = Object.values(allTheories.val());
     const theoriesKey = Object.keys(allTheories.val());
+
     theories = theories.map((theorie, index) => ({
       ...theorie,
       user: this.state.users[theorie.userId],
