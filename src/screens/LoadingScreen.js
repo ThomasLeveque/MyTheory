@@ -1,5 +1,5 @@
 import React from 'react';
-import { Image, ActivityIndicator, StyleSheet } from 'react-native';
+import { Image, ActivityIndicator, StyleSheet, Text } from 'react-native';
 import firebase from 'firebase';
 import { Subscribe } from 'unstated';
 import { Font, LinearGradient } from 'expo';
@@ -35,6 +35,22 @@ class Child extends React.Component {
   }
 
   render() {
+    if (this.props.store.state.error) {
+      return (
+        <Text
+          style={{
+            color: 'red',
+            textAlign: 'center',
+            justifyContent: 'center',
+            alignItems: 'center',
+            fontFamily: 'montserratSemiBold',
+          }}
+        >
+          {this.props.store.state.error.message}
+        </Text>
+      );
+    }
+
     return (
       <LinearGradient
         style={styles.container}
