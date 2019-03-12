@@ -1,15 +1,14 @@
 import React from 'react';
-import { FlatList } from 'react-native';
 import { Subscribe } from 'unstated';
 import { createStackNavigator } from 'react-navigation';
+import { FlatList } from 'react-native';
 
 import Store from '../../store';
-import CardComponent from '../../components/CardComponent';
-
-import TheoryScreen from './TheoryScreen';
+import ChatScreen from './ChatScreen';
+import CardComponnent from '../../components/CardComponent';
 import Layout from '../../components/Layout';
 
-const HomeScreen = props => (
+const ListChatScreen = props => (
   <Subscribe to={[Store]}>
     {store => <Child store={store} navigation={props.navigation} />}
   </Subscribe>
@@ -22,9 +21,7 @@ class Child extends React.Component {
         <FlatList
           data={this.props.store.state.theories}
           keyExtractor={({ date }) => date.toString()}
-          renderItem={({ item }) => {
-            return <CardComponent user={item.user} title={item.name} />;
-          }}
+          renderItem={({ item }) => <CardComponnent user={item.user} />}
         />
       </Layout>
     );
@@ -32,16 +29,6 @@ class Child extends React.Component {
 }
 
 export default createStackNavigator({
-  home: {
-    screen: HomeScreen,
-    navigationOptions: {
-      header: null,
-    },
-  },
-  theory: {
-    screen: TheoryScreen,
-    navigationOptions: {
-      header: null,
-    },
-  },
+  listChat: ListChatScreen,
+  chat: ChatScreen,
 });

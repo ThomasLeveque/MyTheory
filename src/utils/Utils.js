@@ -1,7 +1,7 @@
 import { Alert, Platform } from 'react-native';
 import AndroidOpenSettings from 'react-native-android-open-settings';
 
-export const getPermAsync = async permissionsasked => {
+export const getPermAsync = async () => {
   const { Permissions } = Expo;
   const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
   if (status !== 'granted') {
@@ -25,4 +25,3 @@ export const getPermAsync = async permissionsasked => {
 const checkOS = (callbackiOs, callbackAndroid) => {
   Platform.OS === 'ios' ? callbackiOs() : callbackAndroid();
 };
-

@@ -1,59 +1,49 @@
 import React, { Component } from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  TouchableHighlight,
-  ActivityIndicator,
-  Alert,
-  Button,
-} from 'react-native';
+import { View, Text, StyleSheet, Alert } from 'react-native';
 import firebase from 'firebase';
 import { ImagePicker } from 'expo';
-import { getPermAsync } from '../../utils/Utils';
+import { Subscribe } from 'unstated';
+import { Formik } from 'formik';
+import ModalSelector from 'react-native-modal-selector';
 
+import { InputComponent, AddImgComponent } from '../../components/InputComponent';
+import { PrimaryButton } from '../../components/ButtonComponent';
+
+import { getPermAsync } from '../../utils/utils';
 import db from '../../config/Database';
-import InputComponent from '../../components/InputComponent';
+import Layout from '../../components/Layout';
+import colors from '../../assets/colors';
+import Store from '../../store';
+import TheorySchema from '../../schema/theorySchema';
 
-export default class AddTheoryScreen extends Component {
+const AddTheoryScreen = props => (
+  <Subscribe to={[Store]}>
+    {store => <Child store={store} navigation={props.navigation} />}
+  </Subscribe>
+);
+
+class Child extends Component {
   state = {
-    topic: '',
-    name: '',
-    description: '',
-    likes: [],
-    comments: [],
-    currentUser: null,
-    user: null,
     error: '',
-    image: '',
+    imgUrl: '',
+    resultImg: null,
     loading: false,
-  };
-
-  componentWillMount() {
-    const { currentUser } = firebase.auth();
-    this.setState({ currentUser });
-  }
-
-  componentDidMount() {
-    this.getUserData();
-  }
-
-  getUserData = async () => {
-    const { currentUser } = this.state;
-
-    const user = await db.ref(`/users/${currentUser.uid}`).once('value');
-    this.setState({ user: user.val() });
+    textInputValue: '',
+    hasError: true,
+    modalClosed: false,
   };
 
   onChooseImagePress = async () => {
-    if (getPermAsync()) {
+    const hasPermission = getPermAsync();
+
+    if (hasPermission) {
       const result = await ImagePicker.launchImageLibraryAsync();
       if (!result.cancelled) {
         try {
-          await this.uploadImage(result.uri, 'test-image');
-          Alert('Success');
+          this.setState({ resultImg: result });
+          Alert.alert('Success');
         } catch (error) {
-          Alert(error);
+          Alert.alert(error);
         }
       }
     }
@@ -62,110 +52,159 @@ export default class AddTheoryScreen extends Component {
   uploadImage = async (uri, imageName) => {
     const response = await fetch(uri);
     const blob = await response.blob();
-    this.setState({ image: `images/theories/${imageName}` });
+
     const ref = firebase
       .storage()
       .ref()
       .child(`images/theories/${imageName}`);
-    return ref.put(blob);
+
+    await ref.put(blob);
+
+    const imgUrl = await ref.getDownloadURL();
+    this.setState({ imgUrl });
   };
 
-  handleSubmit = async () => {
-    const { topic, name, description, likes, comments, user, image } = this.state;
-
-    if (topic.length > 0 && name.length > 0 && description.length > 0) {
-      this.setState({ loading: true });
+  handleSubmit = async ({ category, name, description, likes, comments, img }) => {
+    try {
       await db.ref('/theory').push({
         date: firebase.database.ServerValue.TIMESTAMP,
-        topic,
+        category,
         name,
         description,
         likes,
         comments,
-        image,
-        user,
+        img,
+        userId: this.props.store.state.user.id,
       });
+      await this.props.store.getTheories();
       this.setState({ loading: false });
+    } catch (error) {
+      this.setState({ error, loading: false });
+    }
+  };
+
+  validateCategory = value => {
+    if (value === '') {
+      this.setState({ hasError: true, modalClosed: true });
     } else {
-      this.setState({ error: 'Vous avez faux' });
+      this.setState({ hasError: false, modalClosed: false });
     }
   };
 
   render() {
+    const categories = this.props.store.state.categories.map((cat, index) => {
+      return {
+        key: index,
+        label: cat.name,
+        accessibilityLabel: `Tap here for ${cat.name}`,
+      };
+    });
+
     return (
-      <View style={styles.main}>
+      <Layout>
         <Text style={styles.title}>Add theory</Text>
-        <Button title="Choose image..." onPress={this.onChooseImagePress} />
-        <InputComponent
-          value={this.state.topic}
-          onChangeValue={topic => this.setState({ topic })}
-          placeholderInput="Topic"
-          styleInput={styles.itemInput}
-        />
-        <InputComponent
-          value={this.state.name}
-          onChangeValue={name => this.setState({ name })}
-          placeholderInput="Name your theory"
-          styleInput={styles.itemInput}
-        />
-        <InputComponent
-          value={this.state.description}
-          onChangeValue={description => this.setState({ description })}
-          placeholderInput="Description"
-          styleInput={styles.itemInput}
-        />
-        <TouchableHighlight style={styles.button} underlayColor="white" onPress={this.handleSubmit}>
-          <Text style={styles.buttonText}>Add</Text>
-        </TouchableHighlight>
+        <Formik
+          initialValues={{
+            img: '',
+            category: '',
+            name: '',
+            description: '',
+            likes: [],
+            comments: [],
+          }}
+          onSubmit={async (values, { setSubmitting }) => {
+            this.setState({ loading: true });
+            if (this.state.resultImg) {
+              await this.uploadImage(this.state.resultImg.uri, values.name);
+            }
+
+            const formatedValues = {
+              ...values,
+              category: this.state.textInputValue,
+              img: this.state.imgUrl,
+            };
+
+            await this.handleSubmit(formatedValues);
+            setSubmitting(false);
+          }}
+          validationSchema={TheorySchema}
+        >
+          {props => {
+            return (
+              <View>
+                <AddImgComponent
+                  pressed={() => this.onChooseImagePress(props.values.name)}
+                  styleAddImg={styles.AddImg}
+                  label="Add your image"
+                />
+                <InputComponent
+                  label="Nom de la théorie *"
+                  onBlur={props.handleBlur('name')}
+                  onChangeText={props.handleChange('name')}
+                  placeholder="Name your theory"
+                  value={props.values.name}
+                  hasError={!!(props.touched.name && props.errors.name)}
+                />
+                <ModalSelector
+                  data={categories}
+                  initValue="Category"
+                  supportedOrientations={['landscape', 'portrait']}
+                  accessible
+                  scrollViewAccessibilityLabel="Scrollable options"
+                  cancelButtonAccessibilityLabel="Cancel Button"
+                  onChange={category => {
+                    this.setState({ textInputValue: category.label }, () =>
+                      this.validateCategory(this.state.textInputValue),
+                    );
+                  }}
+                  onModalClose={() => this.validateCategory(this.state.textInputValue)}
+                >
+                  <InputComponent // this.state.textInputValue
+                    label="Categorie *"
+                    onBlur={props.handleBlur('category')}
+                    onChangeText={props.handleChange('category')}
+                    placeholder="Category"
+                    value={this.state.textInputValue}
+                    hasError={!!(this.state.hasError && this.state.modalClosed)}
+                    isEditable={false}
+                  />
+                </ModalSelector>
+                <InputComponent
+                  label="Description *"
+                  onChangeText={props.handleChange('description')}
+                  onBlur={props.handleBlur('description')}
+                  placeholder="Description"
+                  value={props.values.description}
+                  isTextArea
+                  hasError={!!(props.touched.description && props.errors.description)}
+                />
+                <PrimaryButton
+                  title="Add theory"
+                  onPress={props.handleSubmit}
+                  loading={this.state.loading}
+                  startColor={colors.GRADIENT_START}
+                  endColor={colors.GRADIENT_END}
+                  pictoName="file-upload"
+                  disabled={!props.isValid || props.isSubmitting || this.state.hasError}
+                />
+              </View>
+            );
+          }}
+        </Formik>
+
         {this.state.error && <Text>{this.state.error}</Text>}
-        {this.state.loading && (
-          <View>
-            <ActivityIndicator size="large" color="red" />
-          </View>
-        )}
-      </View>
+      </Layout>
     );
   }
 }
 
 const styles = StyleSheet.create({
-  main: {
-    flex: 1,
-    padding: 30,
-    flexDirection: 'column',
-    justifyContent: 'center',
-    backgroundColor: '#2a8ab7',
-  },
   title: {
     marginBottom: 20,
     fontSize: 25,
     textAlign: 'center',
   },
-  itemInput: {
-    height: 50,
-    padding: 4,
-    marginRight: 5,
-    fontSize: 23,
-    borderWidth: 1,
-    borderColor: 'white',
-    borderRadius: 8,
-    color: 'white',
-  },
-  buttonText: {
-    fontSize: 18,
-    color: '#111',
-    alignSelf: 'center',
-  },
-  button: {
-    height: 45,
-    flexDirection: 'row',
-    backgroundColor: 'white',
-    borderColor: 'white',
-    borderWidth: 1,
-    borderRadius: 8,
-    marginBottom: 10,
-    marginTop: 10,
-    alignSelf: 'stretch',
-    justifyContent: 'center',
-  },
+  error: { fontSize: 14, color: 'red' },
 });
+
+export default AddTheoryScreen;
