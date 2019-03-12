@@ -4,18 +4,17 @@ import firebase from 'firebase';
 import { ImagePicker } from 'expo';
 import { Subscribe } from 'unstated';
 import { Formik } from 'formik';
-import * as yup from 'yup';
 import ModalSelector from 'react-native-modal-selector';
 
-import { getPermAsync } from '../../utils/Utils';
-import db from '../../config/Database';
-
-import Layout from '../../components/Layout';
 import { InputComponent, AddImgComponent } from '../../components/InputComponent';
 import { PrimaryButton } from '../../components/ButtonComponent';
 
+import { getPermAsync } from '../../utils/utils';
+import db from '../../config/Database';
+import Layout from '../../components/Layout';
 import colors from '../../assets/colors';
 import Store from '../../store';
+import TheorySchema from '../../schema/theorySchema';
 
 const AddTheoryScreen = props => (
   <Subscribe to={[Store]}>
@@ -128,10 +127,7 @@ class Child extends Component {
             await this.handleSubmit(formatedValues);
             setSubmitting(false);
           }}
-          validationSchema={yup.object().shape({
-            name: yup.string().required('required'),
-            description: yup.string().required('required'),
-          })}
+          validationSchema={TheorySchema}
         >
           {props => {
             return (

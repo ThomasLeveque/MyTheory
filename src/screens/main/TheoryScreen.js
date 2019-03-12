@@ -46,10 +46,9 @@ class Child extends Component {
         idUser: currentUser.uid,
         comment,
       };
-      this.props.store.addCommentTheory(params).then(() => {
-        this.getComments();
-        this.setState({ loading: false });
-      });
+      await this.props.store.addCommentTheory(params);
+      this.getComments();
+      this.setState({ loading: false });
     }
   };
 
