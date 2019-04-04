@@ -1,13 +1,22 @@
 import React from 'react';
 import { Image, Text, TouchableOpacity, StyleSheet, View } from 'react-native';
 import { LinearGradient } from 'expo';
+import { MaterialIcons } from '@expo/vector-icons';
 import colors from '../assets/colors';
 
 const CardComponent = ({ image, title, category, user, description, likes, comments, peoples }) => {
   const imgTest =
     'https://images.pexels.com/photos/414612/pexels-photo-414612.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260';
   return (
-    <TouchableOpacity style={{ marginBottom: 10, ...colors.SHADOW }}>
+    <TouchableOpacity
+      style={{
+        marginBottom: 10,
+        ...colors.SHADOW,
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.2,
+      }}
+    >
       <View
         style={{
           flex: 1,
@@ -15,14 +24,13 @@ const CardComponent = ({ image, title, category, user, description, likes, comme
           borderRadius: 5,
           paddingVertical: 0,
           paddingLeft: 0 + gradientWidth,
-          paddingRight: 10,
           position: 'relative',
           overflow: 'hidden',
           backgroundColor: 'white',
         }}
       >
         <LinearGradient
-          colors={['#4c669f', '#3b5998', '#192f6a']}
+          colors={[colors.GRADIENT_START, colors.GRADIENT_END]}
           style={{
             width: gradientWidth,
             position: 'absolute',
@@ -31,8 +39,8 @@ const CardComponent = ({ image, title, category, user, description, likes, comme
             left: 0,
           }}
         />
-        <View style={{ flex: 1, borderTopRightRadius: 5, overflow: 'hidden' }}>
-          {true && (
+        <View style={{ flex: 1, borderTopRightRadius: 5, overflow: 'hidden', marginBottom: 10 }}>
+          {image && (
             <Image
               style={{
                 width: '100%',
@@ -41,7 +49,7 @@ const CardComponent = ({ image, title, category, user, description, likes, comme
                 borderTopRightRadius: 5,
               }}
               source={{
-                uri: imgTest,
+                uri: image,
               }}
             />
           )}
@@ -67,11 +75,6 @@ const CardComponent = ({ image, title, category, user, description, likes, comme
           >
             {category}
           </Text>
-          <View style={{ flex: 0.8, flexDirection: 'row', marginTop: 8, marginLeft: 10 }}>
-            <Text style={{ flex: 0.3 }}>Likes</Text>
-            <Text style={{ flex: 0.3 }}>Comments</Text>
-            <Text style={{ flex: 0.3 }}>Shares</Text>
-          </View>
           <Text
             style={{
               color: 'black',
@@ -82,6 +85,35 @@ const CardComponent = ({ image, title, category, user, description, likes, comme
             }}
           >
             {description}
+          </Text>
+          <View style={{ flex: 1, flexDirection: 'row', marginTop: 8, marginLeft: 10 }}>
+            <View style={{ flex: 0.3, flexDirection: 'row' }}>
+              <MaterialIcons name={'thumb-up'} size={20} color="black" />>
+              <Text style={{ marginLeft: 5, color: 'grey', fontSize: 12, fontWeight: '100' }}>
+                {likes}
+              </Text>
+            </View>
+            <View style={{ flex: 0.3, flexDirection: 'row' }}>
+              <MaterialIcons name={'comment'} size={20} color="black" />>
+              <Text style={{ marginLeft: 5, color: 'grey', fontSize: 12, fontWeight: '100' }}>
+                {comments}
+              </Text>
+            </View>
+            {/* <View style={{ flex: 0.3, flexDirection: 'row' }}>
+              <MaterialIcons name={'thumb-up'} size={20} color="black" />>
+              <Text style={{ marginLeft: 5 }}>{likes}</Text>
+            </View> */}
+          </View>
+          <Text
+            style={{
+              marginLeft: 10,
+              marginTop: 10,
+              color: 'grey',
+              fontSize: 12,
+              fontWeight: '100',
+            }}
+          >
+            by {user.name}
           </Text>
         </View>
       </View>

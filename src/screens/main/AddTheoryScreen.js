@@ -9,7 +9,7 @@ import ModalSelector from 'react-native-modal-selector';
 import { InputComponent, AddImgComponent } from '../../components/InputComponent';
 import { PrimaryButton } from '../../components/ButtonComponent';
 
-import { getPermAsync } from '../../utils/utils';
+import { getPermAsync } from '../../utils/Utils';
 import db from '../../config/Database';
 import Layout from '../../components/Layout';
 import colors from '../../assets/colors';
