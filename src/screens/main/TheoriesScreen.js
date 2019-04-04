@@ -7,6 +7,7 @@ import { LinearGradient } from 'expo';
 import AddTheoryScreen from './AddTheoryScreen';
 import Layout from '../../components/Layout';
 import Store from '../../store';
+import colors from '../../assets/colors';
 
 import games from '../../assets/imageCategory/games.png';
 import history from '../../assets/imageCategory/history.png';
@@ -144,6 +145,7 @@ const styles = StyleSheet.create({
     width: '50%',
     height: 60,
     borderRadius: 5,
+    overflow: 'hidden',
   },
   imageBack: {
     width: '100%',
@@ -154,13 +156,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     marginBottom: 10,
     flexDirection: 'row',
-    shadowColor: '#E8E8E8',
-    shadowOffset: {
-      width: 0,
-      height: 3,
-    },
-    shadowRadius: 5,
-    shadowOpacity: 1.0,
+    ...colors.SHADOW,
     borderRadius: 5,
   },
   categoryText: {

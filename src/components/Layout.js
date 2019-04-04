@@ -24,7 +24,8 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
   },
   scroll: {
-    paddingVertical: commonStyle.verticalGlobalPadding,
+    paddingTop: commonStyle.topGlobalPadding,
+    paddingBottom: commonStyle.bottomGlobalPadding,
   },
 });
 
