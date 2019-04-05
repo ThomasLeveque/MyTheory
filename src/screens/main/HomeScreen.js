@@ -17,7 +17,6 @@ const HomeScreen = props => (
 
 class Child extends React.Component {
   render() {
-    console.log(this.props.store.state.theories);
     return (
       <Layout>
         <FlatList
