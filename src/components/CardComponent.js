@@ -98,10 +98,6 @@ const CardComponent = ({ theory }) => {
                 {comments}
               </Text>
             </View>
-            {/* <View style={{ flex: 0.3, flexDirection: 'row' }}>
-              <MaterialIcons name={'thumb-up'} size={20} color="black" />>
-              <Text style={{ marginLeft: 5 }}>{likes}</Text>
-            </View> */}
           </View>
           <Text
             style={{
@@ -119,21 +115,6 @@ const CardComponent = ({ theory }) => {
     </TouchableOpacity>
   );
 };
-
-// ject {
-//   "category": "Political",
-//   "date": 1552409104690,
-//   "description": "Fezgretrgfdsfg",
-//   "id": "-L_mml1EbSlRoq2uwYDj",
-//   "img": "",
-//   "name": "Dqfesr",
-//   "user": Object {
-//     "email": "Tradelab@gma.com",
-//     "id": "tAXXXIYoBihDktYb38qIfuXQZqs2",
-//     "name": "Tradelab",
-//   },
-//   "userId": "tAXXXIYoBihDktYb38qIfuXQZqs2",
-// },
 
 const gradientWidth = 8;
 //const styles
