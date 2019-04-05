@@ -1,7 +1,8 @@
 // GLOBAL VARIABLES
 const commonStyle = {
   horizontalGlobalPadding: 20,
-  verticalGlobalPadding: 20,
+  topGlobalPadding: 20,
+  bottomGlobalPadding: 20,
 };
 
 const userStyle = {

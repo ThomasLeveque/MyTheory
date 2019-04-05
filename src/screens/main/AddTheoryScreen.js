@@ -203,6 +203,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     fontSize: 25,
     textAlign: 'center',
+    fontFamily: 'montserratBold',
   },
   error: { fontSize: 14, color: 'red' },
 });
