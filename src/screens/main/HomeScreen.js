@@ -17,21 +17,14 @@ const HomeScreen = props => (
 
 class Child extends React.Component {
   render() {
+    console.log(this.props.store.state.theories);
     return (
       <Layout>
         <FlatList
           data={this.props.store.state.theories}
           keyExtractor={({ date }) => date.toString()}
           renderItem={({ item }) => {
-            return (
-              <CardComponent
-                image={item.image}
-                title={item.name}
-                category={item.category}
-                user={item.user}
-                description={item.description}
-              />
-            );
+            return <CardComponent theory={item} />;
           }}
         />
       </Layout>

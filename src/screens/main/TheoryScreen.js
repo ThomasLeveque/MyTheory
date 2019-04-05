@@ -98,7 +98,7 @@ class Child extends Component {
         <FlatList
           data={this.state.comments}
           keyExtractor={({ date }) => date.toString()}
-          renderItem={({ item }) => <CardComponent user={item.user} />}
+          renderItem={({ item }) => <CardComponent theory={item} />}
         />
       </View>
     );
