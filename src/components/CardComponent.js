@@ -4,7 +4,6 @@ import { LinearGradient } from 'expo';
 import { MaterialIcons } from '@expo/vector-icons';
 import colors from '../assets/colors';
 import { createStackNavigator } from 'react-navigation';
-import TheoryScreen from '../screens/main/TheoryScreen';
 import HomeScreen from '../screens/main/HomeScreen';
 
 const CardComponent = ({ theory, navigation }) => {

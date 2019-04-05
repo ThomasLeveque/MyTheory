@@ -1,12 +1,10 @@
 import React from 'react';
 import { FlatList } from 'react-native';
 import { Subscribe } from 'unstated';
-import { createStackNavigator } from 'react-navigation';
 
 import Store from '../../store';
 import CardComponent from '../../components/CardComponent';
 
-import TheoryScreen from './TheoryScreen';
 import Layout from '../../components/Layout';
 
 const HomeScreen = props => (

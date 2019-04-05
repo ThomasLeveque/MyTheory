@@ -1,9 +1,9 @@
-import React, { Component } from 'react';
-import { Button, Image, StyleSheet, Text, View, FlatList } from 'react-native';
+import React from 'react';
+import { Image, StyleSheet, Text, View, FlatList } from 'react-native';
 import { Subscribe } from 'unstated';
-// import { Card } from 'react-native-elements';
+
 import firebase from 'firebase';
-import InputComponent from '../../components/InputComponent';
+import { InputComponent } from '../../components/InputComponent';
 import { PrimaryButton } from '../../components/ButtonComponent';
 import CardComponent from '../../components/CardComponent';
 
@@ -16,7 +16,7 @@ const TheoryScreen = props => (
   </Subscribe>
 );
 
-class Child extends Component {
+class Child extends React.Component {
   state = {
     comment: '',
     comments: [],
@@ -66,23 +66,23 @@ class Child extends Component {
         <Text>{theory.description}</Text>
         <View style={styles.containerInline}>
           <Text style={styles.elementInline}>208 likes</Text>
-          <Button
+          {/* <Button
             color="red"
             title="join chat"
-            onPress={() => {}}
+            onPress={() => { }}
             buttonStyle={{
               borderRadius: 0,
               marginLeft: 0,
               marginRight: 0,
               marginBottom: 0,
             }}
-          />
+          /> */}
         </View>
         <Text>Comments</Text>
         <InputComponent
           value={this.state.comment}
           onChangeValue={comment => this.setState({ comment })}
-          placeholderInput="Your comment"
+          placeholder="Your comment"
           styleInput={styles.itemInput}
         />
         {this.state.errorMessage && <Text style={{ color: 'red' }}>{this.state.errorMessage}</Text>}
