@@ -3,11 +3,15 @@ import { Image, Text, TouchableOpacity, StyleSheet, View } from 'react-native';
 import { LinearGradient } from 'expo';
 import { MaterialIcons } from '@expo/vector-icons';
 import colors from '../assets/colors';
+import { createStackNavigator } from 'react-navigation';
+import TheoryScreen from '../screens/main/TheoryScreen';
+import HomeScreen from '../screens/main/HomeScreen';
 
-const CardComponent = ({ theory }) => {
-  const { image, title, category, user, description, likes, comments, peoples } = theory;
+const CardComponent = ({ theory, navigation }) => {
+  const { img, title, category, user, description, likes, comments, peoples } = theory;
   return (
     <TouchableOpacity
+      onPress={() => navigation.navigate('theory', { theory })}
       style={{
         marginBottom: 10,
         ...colors.SHADOW,
@@ -39,7 +43,7 @@ const CardComponent = ({ theory }) => {
           }}
         />
         <View style={{ flex: 1, borderTopRightRadius: 5, overflow: 'hidden', marginBottom: 10 }}>
-          {image && (
+          {img && (
             <Image
               style={{
                 width: '100%',
@@ -48,7 +52,7 @@ const CardComponent = ({ theory }) => {
                 borderTopRightRadius: 5,
               }}
               source={{
-                uri: image,
+                uri: img,
               }}
             />
           )}

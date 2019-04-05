@@ -12,6 +12,7 @@ import ChatScreen from './screens/main/ChatScreen';
 import ActivityScreen from './screens/main/ActivityScreen';
 import ProfilScreen from './screens/main/ProfilScreen';
 import TheoriesScreen from './screens/main/TheoriesScreen';
+import TheoryScreen from './screens/main/TheoryScreen';
 
 // import button component for header
 import HeaderButton from './components/HeaderButton';
@@ -128,6 +129,12 @@ const App = () => {
       },
       login: {
         screen: LoginScreen,
+        navigationOptions: {
+          header: null,
+        },
+      },
+      theory: {
+        screen: TheoryScreen,
         navigationOptions: {
           header: null,
         },

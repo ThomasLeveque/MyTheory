@@ -23,7 +23,7 @@ class Child extends React.Component {
           data={this.props.store.state.theories}
           keyExtractor={({ date }) => date.toString()}
           renderItem={({ item }) => {
-            return <CardComponent theory={item} />;
+            return <CardComponent theory={item} navigation={this.props.navigation} />;
           }}
         />
       </Layout>
@@ -31,17 +31,4 @@ class Child extends React.Component {
   }
 }
 
-export default createStackNavigator({
-  home: {
-    screen: HomeScreen,
-    navigationOptions: {
-      header: null,
-    },
-  },
-  theory: {
-    screen: TheoryScreen,
-    navigationOptions: {
-      header: null,
-    },
-  },
-});
+export default HomeScreen;
