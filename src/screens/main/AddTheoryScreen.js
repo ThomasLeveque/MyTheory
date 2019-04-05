@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, Alert } from 'react-native';
+import { View, Text, Alert } from 'react-native';
 import firebase from 'firebase';
 import { ImagePicker } from 'expo';
 import { Subscribe } from 'unstated';
@@ -15,6 +15,7 @@ import Layout from '../../components/Layout';
 import colors from '../../assets/colors';
 import Store from '../../store';
 import TheorySchema from '../../schema/theorySchema';
+import { commonStyle } from '../../utils/commonStyles';
 
 const AddTheoryScreen = props => (
   <Subscribe to={[Store]}>
@@ -102,7 +103,7 @@ class Child extends Component {
 
     return (
       <Layout>
-        <Text style={styles.title}>Add theory</Text>
+        <Text style={[commonStyle.titleStyle, { textAlign: 'center' }]}>Add theory</Text>
         <Formik
           initialValues={{
             img: '',
@@ -134,7 +135,6 @@ class Child extends Component {
               <View>
                 <AddImgComponent
                   pressed={() => this.onChooseImagePress(props.values.name)}
-                  styleAddImg={styles.AddImg}
                   label="Add your image"
                 />
                 <InputComponent
@@ -197,15 +197,5 @@ class Child extends Component {
     );
   }
 }
-
-const styles = StyleSheet.create({
-  title: {
-    marginBottom: 20,
-    fontSize: 25,
-    textAlign: 'center',
-    fontFamily: 'montserratBold',
-  },
-  error: { fontSize: 14, color: 'red' },
-});
 
 export default AddTheoryScreen;

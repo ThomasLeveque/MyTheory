@@ -11,6 +11,7 @@ import Store from '../../store';
 
 import SettingScreen from './SettingScreen';
 import colors from '../../assets/colors';
+import { commonStyle } from '../../utils/commonStyles';
 
 const ProfilScreen = props => (
   <Subscribe to={[Store]}>
@@ -26,6 +27,7 @@ class Child extends React.Component {
   render() {
     return (
       <Layout>
+        <Text style={commonStyle.titleStyle}>Profil</Text>
         <Button title="Log Out" onPress={this.signOutUser} />
         <View>
           <Text>{this.props.store.state.user.name}</Text>

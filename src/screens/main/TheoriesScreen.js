@@ -8,6 +8,7 @@ import AddTheoryScreen from './AddTheoryScreen';
 import Layout from '../../components/Layout';
 import Store from '../../store';
 import colors from '../../assets/colors';
+import { commonStyle } from '../../utils/commonStyles';
 
 import games from '../../assets/imageCategory/games.png';
 import history from '../../assets/imageCategory/history.png';
@@ -95,9 +96,7 @@ class Child extends React.Component {
     }
     return (
       <Layout>
-        <Text style={{ fontSize: 35, fontFamily: 'montserratBold', marginBottom: 20 }}>
-          Theories
-        </Text>
+        <Text style={commonStyle.titleStyle}>Theories</Text>
         <TouchableOpacity
           onPress={() => {
             this.props.navigation.navigate('addtheory');

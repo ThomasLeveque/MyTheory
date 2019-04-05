@@ -3,6 +3,7 @@ const commonStyle = {
   horizontalGlobalPadding: 20,
   topGlobalPadding: 20,
   bottomGlobalPadding: 20,
+  titleStyle: { fontSize: 35, fontFamily: 'montserratBold', marginBottom: 20 },
 };
 
 const userStyle = {
