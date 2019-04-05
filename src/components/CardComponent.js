@@ -6,8 +6,6 @@ import colors from '../assets/colors';
 
 const CardComponent = ({ theory }) => {
   const { image, title, category, user, description, likes, comments, peoples } = theory;
-  const imgTest =
-    'https://images.pexels.com/photos/414612/pexels-photo-414612.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260';
   return (
     <TouchableOpacity
       style={{
