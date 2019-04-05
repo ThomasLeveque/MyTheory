@@ -21,7 +21,7 @@ const Child = props => {
           data={props.store.state.theories}
           keyExtractor={({ date }) => date.toString()}
           renderItem={({ item }) => {
-            return <CardComponent user={item.user} title={item.name} />;
+            return <CardComponent theory={item} />;
           }}
         />
       </SafeAreaView>
