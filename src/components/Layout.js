@@ -26,6 +26,7 @@ const styles = StyleSheet.create({
   scroll: {
     paddingTop: commonStyle.topGlobalPadding,
     paddingBottom: commonStyle.bottomGlobalPadding,
+    position: 'relative',
   },
 });
 
