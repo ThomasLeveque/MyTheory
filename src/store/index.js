@@ -88,8 +88,9 @@ class Store extends Container {
 
   updateUser = async ({ newName, newEmail, currentPassword }) => {
     try {
+      this.setState({ loading: true });
       const { currentUser } = firebase.auth();
-      if (newEmail !== currentUser.email) {
+      if (newEmail.toLowerCase() !== currentUser.email.toLowerCase()) {
         await this.reauthenticateUser(currentPassword);
         await currentUser.updateEmail(newEmail);
       }
@@ -98,11 +99,14 @@ class Store extends Container {
         email: newEmail,
       });
 
-      this.getUser();
+      await this.getUser();
       await this.getUsers();
-      this.getTheories();
+      await this.getTheories();
     } catch (error) {
-      this.setState({ updateUserError: { message: error.message, code: error.code } });
+      this.setState({
+        updateUserError: { message: error.message, code: error.code },
+        loading: false,
+      });
     }
   };
 

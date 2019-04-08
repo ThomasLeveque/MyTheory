@@ -11,9 +11,14 @@ import {
   Dimensions,
   Alert,
 } from 'react-native';
+import { MaterialIcons } from '@expo/vector-icons';
 
 import Store from '../../store';
 import Layout from '../../components/Layout';
+import { InputComponent } from '../../components/InputComponent';
+import { PrimaryButton } from '../../components/ButtonComponent';
+
+import colors from '../../assets/colors';
 
 const { width } = Dimensions.get('window');
 
@@ -36,21 +41,37 @@ class Child extends React.Component {
   }
 
   render() {
+    const photoSize = 120;
+
     return (
       <Layout>
-        <Text>Name</Text>
-        <TextInput
-          style={styles.textInput}
+        <View
+          style={{
+            width: photoSize,
+            height: photoSize,
+            backgroundColor: colors.GRAY_BG,
+            marginRight: 25,
+            borderRadius: photoSize / 2,
+            overflow: 'hidden',
+            justifyContent: 'center',
+            alignItems: 'center',
+            alignSelf: 'center',
+            marginVertical: 20,
+          }}
+        >
+          <MaterialIcons name="photo" size={photoSize / 2} color={colors.PRIMARY} />
+        </View>
+        <InputComponent
+          label="Nom *"
+          placeholder="Nom"
           autoCapitalize="none"
-          placeholder="Name"
           value={this.state.newName}
           onChangeText={newName => this.setState({ newName })}
         />
-        <Text>Email</Text>
-        <TextInput
-          style={styles.textInput}
-          autoCapitalize="none"
+        <InputComponent
+          label="Email *"
           placeholder="Email"
+          autoCapitalize="none"
           value={this.state.newEmail}
           onChangeText={newEmail => this.setState({ newEmail })}
         />
@@ -60,13 +81,18 @@ class Child extends React.Component {
             <Text>{this.props.store.state.updateUserError.code}</Text>
           </View>
         )}
-        <Button
+        <PrimaryButton
           title="Update data"
           onPress={() =>
             this.props.store.state.user.email !== this.state.newEmail
               ? this.setModalVisible(!this.state.modalVisible)
               : this.props.store.updateUser(this.state)
           }
+          loading={this.props.store.state.loading}
+          startColor={colors.GRADIENT_START}
+          endColor={colors.GRADIENT_END}
+          pictoName="update"
+          styleButton={{ alignSelf: 'center', marginTop: 10 }}
         />
         <Modal
           animationType="fade"

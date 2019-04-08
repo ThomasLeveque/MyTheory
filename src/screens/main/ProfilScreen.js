@@ -1,12 +1,5 @@
 import React from 'react';
-import {
-  Text,
-  View,
-  FlatList,
-  TouchableOpacity,
-  ActivityIndicator,
-  StyleSheet,
-} from 'react-native';
+import { Text, View, TouchableOpacity, ActivityIndicator, StyleSheet } from 'react-native';
 import firebase from 'firebase';
 import { Subscribe } from 'unstated';
 import { createStackNavigator } from 'react-navigation';
@@ -66,7 +59,7 @@ class Child extends React.Component {
               height: photoSize,
               backgroundColor: colors.GRAY_BG,
               marginRight: 25,
-              borderRadius: 50,
+              borderRadius: photoSize / 2,
               overflow: 'hidden',
               justifyContent: 'center',
               alignItems: 'center',
@@ -99,15 +92,10 @@ class Child extends React.Component {
         </View>
         <Text style={commonStyle.mediumTitleStyle}>Mes theories</Text>
         {this.props.store.state.userTheories.length === 0 && <Text>Aucunes theories</Text>}
-        {this.props.store.state.userTheories && (
-          <FlatList
-            data={this.props.store.state.userTheories}
-            keyExtractor={item => item.date.toString()}
-            renderItem={({ item }) => {
-              return <CardComponent theory={item} />;
-            }}
-          />
-        )}
+        {this.props.store.state.userTheories &&
+          this.props.store.state.userTheories.map(theory => (
+            <CardComponent key={theory.date.toString()} theory={theory} />
+          ))}
       </Layout>
     );
   }
