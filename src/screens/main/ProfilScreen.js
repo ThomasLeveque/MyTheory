@@ -98,7 +98,7 @@ class Child extends React.Component {
               {this.props.store.state.user.email}
             </Text>
             <SecondaryButton
-              title="Update settings"
+              title="Mettre à jour les réglages"
               onPress={() => {
                 this.props.navigation.navigate('setting');
               }}

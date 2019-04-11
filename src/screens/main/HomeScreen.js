@@ -146,7 +146,13 @@ class Child extends React.Component {
           ItemSeparatorComponent={this.renderSeparator}
           showsHorizontalScrollIndicator={false}
           renderItem={({ item }) => {
-            return <CardComponent theory={item} cardStyle={{ width: width * 0.7 }} />;
+            return (
+              <CardComponent
+                theory={item}
+                navigation={this.props.navigation}
+                cardStyle={{ width: width * 0.7 }}
+              />
+            );
           }}
           ListFooterComponent={() => this.renderFooter(MOVIE_SERIES, movieTheory)}
           keyExtractor={item => item.id}

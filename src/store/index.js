@@ -132,15 +132,24 @@ class Store extends Container {
     }
   };
 
-  getCommentsTheory = async () => {
-    const allComments = await db.ref(`/comments/`).once('value');
-    let comments = Object.values(allComments.val());
-    comments = comments.map(comment => ({
-      ...comment,
-      user: this.state.users[comment.userId],
-      dateFormat: m(comment.date).fromNow(),
-    }));
-    return comments;
+  getCommentsTheory = async theoryId => {
+    const allComments = await db
+      .ref(`/comments/`)
+      .orderByChild('idTheory')
+      .equalTo(theoryId)
+      .once('value');
+    m.locale('fr');
+    if (allComments.val()) {
+      let comments = Object.values(allComments.val());
+      comments.reverse();
+      comments = comments.map(comment => ({
+        ...comment,
+        user: this.state.users[comment.userId],
+        dateFormat: m(comment.date).fromNow(),
+      }));
+      return comments;
+    }
+    return null;
   };
 }
 

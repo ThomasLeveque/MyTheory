@@ -12,6 +12,7 @@ import ChatScreen from './screens/main/ChatScreen';
 import ActivityScreen from './screens/main/ActivityScreen';
 import ProfilScreen from './screens/main/ProfilScreen';
 import TheoriesScreen from './screens/main/TheoriesScreen';
+import TheoryScreen from './screens/main/TheoryScreen';
 
 // import button component for header
 import HeaderButton from './components/HeaderButton';
@@ -25,125 +26,129 @@ import ChatImage from './assets/Navigation/chat.png';
 
 import colors from './assets/colors';
 
-// create our app's navigation stack
-const App = () => {
-  const TabsNavigator = createBottomTabNavigator(
-    {
-      theories: {
-        screen: TheoriesScreen,
-        navigationOptions: {
-          tabBarIcon: ({ tintColor }) => (
-            <Image source={TheoryImage} style={{ width: 35, height: 35, tintColor }} />
-          ),
-        },
-      },
-      chat: {
-        screen: ChatScreen,
-        navigationOptions: {
-          tabBarIcon: ({ tintColor }) => (
-            <Image source={ChatImage} style={{ width: 35, height: 35, tintColor }} />
-          ),
-        },
-      },
-      home: {
-        screen: HomeScreen,
-        navigationOptions: {
-          tabBarIcon: ({ tintColor }) => (
-            <Image source={HomeImage} style={{ width: 35, height: 35, tintColor }} />
-          ),
-        },
-      },
-      activity: {
-        screen: ActivityScreen,
-        navigationOptions: {
-          tabBarIcon: ({ tintColor }) => (
-            <Image source={NotifImage} style={{ width: 35, height: 35, tintColor }} />
-          ),
-        },
-      },
-      profil: {
-        screen: ProfilScreen,
-        navigationOptions: {
-          tabBarIcon: ({ tintColor }) => (
-            <Image source={ProfilImage} style={{ width: 35, height: 35, tintColor }} />
-          ),
-        },
+const TabsNavigator = createBottomTabNavigator(
+  {
+    Théories: {
+      screen: TheoriesScreen,
+      navigationOptions: {
+        tabBarIcon: ({ tintColor }) => (
+          <Image source={TheoryImage} style={{ width: 35, height: 35, tintColor }} />
+        ),
       },
     },
-    {
-      initialRouteName: 'home',
-      tabBarOptions: {
-        inactiveTintColor: colors.GRAY,
-        activeTintColor: colors.PRIMARY,
-        style: {
-          shadowColor: '#E8E8E8',
-          shadowOffset: {
-            width: 0,
-            height: -4,
-          },
-          shadowOpacity: 0.4,
-          borderTopWidth: 0,
-          height: 80,
-        },
-        labelStyle: {
-          color: 'black',
-          paddingBottom: 10,
-          fontFamily: 'montserratSemiBold',
-          fontSize: 11,
-        },
-        tabStyle: {
-          // backgroundColor: 'white',
-        },
+    Chat: {
+      screen: ChatScreen,
+      navigationOptions: {
+        tabBarIcon: ({ tintColor }) => (
+          <Image source={ChatImage} style={{ width: 35, height: 35, tintColor }} />
+        ),
       },
     },
-  );
+    Acceuil: {
+      screen: HomeScreen,
+      navigationOptions: {
+        tabBarIcon: ({ tintColor }) => (
+          <Image source={HomeImage} style={{ width: 35, height: 35, tintColor }} />
+        ),
+      },
+    },
+    Activité: {
+      screen: ActivityScreen,
+      navigationOptions: {
+        tabBarIcon: ({ tintColor }) => (
+          <Image source={NotifImage} style={{ width: 35, height: 35, tintColor }} />
+        ),
+      },
+    },
+    Profil: {
+      screen: ProfilScreen,
+      navigationOptions: {
+        tabBarIcon: ({ tintColor }) => (
+          <Image source={ProfilImage} style={{ width: 35, height: 35, tintColor }} />
+        ),
+      },
+    },
+  },
+  {
+    initialRouteName: 'Acceuil',
+    tabBarOptions: {
+      inactiveTintColor: colors.GRAY,
+      activeTintColor: colors.PRIMARY,
+      style: {
+        shadowColor: '#E8E8E8',
+        shadowOffset: {
+          width: 0,
+          height: -4,
+        },
+        shadowOpacity: 0.4,
+        borderTopWidth: 0,
+        height: 80,
+      },
+      labelStyle: {
+        color: 'black',
+        paddingBottom: 10,
+        fontFamily: 'montserratSemiBold',
+        fontSize: 11,
+      },
+      tabStyle: {
+        // backgroundColor: 'white',
+      },
+    },
+  },
+);
 
-  TabsNavigator.navigationOptions = ({ navigation }) => {
-    const { routeName } = navigation.state.routes[navigation.state.index];
+TabsNavigator.navigationOptions = ({ navigation }) => {
+  const { routeName } = navigation.state.routes[navigation.state.index];
 
-    const Capitalize = str => {
-      return str.charAt(0).toUpperCase() + str.slice(1);
-    };
-
-    return {
-      headerLeft: <HeaderButton navigation={navigation} />,
-      headerTitle: <Text style={{ fontFamily: 'montserratBold' }}>{Capitalize(routeName)}</Text>,
-      headerRight: null,
-    };
+  const Capitalize = str => {
+    return str.charAt(0).toUpperCase() + str.slice(1);
   };
 
-  const MainNavigator = createStackNavigator(
-    {
-      loading: {
-        screen: LoadingScreen,
-        navigationOptions: {
-          header: null,
-        },
-      },
-      signUp: {
-        screen: SignUpScreen,
-        navigationOptions: {
-          header: null,
-        },
-      },
-      login: {
-        screen: LoginScreen,
-        navigationOptions: {
-          header: null,
-        },
-      },
-      main: TabsNavigator,
-    },
-    {
-      initialRouteName: 'loading',
-    },
-  );
-
-  return (
-    <Provider>
-      <MainNavigator />
-    </Provider>
-  );
+  return {
+    headerLeft: <HeaderButton navigation={navigation} />,
+    headerTitle: <Text style={{ fontFamily: 'montserratBold' }}>{Capitalize(routeName)}</Text>,
+    headerRight: null,
+  };
 };
+
+const MainNavigator = createStackNavigator(
+  {
+    loading: {
+      screen: LoadingScreen,
+      navigationOptions: {
+        header: null,
+      },
+    },
+    signUp: {
+      screen: SignUpScreen,
+      navigationOptions: {
+        header: null,
+      },
+    },
+    login: {
+      screen: LoginScreen,
+      navigationOptions: {
+        header: null,
+      },
+    },
+    theory: {
+      screen: TheoryScreen,
+    },
+    main: TabsNavigator,
+  },
+  {
+    initialRouteName: 'loading',
+  },
+);
+
+class App extends React.Component {
+  render() {
+    return (
+      <Provider>
+        <MainNavigator />
+      </Provider>
+    );
+  }
+}
 
 export default App;
