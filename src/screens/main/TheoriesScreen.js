@@ -4,9 +4,12 @@ import { createStackNavigator } from 'react-navigation';
 import { FlatList, StyleSheet, Text, View, TouchableOpacity, ImageBackground } from 'react-native';
 import { LinearGradient } from 'expo';
 
+import { MaterialIcons } from '@expo/vector-icons';
 import AddTheoryScreen from './AddTheoryScreen';
 import Layout from '../../components/Layout';
 import Store from '../../store';
+import colors from '../../assets/colors';
+import { commonStyle } from '../../utils/commonStyles';
 
 import games from '../../assets/imageCategory/games.png';
 import history from '../../assets/imageCategory/history.png';
@@ -47,7 +50,7 @@ class Child extends React.Component {
     let content = (
       <View>
         <Text style={{ fontSize: 18, fontFamily: 'montserratBold', marginBottom: 10 }}>
-          Categories
+          Catégories
         </Text>
         <FlatList
           data={this.props.store.state.categories}
@@ -81,7 +84,7 @@ class Child extends React.Component {
               this.setState({ currentCategory: null });
             }}
           >
-            Go back
+            Retour
           </Text>
           <Text style={{ fontSize: 18, fontFamily: 'montserratBold', marginBottom: 10 }}>
             {this.state.currentCategory}
@@ -94,21 +97,21 @@ class Child extends React.Component {
     }
     return (
       <Layout>
-        <Text style={{ fontSize: 35, fontFamily: 'montserratBold', marginBottom: 20 }}>
-          Theories
-        </Text>
+        <Text style={commonStyle.titleStyle}>Théories</Text>
         <TouchableOpacity
           onPress={() => {
             this.props.navigation.navigate('addtheory');
           }}
-          style={{ borderRadius: 5 }}
         >
-          <ImageBackground
-            source={{ uri: 'https://facebook.github.io/react/logo-og.png' }}
-            style={(styles.imageBack, styles.addTheory)}
+          <LinearGradient
+            start={{ x: 0, y: 1 }}
+            end={{ x: 1, y: 1 }}
+            style={styles.addTheory}
+            colors={[colors.GRADIENT_START, colors.GRADIENT_END]}
           >
-            <Text style={{ color: 'black' }}>Add Theory</Text>
-          </ImageBackground>
+            <MaterialIcons name="add" size={36} color="white" />
+            <Text style={styles.textAddTheory}>Add Theory</Text>
+          </LinearGradient>
         </TouchableOpacity>
         {content}
       </Layout>
@@ -132,18 +135,25 @@ export default createStackNavigator({
 });
 
 const styles = StyleSheet.create({
+  textAddTheory: {
+    color: 'white',
+    fontSize: 16,
+    fontFamily: 'montserratBold',
+  },
   addTheory: {
     width: '100%',
     height: 100,
-    marginBottom: 20,
+    marginBottom: 30,
     alignItems: 'center',
     justifyContent: 'center',
     borderRadius: 5,
+    overflow: 'hidden',
   },
   imageContainer: {
     width: '50%',
     height: 60,
     borderRadius: 5,
+    overflow: 'hidden',
   },
   imageBack: {
     width: '100%',
@@ -154,13 +164,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     marginBottom: 10,
     flexDirection: 'row',
-    shadowColor: '#E8E8E8',
-    shadowOffset: {
-      width: 0,
-      height: 3,
-    },
-    shadowRadius: 5,
-    shadowOpacity: 1.0,
+    ...colors.SHADOW,
     borderRadius: 5,
   },
   categoryText: {
