@@ -4,17 +4,17 @@ import { LinearGradient } from 'expo';
 import { MaterialIcons } from '@expo/vector-icons';
 import colors from '../assets/colors';
 
-const CardComponent = ({ theory }) => {
+const CardComponent = ({ theory, cardStyle }) => {
   const { image, title, category, user, description, likes, comments, peoples } = theory;
   return (
     <TouchableOpacity
-      style={{
+      style={[{
         marginBottom: 10,
         ...colors.SHADOW,
         shadowColor: '#000',
         shadowOffset: { width: 0, height: 2 },
         shadowOpacity: 0.2,
-      }}
+      }, cardStyle]}
     >
       <View
         style={{

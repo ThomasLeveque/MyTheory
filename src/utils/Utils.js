@@ -1,6 +1,13 @@
 import { Alert, Platform } from 'react-native';
 import AndroidOpenSettings from 'react-native-android-open-settings';
 
+export const categoryTrads = {
+  'Political': 'Politique',
+  'History': 'Historique',
+  'Video games': 'Jeux video',
+  'Movie & Series': 'Films et séries',
+}
+
 export const getPermAsync = async () => {
   const { Permissions } = Expo;
   const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);

@@ -18,7 +18,7 @@ const HeaderButton = ({ navigation }) => {
 
   let current = getCurrentRouteName(navigation.state),
     displayGoBack =
-      current === 'setting' || current === 'addtheory' || current === 'theory' ? true : null;
+      current === 'setting' || current === 'addtheory' || current === 'theory' || current === 'categoryTheory' ? true : null;
 
   if (displayGoBack) {
     return (
