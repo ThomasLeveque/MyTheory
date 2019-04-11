@@ -14,8 +14,9 @@ const InputComponent = ({
   value,
   isTextArea,
   hasError,
-  isEditable,
+  isEditable = true,
   secureTextEntry,
+  onChangeValue,
 }) => {
   return (
     <View>
@@ -24,6 +25,7 @@ const InputComponent = ({
         multiline={!!isTextArea}
         numberOfLines={isTextArea ? 6 : 0}
         onChangeText={onChangeText}
+        onChangeValue={onChangeValue}
         onBlur={onBlur}
         style={[
           styles.textInput,
