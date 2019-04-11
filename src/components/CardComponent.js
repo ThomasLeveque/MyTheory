@@ -6,20 +6,20 @@ import colors from '../assets/colors';
 import { createStackNavigator } from 'react-navigation';
 import HomeScreen from '../screens/main/HomeScreen';
 
-const CardComponent = ({ theory, navigation }) => {
+const CardComponent = ({ theory, navigation, cardStyle }) => {
   const { img, name, category, user, description, likes, comments, peoples } = theory;
   const imageSize = 20;
-  console.log(img);
+
   return (
     <TouchableOpacity
       onPress={() => navigation.navigate('theory', { theory })}
-      style={{
+      style={[{
         marginBottom: 10,
         ...colors.SHADOW,
         shadowColor: '#000',
         shadowOffset: { width: 0, height: 2 },
         shadowOpacity: 0.2,
-      }}
+      }, cardStyle]}
     >
       <View
         style={{
@@ -140,10 +140,10 @@ const CardComponent = ({ theory, navigation }) => {
           </View>
         </View>
       </View>
-    </TouchableOpacity>
+    </TouchableOpacity >
   );
 };
 
 const gradientWidth = 8;
-//const styles
+
 export default CardComponent;

@@ -4,6 +4,7 @@ import { createStackNavigator } from 'react-navigation';
 import { FlatList, StyleSheet, Text, View, TouchableOpacity, ImageBackground } from 'react-native';
 import { LinearGradient } from 'expo';
 
+import { MaterialIcons } from '@expo/vector-icons';
 import AddTheoryScreen from './AddTheoryScreen';
 import Layout from '../../components/Layout';
 import Store from '../../store';
@@ -101,14 +102,16 @@ class Child extends React.Component {
           onPress={() => {
             this.props.navigation.navigate('addtheory');
           }}
-          style={{ borderRadius: 5 }}
         >
-          <ImageBackground
-            source={{ uri: 'https://facebook.github.io/react/logo-og.png' }}
-            style={(styles.imageBack, styles.addTheory)}
+          <LinearGradient
+            start={{ x: 0, y: 1 }}
+            end={{ x: 1, y: 1 }}
+            style={styles.addTheory}
+            colors={[colors.GRADIENT_START, colors.GRADIENT_END]}
           >
-            <Text style={{ color: 'black' }}>Ajouter une théorie</Text>
-          </ImageBackground>
+            <MaterialIcons name="add" size={36} color="white" />
+            <Text style={styles.textAddTheory}>Add Theory</Text>
+          </LinearGradient>
         </TouchableOpacity>
         {content}
       </Layout>
@@ -132,13 +135,19 @@ export default createStackNavigator({
 });
 
 const styles = StyleSheet.create({
+  textAddTheory: {
+    color: 'white',
+    fontSize: 16,
+    fontFamily: 'montserratBold',
+  },
   addTheory: {
     width: '100%',
     height: 100,
-    marginBottom: 20,
+    marginBottom: 30,
     alignItems: 'center',
     justifyContent: 'center',
     borderRadius: 5,
+    overflow: 'hidden',
   },
   imageContainer: {
     width: '50%',
