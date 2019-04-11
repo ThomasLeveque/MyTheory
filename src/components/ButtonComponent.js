@@ -27,15 +27,15 @@ const PrimaryButton = ({
         start={{ x: 0, y: 1 }}
         end={{ x: 1, y: 1 }}
         style={styles.primaryGradient}
-        colors={[startColor, endColor]}
+        colors={disabled ? [colors.GRAY, colors.GRAY] : [startColor, endColor]}
       >
         {loading ? (
           <ActivityIndicator size="small" color="white" style={{ marginRight: 10 }} />
         ) : (
-          pictoName && (
-            <MaterialIcons name={pictoName} size={20} color="white" style={{ marginRight: 10 }} />
-          )
-        )}
+            pictoName && (
+              <MaterialIcons name={pictoName} size={20} color="white" style={{ marginRight: 10 }} />
+            )
+          )}
         <Text style={[styleText, styles.primaryText]}>{title}</Text>
       </LinearGradient>
     </TouchableOpacity>
