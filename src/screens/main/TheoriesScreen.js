@@ -49,7 +49,7 @@ class Child extends React.Component {
     let content = (
       <View>
         <Text style={{ fontSize: 18, fontFamily: 'montserratBold', marginBottom: 10 }}>
-          Categories
+          Catégories
         </Text>
         <FlatList
           data={this.props.store.state.categories}
@@ -83,7 +83,7 @@ class Child extends React.Component {
               this.setState({ currentCategory: null });
             }}
           >
-            Go back
+            Retour
           </Text>
           <Text style={{ fontSize: 18, fontFamily: 'montserratBold', marginBottom: 10 }}>
             {this.state.currentCategory}
@@ -96,7 +96,7 @@ class Child extends React.Component {
     }
     return (
       <Layout>
-        <Text style={commonStyle.titleStyle}>Theories</Text>
+        <Text style={commonStyle.titleStyle}>Théories</Text>
         <TouchableOpacity
           onPress={() => {
             this.props.navigation.navigate('addtheory');
@@ -107,7 +107,7 @@ class Child extends React.Component {
             source={{ uri: 'https://facebook.github.io/react/logo-og.png' }}
             style={(styles.imageBack, styles.addTheory)}
           >
-            <Text style={{ color: 'black' }}>Add Theory</Text>
+            <Text style={{ color: 'black' }}>Ajouter une théorie</Text>
           </ImageBackground>
         </TouchableOpacity>
         {content}

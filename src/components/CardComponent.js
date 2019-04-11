@@ -9,6 +9,7 @@ import HomeScreen from '../screens/main/HomeScreen';
 const CardComponent = ({ theory, navigation }) => {
   const { img, name, category, user, description, likes, comments, peoples } = theory;
   const imageSize = 20;
+  console.log(img);
   return (
     <TouchableOpacity
       onPress={() => navigation.navigate('theory', { theory })}

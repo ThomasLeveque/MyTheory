@@ -183,7 +183,7 @@ class Child extends React.Component {
           </View>
         )}
         <PrimaryButton
-          title="Update data"
+          title="Mise à jour des données"
           onPress={async () => {
             if (this.props.store.state.user.email !== this.state.newEmail) {
               this.setModalVisible(!this.state.modalVisible);
@@ -235,7 +235,7 @@ class Child extends React.Component {
                 onChangeText={currentPassword => this.setState({ currentPassword })}
               />
               <PrimaryButton
-                title="Update data"
+                title="Mise à jour des données"
                 onPress={async () => this.updateUser(this.state)}
                 loading={this.state.loading}
                 startColor={colors.GRADIENT_START}
