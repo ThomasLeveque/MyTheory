@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View, TouchableOpacity, ActivityIndicator, StyleSheet } from 'react-native';
+import { Text, View, TouchableOpacity, ActivityIndicator, StyleSheet, Image } from 'react-native';
 import firebase from 'firebase';
 import { Subscribe } from 'unstated';
 import { createStackNavigator } from 'react-navigation';
@@ -33,6 +33,22 @@ class Child extends React.Component {
 
   render() {
     const photoSize = 80;
+    let img = <MaterialIcons name="photo" size={photoSize / 2} color={colors.PRIMARY} />;
+
+    if (this.props.store.state.user.img) {
+      img = (
+        <Image
+          style={{
+            width: '100%',
+            height: '100%',
+          }}
+          resizeMode="cover"
+          source={{
+            uri: this.props.store.state.user.img,
+          }}
+        />
+      );
+    }
 
     let logoutButton = (
       <TouchableOpacity onPress={this.signOutUser} style={styles.logoutButton}>
@@ -65,7 +81,7 @@ class Child extends React.Component {
               alignItems: 'center',
             }}
           >
-            <MaterialIcons name="photo" size={photoSize / 2} color={colors.PRIMARY} />
+            {img}
           </View>
           <View>
             <Text style={{ fontSize: 16, color: colors.BLACK, fontFamily: 'montserratSemiBold' }}>

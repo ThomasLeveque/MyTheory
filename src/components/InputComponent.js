@@ -3,6 +3,7 @@ import { TextInput, View, StyleSheet, Text, TouchableOpacity } from 'react-nativ
 import { MaterialIcons } from '@expo/vector-icons';
 
 import colors from '../assets/colors';
+import { commonStyle } from '../utils/commonStyles';
 
 const InputComponent = ({
   label,
@@ -40,19 +41,16 @@ const InputComponent = ({
   );
 };
 
-const AddImgComponent = ({ label, pressed, styleAddImg, styleTextAddImg }) => {
+const AddImgComponent = ({ children, title, pressed, styleAddImg, textAlign = 'left' }) => {
   return (
     <View>
-      <Text style={styles.nameInput}>Ajouter une image</Text>
-      <TouchableOpacity style={[styles.addImgContainer, styleAddImg]} onPress={pressed}>
-        <MaterialIcons name="add" size={36} color={colors.GRAY_TXT} />
-        <Text style={[styles.textAddImage, styleTextAddImg]}>{label}</Text>
+      <Text style={[styles.nameInput, { textAlign: textAlign }]}>{title}</Text>
+      <TouchableOpacity style={styleAddImg} onPress={pressed}>
+        {children}
       </TouchableOpacity>
     </View>
   );
 };
-
-const inputBottomMargin = 16;
 
 const styles = StyleSheet.create({
   textInput: {
@@ -64,7 +62,7 @@ const styles = StyleSheet.create({
     fontFamily: 'montserratSemiBold',
     borderColor: colors.GRAY_TXT,
     color: 'black',
-    marginBottom: inputBottomMargin,
+    marginBottom: commonStyle.inputBottomMargin,
     borderTopLeftRadius: 5,
     borderTopRightRadius: 5,
   },
@@ -76,21 +74,6 @@ const styles = StyleSheet.create({
   },
   heightArea: {
     height: 250,
-  },
-  textAddImage: {
-    color: colors.GRAY_TXT,
-    fontSize: 16,
-    fontFamily: 'montserratBold',
-  },
-  addImgContainer: {
-    alignItems: 'center',
-    paddingVertical: 15,
-    backgroundColor: colors.GRAY_BG,
-    borderBottomWidth: 3,
-    borderColor: colors.GRAY_TXT,
-    marginBottom: inputBottomMargin,
-    borderTopLeftRadius: 5,
-    borderTopRightRadius: 5,
   },
 });
 

@@ -12,7 +12,6 @@ class Store extends Container {
     categories: [],
     user: null,
     users: null,
-    updateUserError: null,
     error: null,
   };
 
@@ -52,12 +51,12 @@ class Store extends Container {
     }
   };
 
-  storeUser = (userId, email, name, followedCategory) => {
+  storeUser = (userId, email, name, img) => {
     db.ref(`users/${userId}`).set({
       id: userId,
       email,
       name,
-      followedCategory,
+      img,
     });
   };
 
@@ -68,7 +67,7 @@ class Store extends Container {
       await firebase.auth().createUserWithEmailAndPassword(formatedEmail, password);
 
       const { currentUser } = firebase.auth();
-      await this.storeUser(currentUser.uid, formatedEmail, name, {});
+      await this.storeUser(currentUser.uid, formatedEmail, name, '');
     } catch (error) {
       this.setState({
         error,
@@ -84,40 +83,6 @@ class Store extends Container {
     } catch (error) {
       this.setState({ error, loading: false });
     }
-  };
-
-  updateUser = async ({ newName, newEmail, currentPassword }) => {
-    try {
-      this.setState({ loading: true });
-      const { currentUser } = firebase.auth();
-      if (newEmail.toLowerCase() !== currentUser.email.toLowerCase()) {
-        await this.reauthenticateUser(currentPassword);
-        await currentUser.updateEmail(newEmail);
-      }
-      await db.ref(`/users/${currentUser.uid}`).update({
-        name: newName,
-        email: newEmail,
-      });
-
-      await this.getUser();
-      await this.getUsers();
-      await this.getTheories();
-    } catch (error) {
-      this.setState({
-        updateUserError: { message: error.message, code: error.code },
-        loading: false,
-      });
-    }
-  };
-
-  ResetUserError = () => {
-    this.setState({ updateUserError: null });
-  };
-
-  reauthenticateUser = currentPassword => {
-    const { currentUser } = firebase.auth();
-    const cred = firebase.auth.EmailAuthProvider.credential(currentUser.email, currentPassword);
-    return currentUser.reauthenticateAndRetrieveDataWithCredential(cred);
   };
 
   // THEORY //

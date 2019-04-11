@@ -1,21 +1,22 @@
 import React, { Component } from 'react';
-import { View, Text, Alert } from 'react-native';
+import { View, Text, Alert, StyleSheet, Image } from 'react-native';
 import firebase from 'firebase';
-import { ImagePicker } from 'expo';
 import { Subscribe } from 'unstated';
 import { Formik } from 'formik';
 import ModalSelector from 'react-native-modal-selector';
+import { ImagePicker } from 'expo';
 
+import { MaterialIcons } from '@expo/vector-icons';
 import { InputComponent, AddImgComponent } from '../../components/InputComponent';
 import { PrimaryButton } from '../../components/ButtonComponent';
 
-import { getPermAsync } from '../../utils/Utils';
 import db from '../../config/Database';
 import Layout from '../../components/Layout';
 import colors from '../../assets/colors';
 import Store from '../../store';
 import TheorySchema from '../../schema/theorySchema';
 import { commonStyle } from '../../utils/commonStyles';
+import { getPermAsync } from '../../utils/Utils';
 
 const AddTheoryScreen = props => (
   <Subscribe to={[Store]}>
@@ -26,12 +27,12 @@ const AddTheoryScreen = props => (
 class Child extends Component {
   state = {
     error: '',
-    imgUrl: '',
-    resultImg: null,
     loading: false,
     textInputValue: '',
     hasError: true,
     modalClosed: false,
+    imgUrl: '',
+    resultImg: null,
   };
 
   onChooseImagePress = async () => {
@@ -50,14 +51,14 @@ class Child extends Component {
     }
   };
 
-  uploadImage = async (uri, imageName) => {
+  uploadImage = async (uri, imageName, type) => {
     const response = await fetch(uri);
     const blob = await response.blob();
 
     const ref = firebase
       .storage()
       .ref()
-      .child(`images/theories/${imageName}`);
+      .child(`images/${type}/${imageName}`);
 
     await ref.put(blob);
 
@@ -93,6 +94,28 @@ class Child extends Component {
   };
 
   render() {
+    let img = (
+      <React.Fragment>
+        <MaterialIcons name="add" size={36} color={colors.GRAY_TXT} />
+        <Text style={styles.textAddImage}>Add img</Text>
+      </React.Fragment>
+    );
+
+    if (this.state.resultImg) {
+      img = (
+        <Image
+          style={{
+            width: '100%',
+            height: '100%',
+          }}
+          resizeMode="cover"
+          source={{
+            uri: this.state.resultImg.uri,
+          }}
+        />
+      );
+    }
+
     const categories = this.props.store.state.categories.map((cat, index) => {
       return {
         key: index,
@@ -114,19 +137,25 @@ class Child extends Component {
             comments: [],
           }}
           onSubmit={async (values, { setSubmitting }) => {
-            this.setState({ loading: true });
-            if (this.state.resultImg) {
-              await this.uploadImage(this.state.resultImg.uri, values.name);
+            try {
+              this.setState({ loading: true });
+
+              if (this.state.resultImg) {
+                await this.uploadImage(this.state.resultImg.uri, values.name, 'theories');
+              }
+
+              const formatedValues = {
+                ...values,
+                category: this.state.textInputValue,
+                img: this.state.imgUrl,
+              };
+
+              await this.handleSubmit(formatedValues);
+              setSubmitting(false);
+            } catch (error) {
+              Alert.alert(error);
+              setSubmitting(false);
             }
-
-            const formatedValues = {
-              ...values,
-              category: this.state.textInputValue,
-              img: this.state.imgUrl,
-            };
-
-            await this.handleSubmit(formatedValues);
-            setSubmitting(false);
           }}
           validationSchema={TheorySchema}
         >
@@ -134,9 +163,12 @@ class Child extends Component {
             return (
               <View>
                 <AddImgComponent
-                  pressed={() => this.onChooseImagePress(props.values.name)}
-                  label="Add your image"
-                />
+                  pressed={this.onChooseImagePress}
+                  title="Ajouter une image"
+                  styleAddImg={styles.addImgContainer}
+                >
+                  {img}
+                </AddImgComponent>
                 <InputComponent
                   label="Nom de la théorie *"
                   onBlur={props.handleBlur('name')}
@@ -197,5 +229,25 @@ class Child extends Component {
     );
   }
 }
+
+const styles = StyleSheet.create({
+  textAddImage: {
+    color: colors.GRAY_TXT,
+    fontSize: 16,
+    fontFamily: 'montserratBold',
+  },
+  addImgContainer: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    height: 100,
+    backgroundColor: colors.GRAY_BG,
+    borderBottomWidth: 3,
+    borderColor: colors.GRAY_TXT,
+    marginBottom: commonStyle.inputBottomMargin,
+    borderTopLeftRadius: 5,
+    borderTopRightRadius: 5,
+    overflow: 'hidden',
+  },
+});
 
 export default AddTheoryScreen;
