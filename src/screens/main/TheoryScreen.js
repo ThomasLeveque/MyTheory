@@ -96,17 +96,17 @@ class Child extends React.Component {
           <InputComponent
             value={this.state.comment}
             onChangeText={comment => this.setState({ comment })}
-            placeholder="Your comment"
+            placeholder="Votre commentaire"
           />
           {this.state.errorMessage && (
             <Text style={{ color: 'red' }}>{this.state.errorMessage}</Text>
           )}
           <PrimaryButton
-            title="Add comment"
-            styleButton={{alignSelf: 'center', marginBottom: 20}}
+            title="Ajouter un commentaire"
+            styleButton={{ alignSelf: 'center', marginBottom: 20 }}
             onPress={this.handleSubmit}
             loading={this.state.loading}
-            pictoName='create'
+            pictoName="create"
             startColor={colors.GRADIENT_START}
             endColor={colors.GRADIENT_END}
           />

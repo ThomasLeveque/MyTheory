@@ -28,7 +28,7 @@ import colors from './assets/colors';
 
 const TabsNavigator = createBottomTabNavigator(
   {
-    theories: {
+    Théories: {
       screen: TheoriesScreen,
       navigationOptions: {
         tabBarIcon: ({ tintColor }) => (
@@ -36,7 +36,7 @@ const TabsNavigator = createBottomTabNavigator(
         ),
       },
     },
-    chat: {
+    Chat: {
       screen: ChatScreen,
       navigationOptions: {
         tabBarIcon: ({ tintColor }) => (
@@ -44,7 +44,7 @@ const TabsNavigator = createBottomTabNavigator(
         ),
       },
     },
-    home: {
+    Acceuil: {
       screen: HomeScreen,
       navigationOptions: {
         tabBarIcon: ({ tintColor }) => (
@@ -52,7 +52,7 @@ const TabsNavigator = createBottomTabNavigator(
         ),
       },
     },
-    activity: {
+    Activité: {
       screen: ActivityScreen,
       navigationOptions: {
         tabBarIcon: ({ tintColor }) => (
@@ -60,7 +60,7 @@ const TabsNavigator = createBottomTabNavigator(
         ),
       },
     },
-    profil: {
+    Profil: {
       screen: ProfilScreen,
       navigationOptions: {
         tabBarIcon: ({ tintColor }) => (
@@ -70,7 +70,7 @@ const TabsNavigator = createBottomTabNavigator(
     },
   },
   {
-    initialRouteName: 'home',
+    initialRouteName: 'Acceuil',
     tabBarOptions: {
       inactiveTintColor: colors.GRAY,
       activeTintColor: colors.PRIMARY,
