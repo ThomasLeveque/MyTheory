@@ -223,7 +223,6 @@ class Child extends Component {
             );
           }}
         </Formik>
-
         {this.state.error && <Text>{this.state.error}</Text>}
       </Layout>
     );
