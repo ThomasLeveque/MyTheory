@@ -15,7 +15,7 @@ const InputComponent = ({
   hasError,
   isEditable = true,
   secureTextEntry,
-  onChangeValue
+  onChangeValue,
 }) => {
   return (
     <View>

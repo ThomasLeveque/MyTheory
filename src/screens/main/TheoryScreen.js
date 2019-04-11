@@ -1,14 +1,16 @@
 import React from 'react';
 import { Image, StyleSheet, Text, View, FlatList } from 'react-native';
 import { Subscribe } from 'unstated';
+import { MaterialIcons } from '@expo/vector-icons';
 
 import firebase from 'firebase';
 import { InputComponent } from '../../components/InputComponent';
 import { PrimaryButton } from '../../components/ButtonComponent';
-import CardComponent from '../../components/CardComponent';
+import CommentComponent from '../../components/CommentComponent';
 
 import Store from '../../store';
 import colors from '../../assets/colors';
+import Layout from '../../components/Layout';
 
 const TheoryScreen = props => (
   <Subscribe to={[Store]}>
@@ -49,58 +51,72 @@ class Child extends React.Component {
       await this.props.store.addCommentTheory(params);
       this.getComments();
       this.setState({ loading: false });
+    } else {
+      this.setState({ loading: false });
     }
   };
 
   render() {
     const theory = this.props.navigation.state.params.theory;
     return (
-      <View style={styles.container}>
-        <Image
-          style={{ width: '100%', height: '50%' }}
-          source={{
-            uri: 'https://s3.amazonaws.com/uifaces/faces/twitter/brynn/128.jpg',
-          }}
-        />
-        <Text>{theory.name}</Text>
-        <Text>{theory.description}</Text>
-        <View style={styles.containerInline}>
-          <Text style={styles.elementInline}>208 likes</Text>
-          {/* <Button
-            color="red"
-            title="join chat"
-            onPress={() => { }}
-            buttonStyle={{
-              borderRadius: 0,
-              marginLeft: 0,
-              marginRight: 0,
-              marginBottom: 0,
+      <Layout style={styles.container}>
+        {theory.img && (
+          <Image
+            style={{ width: '100%' }}
+            source={{
+              uri: theory.img,
             }}
-          /> */}
+          />
+        )}
+        <View style={{}}>
+          <Text
+            style={{ fontSize: 25, fontFamily: 'montserratBold', marginTop: 10, marginLeft: 10 }}
+          >
+            {theory.name}
+          </Text>
+          <Text style={{ fontSize: 14, fontFamily: 'montserratRegular', marginTop: 15 }}>
+            {theory.description}
+          </Text>
+          <View style={(styles.containerInline, { marginTop: 10, flexDirection: 'row' })}>
+            <MaterialIcons name="thumb-up" size={20} color="black" />
+            <Text
+              style={
+                (styles.elementInline,
+                { marginLeft: 10, fontFamily: 'montserratLight', fontSize: 15 })
+              }
+            >
+              208 likes
+            </Text>
+          </View>
+
+          <Text style={{ fontFamily: 'montserratSemiBold', fontSize: 18, marginTop: 15 }}>
+            Commentaires
+          </Text>
+
+          <InputComponent
+            value={this.state.comment}
+            onChangeText={comment => this.setState({ comment })}
+            placeholder="Your comment"
+          />
+          {this.state.errorMessage && (
+            <Text style={{ color: 'red' }}>{this.state.errorMessage}</Text>
+          )}
+          <PrimaryButton
+            title="Add comment"
+            styleButton={{alignSelf: 'center', marginBottom: 20}}
+            onPress={this.handleSubmit}
+            loading={this.state.loading}
+            pictoName='create'
+            startColor={colors.GRADIENT_START}
+            endColor={colors.GRADIENT_END}
+          />
+          <FlatList
+            data={this.state.comments}
+            keyExtractor={({ date }) => date.toString()}
+            renderItem={({ item }) => <CommentComponent commentObject={item} />}
+          />
         </View>
-        <Text>Comments</Text>
-        <InputComponent
-          value={this.state.comment}
-          onChangeValue={comment => this.setState({ comment })}
-          placeholder="Your comment"
-          styleInput={styles.itemInput}
-        />
-        {this.state.errorMessage && <Text style={{ color: 'red' }}>{this.state.errorMessage}</Text>}
-        <PrimaryButton
-          title="Add comment"
-          styleButton={styles.button}
-          styleText={styles.buttonText}
-          onPress={this.handleSubmit}
-          loading={this.state.loading}
-          startColor={colors.GRAY}
-          endColor={colors.GRAY}
-        />
-        <FlatList
-          data={this.state.comments}
-          keyExtractor={({ date }) => date.toString()}
-          renderItem={({ item }) => <CardComponent theory={item} />}
-        />
-      </View>
+      </Layout>
     );
   }
 }
@@ -108,18 +124,18 @@ class Child extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center',
+    // marginLeft: 25,
   },
   containerInline: {
     flex: 1,
     marginRight: 50,
-    marginLeft: 50,
+    marginLeft: 10,
   },
   elementInline: {
     flex: 2,
   },
   itemInput: {
-    height: 50,
+    height: 55,
     padding: 4,
     marginRight: 5,
     fontSize: 23,

@@ -7,7 +7,8 @@ import { createStackNavigator } from 'react-navigation';
 import HomeScreen from '../screens/main/HomeScreen';
 
 const CardComponent = ({ theory, navigation }) => {
-  const { img, title, category, user, description, likes, comments, peoples } = theory;
+  const { img, name, category, user, description, likes, comments, peoples } = theory;
+  const imageSize = 20;
   return (
     <TouchableOpacity
       onPress={() => navigation.navigate('theory', { theory })}
@@ -41,7 +42,7 @@ const CardComponent = ({ theory, navigation }) => {
             left: 0,
           }}
         />
-        <View style={{ flex: 1, borderTopRightRadius: 5, overflow: 'hidden', marginBottom: 10 }}>
+        <View style={{ flex: 1, borderTopRightRadius: 5, overflow: 'hidden', marginBottom: 0 }}>
           {img && (
             <Image
               style={{
@@ -57,21 +58,21 @@ const CardComponent = ({ theory, navigation }) => {
           )}
           <Text
             style={{
-              color: 'black',
-              marginLeft: 10,
               fontSize: 25,
-              fontWeight: 'bold',
-              marginTop: 10,
+              fontFamily: 'montserratBold',
+              marginTop: 15,
+              marginLeft: 10,
+              color: 'black',
             }}
           >
-            {title}
+            {name}
           </Text>
           <Text
             style={{
-              color: 'grey',
+              color: colors.GRAY,
               marginLeft: 10,
-              fontSize: 12,
-              fontWeight: '100',
+              fontSize: 14,
+              fontFamily: 'montserratLight',
               marginTop: 2,
             }}
           >
@@ -82,7 +83,7 @@ const CardComponent = ({ theory, navigation }) => {
               color: 'black',
               marginLeft: 10,
               fontSize: 15,
-              fontWeight: '100',
+              fontFamily: 'montserratLight',
               marginTop: 8,
             }}
           >
@@ -90,7 +91,7 @@ const CardComponent = ({ theory, navigation }) => {
           </Text>
           <View style={{ flex: 1, flexDirection: 'row', marginTop: 8, marginLeft: 10 }}>
             <View style={{ flex: 0.3, flexDirection: 'row' }}>
-              <MaterialIcons name={'thumb-up'} size={20} color="black" />>
+              <MaterialIcons name={'thumb-up'} size={20} color="black" />
               <Text style={{ marginLeft: 5, color: 'grey', fontSize: 12, fontWeight: '100' }}>
                 {likes}
               </Text>
@@ -102,17 +103,40 @@ const CardComponent = ({ theory, navigation }) => {
               </Text>
             </View>
           </View>
-          <Text
+          <View
             style={{
+              flex: 1,
+              flexDirection: 'row',
+              marginBottom: 10,
               marginLeft: 10,
               marginTop: 10,
-              color: 'grey',
-              fontSize: 12,
-              fontWeight: '100',
             }}
           >
-            by {user.name}
-          </Text>
+            <View
+              style={{
+                width: imageSize,
+                height: imageSize,
+                borderRadius: imageSize / 2,
+                overflow: 'hidden',
+                backgroundColor: colors.GRAY_BG,
+              }}
+            >
+              <Image
+                style={{ width: '100%', height: '100%', resizeMode: 'cover' }}
+                source={{ uri: user.img }}
+              />
+            </View>
+            <Text
+              style={{
+                color: colors.GRAY,
+                fontSize: 14,
+                marginLeft: 5,
+                fontFamily: 'montserratLight',
+              }}
+            >
+              {user.name}
+            </Text>
+          </View>
         </View>
       </View>
     </TouchableOpacity>
