@@ -1,5 +1,5 @@
 import React from 'react';
-import { Image, StyleSheet, Text, View, FlatList } from 'react-native';
+import { Image, StyleSheet, Text, View, FlatList, TouchableOpacity } from 'react-native';
 import { Subscribe } from 'unstated';
 import { MaterialIcons } from '@expo/vector-icons';
 
@@ -61,33 +61,37 @@ class Child extends React.Component {
     return (
       <Layout style={styles.container}>
         {theory.img && (
-          <Image
-            style={{ width: '100%' }}
-            source={{
-              uri: theory.img,
-            }}
-          />
+          <View style={{ height: 200, width: '100%' }}>
+            <Image
+              style={{ width: '100%', height: '100%' }}
+              resizeMode="cover"
+              source={{
+                uri: theory.img,
+              }}
+            />
+          </View>
         )}
-        <View style={{}}>
-          <Text
-            style={{ fontSize: 25, fontFamily: 'montserratBold', marginTop: 10, marginLeft: 10 }}
-          >
+        <View>
+          <Text style={{ fontSize: 25, fontFamily: 'montserratBold', marginTop: 10 }}>
             {theory.name}
           </Text>
           <Text style={{ fontSize: 14, fontFamily: 'montserratRegular', marginTop: 15 }}>
             {theory.description}
           </Text>
-          <View style={(styles.containerInline, { marginTop: 10, flexDirection: 'row' })}>
+          <TouchableOpacity
+            onPress={() => this.props.store.addTheoryLike(theory)}
+            style={(styles.containerInline, { marginTop: 10, flexDirection: 'row' })}
+          >
             <MaterialIcons name="thumb-up" size={20} color="black" />
             <Text
-              style={
-                (styles.elementInline,
-                { marginLeft: 10, fontFamily: 'montserratLight', fontSize: 15 })
-              }
+              style={[
+                styles.elementInline,
+                { marginLeft: 10, fontFamily: 'montserratLight', fontSize: 15 },
+              ]}
             >
-              208 likes
+              {theory.likes && `${theory.likes.length} likes`}
             </Text>
-          </View>
+          </TouchableOpacity>
 
           <Text style={{ fontFamily: 'montserratSemiBold', fontSize: 18, marginTop: 15 }}>
             Commentaires
@@ -109,6 +113,7 @@ class Child extends React.Component {
             pictoName="create"
             startColor={colors.GRADIENT_START}
             endColor={colors.GRADIENT_END}
+            disabled={this.state.loading}
           />
           <FlatList
             data={this.state.comments}

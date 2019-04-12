@@ -15,6 +15,7 @@ import games from '../../assets/imageCategory/games.png';
 import history from '../../assets/imageCategory/history.png';
 import series from '../../assets/imageCategory/series.png';
 import political from '../../assets/imageCategory/political.jpg';
+import CardComponent from '../../components/CardComponent';
 
 const TheoriesScreen = props => (
   <Subscribe to={[Store]}>
@@ -83,6 +84,7 @@ class Child extends React.Component {
             onPress={() => {
               this.setState({ currentCategory: null });
             }}
+            style={{ marginBottom: 10 }}
           >
             Retour
           </Text>
@@ -90,7 +92,9 @@ class Child extends React.Component {
             {this.state.currentCategory}
           </Text>
           {this.state.currentTheories.map(theory => {
-            return <Text key={theory.id}>{theory.name}</Text>;
+            return (
+              <CardComponent navigation={this.props.navigation} theory={theory} key={theory.id} />
+            );
           })}
         </View>
       );
@@ -110,7 +114,7 @@ class Child extends React.Component {
             colors={[colors.GRADIENT_START, colors.GRADIENT_END]}
           >
             <MaterialIcons name="add" size={36} color="white" />
-            <Text style={styles.textAddTheory}>Add Theory</Text>
+            <Text style={styles.textAddTheory}>Ajouter une theory</Text>
           </LinearGradient>
         </TouchableOpacity>
         {content}

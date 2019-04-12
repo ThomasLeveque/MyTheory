@@ -80,6 +80,7 @@ const CardComponent = ({ theory, navigation, cardStyle }) => {
             {category}
           </Text>
           <Text
+            numberOfLines={3}
             style={{
               color: 'black',
               marginLeft: 10,
@@ -91,10 +92,10 @@ const CardComponent = ({ theory, navigation, cardStyle }) => {
             {description}
           </Text>
           <View style={{ flex: 1, flexDirection: 'row', marginTop: 8, marginLeft: 10 }}>
-            <View style={{ flex: 0.3, flexDirection: 'row' }}>
+            <View style={{ flex: 0.3, flexDirection: 'row', alignItems: 'center' }}>
               <MaterialIcons name={'thumb-up'} size={20} color="black" />
               <Text style={{ marginLeft: 5, color: 'grey', fontSize: 12, fontWeight: '100' }}>
-                {likes}
+                {likes && likes.length}
               </Text>
             </View>
             <View style={{ flex: 0.3, flexDirection: 'row' }}>
@@ -120,12 +121,18 @@ const CardComponent = ({ theory, navigation, cardStyle }) => {
                 borderRadius: imageSize / 2,
                 overflow: 'hidden',
                 backgroundColor: colors.GRAY_BG,
+                justifyContent: 'center',
+                alignItems: 'center',
+                alignSelf: 'flex-end',
               }}
             >
-              <Image
-                style={{ width: '100%', height: '100%', resizeMode: 'cover' }}
-                source={{ uri: user.img }}
-              />
+              {user.img ? (
+                <Image
+                  style={{ width: '100%', height: '100%', resizeMode: 'cover' }}
+                  source={{ uri: user.img }}
+                />) : (
+                  <MaterialIcons name="photo" size={imageSize / 2} color={colors.PRIMARY} />
+                )}
             </View>
             <Text
               style={{
@@ -133,6 +140,7 @@ const CardComponent = ({ theory, navigation, cardStyle }) => {
                 fontSize: 14,
                 marginLeft: 5,
                 fontFamily: 'montserratLight',
+                alignSelf: 'flex-end',
               }}
             >
               {user.name}

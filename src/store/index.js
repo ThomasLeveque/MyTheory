@@ -151,6 +151,14 @@ class Store extends Container {
     }
     return null;
   };
+
+  addTheoryLike = async theory => {
+    const { currentUser } = firebase.auth();
+    await db.ref(`/theory/${theory.id}`).update({
+      likes: theory.likes ? [...theory.likes, currentUser.uid] : [currentUser.uid],
+    });
+    await this.getTheories();
+  };
 }
 
 export default Store;
