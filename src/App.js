@@ -44,7 +44,7 @@ const TabsNavigator = createBottomTabNavigator(
         ),
       },
     },
-    Acceuil: {
+    Accueil: {
       screen: HomeScreen,
       navigationOptions: {
         tabBarIcon: ({ tintColor }) => (
@@ -70,7 +70,7 @@ const TabsNavigator = createBottomTabNavigator(
     },
   },
   {
-    initialRouteName: 'Acceuil',
+    initialRouteName: 'Accueil',
     tabBarOptions: {
       inactiveTintColor: colors.GRAY,
       activeTintColor: colors.PRIMARY,
