@@ -26,12 +26,19 @@ const CommentComponent = ({ commentObject }) => {
             borderRadius: imageSize / 2,
             overflow: 'hidden',
             backgroundColor: colors.GRAY_BG,
+            justifyContent: 'center',
+            alignItems: 'center',
           }}
         >
-          <Image
-            style={{ width: '100%', height: '100%', resizeMode: 'cover' }}
-            source={{ uri: user.img }}
-          />
+          {user.img ? (
+            <Image
+              style={{ width: '100%', height: '100%', resizeMode: 'cover' }}
+              source={{ uri: user.img }}
+            />) : (
+              <MaterialIcons name="photo" size={imageSize / 2} color={colors.PRIMARY} />
+            )
+          }
+
         </View>
         <View style={{ flexDirection: 'column', marginLeft: 10 }}>
           <Text
@@ -79,5 +86,5 @@ const CommentComponent = ({ commentObject }) => {
 };
 
 const gradientWidth = 8;
-//const styles
+
 export default CommentComponent;

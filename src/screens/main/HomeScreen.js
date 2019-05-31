@@ -75,7 +75,7 @@ class Child extends React.Component {
   };
 
   render() {
-    const numberOfTheories = 3;
+    const numberOfTheories = 2;
 
     const politicalTheory = this.props.store.state.theories.filter(
       _theory => _theory.category === POLITICAL,
@@ -96,48 +96,6 @@ class Child extends React.Component {
     return (
       <Layout>
         <Text style={[commonStyle.titleStyle, { marginBottom: 10 }]}>
-          {categoryTrads[POLITICAL]}
-        </Text>
-        <FlatList
-          data={politicalTheory.slice(0, numberOfTheories)}
-          horizontal
-          ItemSeparatorComponent={this.renderSeparator}
-          showsHorizontalScrollIndicator={false}
-          renderItem={({ item }) => {
-            return <CardComponent theory={item} cardStyle={{ width: width * 0.7 }} />;
-          }}
-          ListFooterComponent={() => this.renderFooter(POLITICAL, politicalTheory)}
-          keyExtractor={item => item.id}
-        />
-        <Text style={[commonStyle.titleStyle, { marginTop: 20, marginBottom: 10 }]}>
-          {categoryTrads[HISTORY]}
-        </Text>
-        <FlatList
-          data={historyTheory.slice(0, numberOfTheories)}
-          horizontal
-          ItemSeparatorComponent={this.renderSeparator}
-          showsHorizontalScrollIndicator={false}
-          renderItem={({ item }) => {
-            return <CardComponent theory={item} cardStyle={{ width: width * 0.7 }} />;
-          }}
-          ListFooterComponent={() => this.renderFooter(HISTORY, historyTheory)}
-          keyExtractor={item => item.id}
-        />
-        <Text style={[commonStyle.titleStyle, { marginTop: 20, marginBottom: 10 }]}>
-          {categoryTrads[VIDEO_GAMES]}
-        </Text>
-        <FlatList
-          data={gameTheory.slice(0, numberOfTheories)}
-          horizontal
-          ItemSeparatorComponent={this.renderSeparator}
-          showsHorizontalScrollIndicator={false}
-          renderItem={({ item }) => {
-            return <CardComponent theory={item} cardStyle={{ width: width * 0.7 }} />;
-          }}
-          ListFooterComponent={() => this.renderFooter(VIDEO_GAMES, gameTheory)}
-          keyExtractor={item => item.id}
-        />
-        <Text style={[commonStyle.titleStyle, { marginTop: 20, marginBottom: 10 }]}>
           {categoryTrads[MOVIE_SERIES]}
         </Text>
         <FlatList
@@ -155,6 +113,66 @@ class Child extends React.Component {
             );
           }}
           ListFooterComponent={() => this.renderFooter(MOVIE_SERIES, movieTheory)}
+          keyExtractor={item => item.id}
+        />
+        <Text style={[commonStyle.titleStyle, { marginTop: 20, marginBottom: 10 }]}>
+          {categoryTrads[POLITICAL]}
+        </Text>
+        <FlatList
+          data={politicalTheory.slice(0, numberOfTheories)}
+          horizontal
+          ItemSeparatorComponent={this.renderSeparator}
+          showsHorizontalScrollIndicator={false}
+          renderItem={({ item }) => {
+            return (
+              <CardComponent
+                theory={item}
+                cardStyle={{ width: width * 0.7 }}
+                navigation={this.props.navigation}
+              />
+            );
+          }}
+          ListFooterComponent={() => this.renderFooter(POLITICAL, politicalTheory)}
+          keyExtractor={item => item.id}
+        />
+        <Text style={[commonStyle.titleStyle, { marginTop: 20, marginBottom: 10 }]}>
+          {categoryTrads[HISTORY]}
+        </Text>
+        <FlatList
+          data={historyTheory.slice(0, numberOfTheories)}
+          horizontal
+          ItemSeparatorComponent={this.renderSeparator}
+          showsHorizontalScrollIndicator={false}
+          renderItem={({ item }) => {
+            return (
+              <CardComponent
+                theory={item}
+                cardStyle={{ width: width * 0.7 }}
+                navigation={this.props.navigation}
+              />
+            );
+          }}
+          ListFooterComponent={() => this.renderFooter(HISTORY, historyTheory)}
+          keyExtractor={item => item.id}
+        />
+        <Text style={[commonStyle.titleStyle, { marginTop: 20, marginBottom: 10 }]}>
+          {categoryTrads[VIDEO_GAMES]}
+        </Text>
+        <FlatList
+          data={gameTheory.slice(0, numberOfTheories)}
+          horizontal
+          ItemSeparatorComponent={this.renderSeparator}
+          showsHorizontalScrollIndicator={false}
+          renderItem={({ item }) => {
+            return (
+              <CardComponent
+                theory={item}
+                cardStyle={{ width: width * 0.7 }}
+                navigation={this.props.navigation}
+              />
+            );
+          }}
+          ListFooterComponent={() => this.renderFooter(VIDEO_GAMES, gameTheory)}
           keyExtractor={item => item.id}
         />
       </Layout>
