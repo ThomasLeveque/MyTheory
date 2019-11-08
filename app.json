@@ -4,7 +4,7 @@
     "description": "This project is really great.",
     "slug": "my-theory",
     "privacy": "public",
-    "sdkVersion": "30.0.0",
+    "sdkVersion": "35.0.0",
     "platforms": [
       "ios",
       "android"
