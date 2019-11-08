@@ -12,17 +12,6 @@
     "lint": "eslint --color --debug src/ ; exit 0",
     "lint:write": "eslint --color --debug src/ --fix"
   },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged"
-    }
-  },
-  "lint-staged": {
-    "*.(js|jsx)": [
-      "npm run lint:write",
-      "git add"
-    ]
-  },
   "dependencies": {
     "@expo/vector-icons": "^10.0.0",
     "expo": "^35.0.0",
