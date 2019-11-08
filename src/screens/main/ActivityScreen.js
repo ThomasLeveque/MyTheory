@@ -9,11 +9,11 @@ import Store from '../../store/index';
 
 const ActivityScreen = props => (
   <Subscribe to={[Store]}>
-    {store => <Child store={store} navigation={props.navigation} />}
+    {store => <ActivityChild store={store} navigation={props.navigation} />}
   </Subscribe>
 );
 
-const Child = props => {
+const ActivityChild = props => {
   return (
     <Layout>
       <SafeAreaView forceInset={{ bottom: 'never' }} style={styles.container}>

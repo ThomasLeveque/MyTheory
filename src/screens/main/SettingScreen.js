@@ -17,9 +17,11 @@ import { commonStyle } from '../../utils/commonStyles';
 
 const { width } = Dimensions.get('window');
 
-const SettingScreen = () => <Subscribe to={[Store]}>{store => <Child store={store} />}</Subscribe>;
+const SettingScreen = () => (
+  <Subscribe to={[Store]}>{store => <SettingChild store={store} />}</Subscribe>
+);
 
-class Child extends React.Component {
+class SettingChild extends React.Component {
   state = {
     newName: this.props.store.state.user.name,
     newEmail: this.props.store.state.user.email,

@@ -2,7 +2,7 @@ import React from 'react';
 import { Text, View, TouchableOpacity, ActivityIndicator, StyleSheet, Image } from 'react-native';
 import firebase from 'firebase';
 import { Subscribe } from 'unstated';
-import { createStackNavigator } from 'react-navigation';
+import { createStackNavigator } from 'react-navigation-stack';
 import { MaterialIcons, Entypo } from '@expo/vector-icons';
 import { SecondaryButton } from '../../components/ButtonComponent';
 import CardComponent from '../../components/CardComponent';
@@ -16,11 +16,11 @@ import { commonStyle } from '../../utils/commonStyles';
 
 const ProfilScreen = props => (
   <Subscribe to={[Store]}>
-    {store => <Child store={store} navigation={props.navigation} />}
+    {store => <ProfilChild store={store} navigation={props.navigation} />}
   </Subscribe>
 );
 
-class Child extends React.Component {
+class ProfilChild extends React.Component {
   state = {
     loading: false,
   };

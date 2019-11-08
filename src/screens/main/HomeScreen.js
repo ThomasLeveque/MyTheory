@@ -1,13 +1,15 @@
 import React from 'react';
 import { Subscribe } from 'unstated';
-import { createStackNavigator } from 'react-navigation';
-import { LinearGradient } from 'expo';
+import { createStackNavigator } from 'react-navigation-stack';
+import { LinearGradient } from 'expo-linear-gradient';
+
 import { Text, FlatList, Dimensions, View, TouchableOpacity } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
-import Store from '../../store';
-import CardComponent from '../../components/CardComponent';
 
 import CategoryTheory from './CategoryTheory';
+
+import Store from '../../store';
+import CardComponent from '../../components/CardComponent';
 import Layout from '../../components/Layout';
 import { commonStyle } from '../../utils/commonStyles';
 import colors from '../../assets/colors';
@@ -22,11 +24,11 @@ const { width } = Dimensions.get('window');
 
 const HomeScreen = props => (
   <Subscribe to={[Store]}>
-    {store => <Child store={store} navigation={props.navigation} />}
+    {store => <HomeChild store={store} navigation={props.navigation} />}
   </Subscribe>
 );
 
-class Child extends React.Component {
+class HomeChild extends React.Component {
   renderSeparator = () => {
     return (
       <View

@@ -1,22 +1,22 @@
 import React from 'react';
 import { GiftedChat } from 'react-native-gifted-chat';
 import { Subscribe } from 'unstated';
-import { createStackNavigator } from 'react-navigation';
+import { createStackNavigator } from 'react-navigation-stack';
 import { KeyboardAvoidingView, StyleSheet } from 'react-native';
 
 import Store from '../../store';
 
 const ChatScreen = props => (
   <Subscribe to={[Store]}>
-    {store => <Child store={store} navigation={props.navigation} />}
+    {store => <ChatChild store={store} navigation={props.navigation} />}
   </Subscribe>
 );
 
-class Child extends React.Component {
-  static navigationOptions = {
-    header: null,
-  };
+ChatScreen.navigationOptions = {
+  header: null,
+};
 
+class ChatChild extends React.Component {
   state = {
     messages: [],
   };

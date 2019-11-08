@@ -1,8 +1,8 @@
 import React from 'react';
 import { Subscribe } from 'unstated';
-import { createStackNavigator } from 'react-navigation';
+import { createStackNavigator } from 'react-navigation-stack';
 import { FlatList, StyleSheet, Text, View, TouchableOpacity, ImageBackground } from 'react-native';
-import { LinearGradient } from 'expo';
+import { LinearGradient } from 'expo-linear-gradient';
 
 import { MaterialIcons } from '@expo/vector-icons';
 import AddTheoryScreen from './AddTheoryScreen';
@@ -19,11 +19,11 @@ import CardComponent from '../../components/CardComponent';
 
 const TheoriesScreen = props => (
   <Subscribe to={[Store]}>
-    {store => <Child store={store} navigation={props.navigation} />}
+    {store => <TheoriesChild store={store} navigation={props.navigation} />}
   </Subscribe>
 );
 
-class Child extends React.Component {
+class TheoriesChild extends React.Component {
   state = {
     currentCategory: null,
     currentTheories: null,

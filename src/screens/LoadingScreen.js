@@ -2,7 +2,8 @@ import React from 'react';
 import { Image, ActivityIndicator, StyleSheet, Text } from 'react-native';
 import firebase from 'firebase';
 import { Subscribe } from 'unstated';
-import { Font, LinearGradient } from 'expo';
+import { LinearGradient } from 'expo-linear-gradient';
+import * as Font from 'expo-font';
 
 import Store from '../store';
 import fonts from '../assets/fonts';
@@ -12,11 +13,11 @@ const logo = require('../assets/logo.png');
 
 const LoadingScreen = props => (
   <Subscribe to={[Store]}>
-    {store => <Child store={store} navigation={props.navigation} />}
+    {store => <LoadingChild store={store} navigation={props.navigation} />}
   </Subscribe>
 );
 
-class Child extends React.Component {
+class LoadingChild extends React.Component {
   async componentDidMount() {
     await Font.loadAsync(fonts);
 

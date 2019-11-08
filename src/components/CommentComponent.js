@@ -1,12 +1,13 @@
 import React from 'react';
 import { Image, Text, TouchableOpacity, StyleSheet, View } from 'react-native';
-import { LinearGradient } from 'expo';
 import { MaterialIcons } from '@expo/vector-icons';
 import colors from '../assets/colors';
 
 const CommentComponent = ({ commentObject }) => {
   const imageSize = 35;
+  const gradientWidth = 8;
   const { comment, idTheory, user, dateFormat } = commentObject;
+
   return (
     <View
       style={{
@@ -34,11 +35,10 @@ const CommentComponent = ({ commentObject }) => {
             <Image
               style={{ width: '100%', height: '100%', resizeMode: 'cover' }}
               source={{ uri: user.img }}
-            />) : (
-              <MaterialIcons name="photo" size={imageSize / 2} color={colors.PRIMARY} />
-            )
-          }
-
+            />
+          ) : (
+            <MaterialIcons name="photo" size={imageSize / 2} color={colors.PRIMARY} />
+          )}
         </View>
         <View style={{ flexDirection: 'column', marginLeft: 10 }}>
           <Text
@@ -84,7 +84,5 @@ const CommentComponent = ({ commentObject }) => {
     </View>
   );
 };
-
-const gradientWidth = 8;
 
 export default CommentComponent;

@@ -1,7 +1,9 @@
 import React from 'react';
-import { createStackNavigator, createBottomTabNavigator } from 'react-navigation';
+import { createBottomTabNavigator } from 'react-navigation-tabs';
+import { createStackNavigator } from 'react-navigation-stack';
 import { Text, Image } from 'react-native';
 import { Provider } from 'unstated';
+import { createAppContainer } from 'react-navigation';
 
 // import the different screens
 import LoadingScreen from './screens/LoadingScreen';
@@ -28,7 +30,7 @@ import colors from './assets/colors';
 
 const TabsNavigator = createBottomTabNavigator(
   {
-    Théories: {
+    theories: {
       screen: TheoriesScreen,
       navigationOptions: {
         tabBarIcon: ({ tintColor }) => (
@@ -36,7 +38,7 @@ const TabsNavigator = createBottomTabNavigator(
         ),
       },
     },
-    Chat: {
+    chat: {
       screen: ChatScreen,
       navigationOptions: {
         tabBarIcon: ({ tintColor }) => (
@@ -44,7 +46,7 @@ const TabsNavigator = createBottomTabNavigator(
         ),
       },
     },
-    Accueil: {
+    accueil: {
       screen: HomeScreen,
       navigationOptions: {
         tabBarIcon: ({ tintColor }) => (
@@ -52,7 +54,7 @@ const TabsNavigator = createBottomTabNavigator(
         ),
       },
     },
-    Activité: {
+    activite: {
       screen: ActivityScreen,
       navigationOptions: {
         tabBarIcon: ({ tintColor }) => (
@@ -60,7 +62,7 @@ const TabsNavigator = createBottomTabNavigator(
         ),
       },
     },
-    Profil: {
+    profil: {
       screen: ProfilScreen,
       navigationOptions: {
         tabBarIcon: ({ tintColor }) => (
@@ -70,7 +72,7 @@ const TabsNavigator = createBottomTabNavigator(
     },
   },
   {
-    initialRouteName: 'Accueil',
+    initialRouteName: 'accueil',
     tabBarOptions: {
       inactiveTintColor: colors.GRAY,
       activeTintColor: colors.PRIMARY,
@@ -141,14 +143,14 @@ const MainNavigator = createStackNavigator(
   },
 );
 
-class App extends React.Component {
-  render() {
-    return (
-      <Provider>
-        <MainNavigator />
-      </Provider>
-    );
-  }
-}
+const AppContainer = createAppContainer(MainNavigator);
+
+const App = () => {
+  return (
+    <Provider>
+      <AppContainer />
+    </Provider>
+  );
+};
 
 export default App;

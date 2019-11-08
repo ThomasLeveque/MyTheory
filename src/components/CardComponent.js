@@ -1,25 +1,27 @@
 import React from 'react';
 import { Image, Text, TouchableOpacity, StyleSheet, View } from 'react-native';
-import { LinearGradient } from 'expo';
+import { LinearGradient } from 'expo-linear-gradient';
 import { MaterialIcons } from '@expo/vector-icons';
 import colors from '../assets/colors';
-import { createStackNavigator } from 'react-navigation';
-import HomeScreen from '../screens/main/HomeScreen';
 
 const CardComponent = ({ theory, navigation, cardStyle }) => {
   const { img, name, category, user, description, likes, comments, peoples } = theory;
   const imageSize = 20;
+  const gradientWidth = 8;
 
   return (
     <TouchableOpacity
       onPress={() => navigation.navigate('theory', { theory })}
-      style={[{
-        marginBottom: 10,
-        ...colors.SHADOW,
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.2,
-      }, cardStyle]}
+      style={[
+        {
+          marginBottom: 10,
+          ...colors.SHADOW,
+          shadowColor: '#000',
+          shadowOffset: { width: 0, height: 2 },
+          shadowOpacity: 0.2,
+        },
+        cardStyle,
+      ]}
     >
       <View
         style={{
@@ -44,7 +46,7 @@ const CardComponent = ({ theory, navigation, cardStyle }) => {
           }}
         />
         <View style={{ flex: 1, borderTopRightRadius: 5, overflow: 'hidden', marginBottom: 0 }}>
-          {img && (
+          {img.length !== 0 && (
             <Image
               style={{
                 width: '100%',
@@ -93,13 +95,13 @@ const CardComponent = ({ theory, navigation, cardStyle }) => {
           </Text>
           <View style={{ flex: 1, flexDirection: 'row', marginTop: 8, marginLeft: 10 }}>
             <View style={{ flex: 0.3, flexDirection: 'row', alignItems: 'center' }}>
-              <MaterialIcons name={'thumb-up'} size={20} color="black" />
+              <MaterialIcons name="thumb-up" size={20} color="black" />
               <Text style={{ marginLeft: 5, color: 'grey', fontSize: 12, fontWeight: '100' }}>
                 {likes && likes.length}
               </Text>
             </View>
             <View style={{ flex: 0.3, flexDirection: 'row' }}>
-              <MaterialIcons name={'comment'} size={20} color="black" />>
+              <MaterialIcons name="comment" size={20} color="black" />
               <Text style={{ marginLeft: 5, color: 'grey', fontSize: 12, fontWeight: '100' }}>
                 {comments}
               </Text>
@@ -130,9 +132,10 @@ const CardComponent = ({ theory, navigation, cardStyle }) => {
                 <Image
                   style={{ width: '100%', height: '100%', resizeMode: 'cover' }}
                   source={{ uri: user.img }}
-                />) : (
-                  <MaterialIcons name="photo" size={imageSize / 2} color={colors.PRIMARY} />
-                )}
+                />
+              ) : (
+                <MaterialIcons name="photo" size={imageSize / 2} color={colors.PRIMARY} />
+              )}
             </View>
             <Text
               style={{
@@ -148,10 +151,8 @@ const CardComponent = ({ theory, navigation, cardStyle }) => {
           </View>
         </View>
       </View>
-    </TouchableOpacity >
+    </TouchableOpacity>
   );
 };
-
-const gradientWidth = 8;
 
 export default CardComponent;

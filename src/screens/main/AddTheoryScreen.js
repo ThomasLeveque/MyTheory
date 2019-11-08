@@ -20,11 +20,11 @@ import { getPermAsync } from '../../utils/Utils';
 
 const AddTheoryScreen = props => (
   <Subscribe to={[Store]}>
-    {store => <Child store={store} navigation={props.navigation} />}
+    {store => <AddTheoryChild store={store} navigation={props.navigation} />}
   </Subscribe>
 );
 
-class Child extends Component {
+class AddTheoryChild extends Component {
   state = {
     error: '',
     loading: false,
@@ -223,7 +223,7 @@ class Child extends Component {
             );
           }}
         </Formik>
-        {this.state.error && <Text>{this.state.error}</Text>}
+        {this.state.error.length !== 0 && <Text>{this.state.error}</Text>}
       </Layout>
     );
   }

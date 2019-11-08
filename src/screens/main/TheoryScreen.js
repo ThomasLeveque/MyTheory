@@ -14,11 +14,11 @@ import Layout from '../../components/Layout';
 
 const TheoryScreen = props => (
   <Subscribe to={[Store]}>
-    {store => <Child store={store} navigation={props.navigation} />}
+    {store => <TheoryChild store={store} navigation={props.navigation} />}
   </Subscribe>
 );
 
-class Child extends React.Component {
+class TheoryChild extends React.Component {
   state = {
     comment: '',
     comments: [],
@@ -60,7 +60,7 @@ class Child extends React.Component {
     const theory = this.props.navigation.state.params.theory;
     return (
       <Layout style={styles.container}>
-        {theory.img && (
+        {theory.img.length !== 0 && (
           <View style={{ height: 200, width: '100%' }}>
             <Image
               style={{ width: '100%', height: '100%' }}
@@ -89,7 +89,7 @@ class Child extends React.Component {
                 { marginLeft: 10, fontFamily: 'montserratLight', fontSize: 15 },
               ]}
             >
-              {theory.likes && `${theory.likes.length} likes`}
+              {theory.likes.length !== 0 && `${theory.likes.length} likes`}
             </Text>
           </TouchableOpacity>
 
@@ -102,7 +102,7 @@ class Child extends React.Component {
             onChangeText={comment => this.setState({ comment })}
             placeholder="Votre commentaire"
           />
-          {this.state.errorMessage && (
+          {this.state.errorMessage.length !== 0 && (
             <Text style={{ color: 'red' }}>{this.state.errorMessage}</Text>
           )}
           <PrimaryButton
